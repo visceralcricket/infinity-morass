@@ -1,14 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <stdbool.h> // Necesario para identificadores/flags
 // #include <string.h>
 // #include <ctype.h>
 #include <limits.h> // Necessary for using INF (infinity)
-#define INF INT_MAX
-#define INT_ERROR -1
 #include "tdas/list.h"
 #include "tdas/extra.h"
 #include "tdas/heap.h"
+
+// General definitions
+#define INF INT_MAX
+#define INT_ERROR -1
+#define MAX_ID 30
 
 // Maze symbols
 #define WALL '#' // Obstacle
@@ -16,6 +20,20 @@
 #define PATH '.' // Path for the agent
 #define START 'I' // Starting position of the agent
 #define GOAL 'M' // Goal tile
+
+// Menu modes
+#define MAIN_MENU 0
+#define EXPLORATION_MODE 1
+#define MAP_VIEW 2
+#define INVENTORY_VIEW 3
+#define COMBAT_MODE 4
+
+// Gameplay inputs
+#define ESC_KEY 27
+#define UP_ARROW 72
+#define DOWN_ARROW 80
+#define LEFT_ARROW 75
+#define RIGHT_ARROW 77
 
 // Estructura simple para enumerar movimientos/acciones
 typedef enum {
@@ -25,8 +43,12 @@ typedef enum {
     RIGHT = 4
 } Action;
 
-
+// Structures' definitions
 typedef struct State State;
+typedef struct Stats Stats;
+typedef struct Enemy Enemy;
+typedef struct Player Player;
+
 // El laberinto comienza desde la esquina SUPERIOR-IZQUIERDA (UPPER-LEFT)
  struct State {
     int currentRow; // modifies "y" axis
@@ -34,6 +56,20 @@ typedef struct State State;
     int accumulated; // Real cost (g) of moves
     int estimated; // Total estimated cost (f = g + h), essential for best-first / A* algorithm
     State *parent; // Pointer to predecessor state
+};
+
+struct Stats {
+    int hp, speed, attack, defense;
+};
+
+struct Enemy {
+    Stats combatStats;
+    char idEnemigo[MAX_ID];
+};
+
+struct Player {
+    Stats combatStats;
+    List *inventory;
 };
 
 // --------------- Utilities ---------------
@@ -60,14 +96,15 @@ State *createNewState();
 State *transition(State *currentState, Action accion);
 List *getAdjacentNodes(State *currentState, int maze[N][N], int targetRow, int targetColumn);
 
-// Format / outputting functions
+// Format, aka output/input functions
 void printRawMaze(int maze[N][N]);
 void mostrarMenuPrincipal();
-
+void manejarInputWindows();
 // ==================== Main ====================
 
 int main() {
     char option;
+    int currentMode = MAIN_MENU;
     int maze[N][N] = {0};
     int mazeGenerated = 0;
     // Inicializar semilla aleatoria para generar laberintos únicos
@@ -107,7 +144,7 @@ int main() {
                 }
             }
         }
-    } while(option != '5');
+    } while(currentMode == MAIN_MENU);
 
     limpiarPantalla();
     printf("Cerrando programa.. gracias por su paciencia.\n");
@@ -214,6 +251,37 @@ List *getAdjacentNodes(State *currentState, int maze[N][N], int targetRow, int t
     }
     return adjacentList;
 }
+// Faltaría implementar manejo de input para Linux
+void manejarInputWindows() {
+    bool playing = true;
+    while(playing) {
+        int key = _getch();
+        // Verificar si es tecla especial (como las flechas)
+        if(key == 0 || key == 224) {
+            int direction = _getch();
+
+            switch(direction) {
+                case UP_ARROW: // Flecha arriba
+                    printf("Moviéndose al Norte..\n");
+                    // jugador.y -= 1;
+                    break;
+                case DOWN_ARROW: // Flecha abajo
+                    printf("Moviéndose al Sur..\n");
+                    // jugador.y += 1;
+                    break;
+                case LEFT_ARROW:
+                    printf("Moviéndose al Este..\n");
+                    // jugador.x += 1;
+                    break;
+                case RIGHT_ARROW:
+                    printf("Moviéndose al Oeste..\n");
+                    // jugador.x -= 1;
+                    break;
+            }
+        }
+        else if(key == ESC_KEY) playing = false;
+    }    
+}
 
 void printRawMaze(int maze[N][N]) {
 
@@ -237,14 +305,14 @@ void printRawMaze(int maze[N][N]) {
 void mostrarMenuPrincipal() {
     limpiarPantalla();
     separador1();
-    puts("|---- Maze-Mapper: laberinto 10x10 ----|");
+    puts("\t|---- Maze-Mapper: laberinto 10x10 ----|");
     separador2();
-    puts("\nOpciones de control\n< ");
-    puts("1) Generar nuevo laberinto (Dificultad 90)");
-    puts("2) Resolver usando DFS (Profundidad)");
-    puts("3) Resolver usando BFS (Anchura)");
-    puts("4) Resolver usando A* (Heurística)");
-    puts("5) Salir del programa\n");
+    puts("\n\tOpciones de control\n< ");
+    puts("\t1) Generar nuevo laberinto (Dificultad 90)");
+    puts("\t2) Resolver usando DFS (Profundidad)");
+    puts("\t3) Resolver usando BFS (Anchura)");
+    puts("\t4) Resolver usando A* (Heurística)");
+    puts("\t5) Salir del programa\n");
 
     separador2();
 }
