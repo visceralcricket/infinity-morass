@@ -21,4 +21,6 @@
 
 5. Una función generate_maze para generar un mapa/mazmorra de NxN dimensiones y dificultad entera de 0 a 100.
     * La función de generar un camino asegurado (build_safe_path) y leer se encuentra temporalmente descartada puesto que no ve uso en este proyecto; considerar además eliminar las funciones las cuales no vayan a ver uso.
+
+6. La estructura list.c y su encabezado fueron implementados como una lista enlazada simple (unidireccional), considerar quizás re-implementarla como una lista enlazada doble en el futuro para adecuarse a las necesidades del proyecto.
 ___
