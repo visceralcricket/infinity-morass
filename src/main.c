@@ -1,16 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <string.h>
-#include <ctype.h>
-// #include <limits.h> // Necessary for using INF (infinity)
+// #include <string.h>
+// #include <ctype.h>
+#include <limits.h> // Necessary for using INF (infinity)
 #define INF INT_MAX
 #define INT_ERROR -1
-#include "infinity-morass/tdas/list.h"
-#include "infinity-morass/tdas/extra.h"
-#include "infinity-morass/tdas/heap.h"
-#include "infinity-morass/tdas/stack.h"
-#include "infinity-morass/tdas/queue.h"
+#include "tdas/list.h"
+#include "tdas/extra.h"
+#include "tdas/heap.h"
+
 // Maze symbols
 #define WALL '#' // Obstacle
 #define EMPTY ' ' // Empty/free tile
@@ -60,12 +59,6 @@ int getL1Distance(int currentRow, int currentColumn, int targetRow, int targetCo
 State *createNewState();
 State *transition(State *currentState, Action accion);
 List *getAdjacentNodes(State *currentState, int maze[N][N], int targetRow, int targetColumn);
-void printSolution(State *finalState, int maze[N][N], int expandedNodes, const char *algorithmName);
-
-// Searching methods (Deep-first search, broad-first, A-Star)
-void runDFS(int maze[N][N]);
-void runBFS(int maze[N][N]);
-void runAStar(int maze[N][N]);
 
 // Format / outputting functions
 void printRawMaze(int maze[N][N]);
@@ -220,227 +213,6 @@ List *getAdjacentNodes(State *currentState, int maze[N][N], int targetRow, int t
         }
     }
     return adjacentList;
-}
-
-void printSolution(State *finalState, int maze[N][N], int expandedNodes, const char *algorithmName) {
-    if(!finalState || !maze) return;
-
-    char view[N][N];
-    // Build the labyrinth by mapping its free tiles and obstacles
-    for(int i=0; i<N; i++) {
-        for(int j=0; j<N; j++) {
-            view[i][j] = (maze[i][j] == 1) ? WALL : EMPTY;
-        }
-    }
-    int pathCost = finalState->accumulated;
-
-    State *step = finalState;
-    while(step) {
-        view[step->currentRow][step->currentColumn] = PATH;
-        step = step->parent;
-    }
-    view[0][0] = START;
-    view[N-1][N-1] = GOAL;
-
-    separador2();
-    printf("Resultado: %s\n", algorithmName);
-    separador2();
-
-    for(int i=0; i<N; i++) {
-        printf(" | ");
-        for(int j=0; j<N; j++) {
-            printf("%c ", view[i][j]);
-        }
-        printf("\n");
-    }
-    separador1();
-    printf(" -> Iteraciones (Nodos expandidos): %d\n", expandedNodes);
-    printf(" -> Costo del camino encontrado: %d\n", pathCost);
-    separador2();
-
-    presioneEnterParaContinuar();
-}
-
-void runDFS(int maze[N][N]) {
-
-    Stack *stack = stack_create(NULL);
-    if(!stack) return;
-
-    List *garbageCollector = list_create();
-    if(!garbageCollector) {
-        stack_clean(stack);
-        free(stack);
-        return;
-    }
-
-    int visited[N][N] = {0};
-    int expandedNodes = 0;
-
-    State *initialState = createNewState();
-    if(!initialState) {
-        cleanGarbage(garbageCollector);
-        stack_clean(stack);
-        free(stack);
-        return;
-    }
-
-    stack_push(stack, initialState);
-    list_pushBack(garbageCollector, initialState);
-
-    while(stack_top(stack)) {
-        State *current = (State *) stack_pop(stack);
-        expandedNodes++;
-
-        if(isFinal(current, N-1, N-1)) {
-            printSolution(current, maze, expandedNodes, "Búsqueda en Profundidad (DFS)");
-            break;
-        }
-        if(visited[current->currentRow][current->currentColumn]) continue;
-        visited[current->currentRow][current->currentColumn] = 1;
-
-        List *adjacents = getAdjacentNodes(current, maze, N-1, N-1);
-        if(!adjacents) break;
-        State *currentAdjacent = list_first(adjacents);
-
-        while(currentAdjacent) {
-            if(!visited[currentAdjacent->currentRow][currentAdjacent->currentColumn]) {
-                stack_push(stack, currentAdjacent);
-                list_pushBack(garbageCollector, currentAdjacent);
-            }
-            else free(currentAdjacent);
-            currentAdjacent = list_next(adjacents);
-        }
-        list_clean(adjacents);
-        free(adjacents);
-    }
-
-    // Clean allocated memory
-    cleanGarbage(garbageCollector);
-
-    stack_clean(stack);
-    free(stack);
-}
-// Búsqueda en anchura (broad-first search)
-void runBFS(int maze[N][N]) {
-
-    Queue *queue = queue_create(NULL);
-    if(!queue) return;
-
-    List *garbageCollector = list_create();
-    if(!garbageCollector) {
-        queue_clean(queue);
-        free(queue);
-        return;
-    }
-
-    int visited[N][N] = {0};
-    int expandedNodes = 0;
-
-    State *initialState = createNewState();
-    if(!initialState) {
-        cleanGarbage(garbageCollector);
-        queue_clean(queue);
-        free(queue);
-        return;
-    }
-
-    queue_insert(queue, initialState);
-    list_pushBack(garbageCollector, initialState);
-    visited[0][0] = 1; // Marcamos al encolar para optimizar memoria
-
-    while(queue_front(queue)) {
-        State *current = (State *) queue_remove(queue);
-        expandedNodes++;
-
-        if(isFinal(current, N-1, N-1)) {
-            printSolution(current, maze, expandedNodes, "Búsqueda en anchura (BFS)");
-            break;
-        }
-        List *adjacents = getAdjacentNodes(current, maze, N-1, N-1);
-        if(!adjacents) break;
-        State *currentAdjacent = list_first(adjacents);
-
-        while(currentAdjacent) {
-            if(!visited[currentAdjacent->currentRow][currentAdjacent->currentColumn]) {
-                visited[currentAdjacent->currentRow][currentAdjacent->currentColumn] = 1;
-                queue_insert(queue, currentAdjacent);
-                list_pushBack(garbageCollector, currentAdjacent);
-            }
-            else free(currentAdjacent);
-            currentAdjacent = list_next(adjacents);
-        }
-        list_clean(adjacents);
-        free(adjacents);
-    }
-    // Clean allocated memory
-    cleanGarbage(garbageCollector);
-
-    queue_clean(queue);
-    free(queue);
-}
-
-void runAStar(int maze[N][N]) {
-
-    Heap *pq = heap_create();
-    if(!pq) return;
-    List *garbageCollector = list_create();
-    if(!garbageCollector) {
-        heap_destroy(pq);
-        free(pq);
-        return;
-    }
-
-    int bestCost[N][N];
-    int expandedNodes = 0;
-
-    for(int i=0; i<N; i++) {
-        for(int j=0; j<N; j++) {
-            bestCost[i][j] = INF;
-        }
-    }
-    State *initialState = createNewState();
-    if(!initialState) {
-        cleanGarbage(garbageCollector);
-        heap_destroy(pq);
-        free(pq);
-        return;
-    }
-
-    heap_push(pq, initialState, -(initialState->estimated));
-    list_pushBack(garbageCollector, initialState);
-    bestCost[0][0] = 0;
-
-    while(heap_top(pq)) {
-        State *current = (State *) heap_top(pq);
-        heap_pop(pq);
-        expandedNodes++;
-
-        if(isFinal(current, N-1, N-1)) {
-            printSolution(current, maze, expandedNodes, "Búsqueda A* (Heurística)");
-            break;
-        }
-        if(current->accumulated > bestCost[current->currentRow][current->currentColumn]) continue;
-        List *adjacents = getAdjacentNodes(current, maze, N-1, N-1);
-        if(!adjacents) break;
-        State *currentAdjacent = list_first(adjacents);
-
-        while(currentAdjacent) {
-            if(currentAdjacent->accumulated < bestCost[currentAdjacent->currentRow][currentAdjacent->currentColumn]) {
-                bestCost[currentAdjacent->currentRow][currentAdjacent->currentColumn] = currentAdjacent->accumulated;
-                heap_push(pq, currentAdjacent, -(currentAdjacent->estimated));
-                list_pushBack(garbageCollector, currentAdjacent);
-            }
-            else free(currentAdjacent);
-            currentAdjacent = list_next(adjacents);
-        }
-        list_clean(adjacents);
-        free(adjacents);
-    }
-    // Clean allocated memory
-    cleanGarbage(garbageCollector);
-
-    heap_destroy(pq);
-    free(pq);
 }
 
 void printRawMaze(int maze[N][N]) {
