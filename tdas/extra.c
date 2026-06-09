@@ -121,7 +121,7 @@ void presioneEnterParaContinuar() {
   int c;
   while((c=getchar())!='\n' && c != EOF);
 }
-
+/*
 // Función recursiva (DFS) para encontrar un camino aleatorio garantizado
 int build_safe_path(int x, int y, int safe[N][N], int visited[N][N]) {
     // Verificar límites y si ya visitamos la celda
@@ -164,6 +164,7 @@ int build_safe_path(int x, int y, int safe[N][N], int visited[N][N]) {
     safe[x][y] = 0;
     return 0;
 }
+*/
 
 // Función principal para generar el laberinto
 void generate_maze(int maze[N][N], int difficulty) {
