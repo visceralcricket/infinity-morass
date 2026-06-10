@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <conio.h> // Necesario para usar _getch
 #include <ctype.h> // Necesario para readCharOption
 #include "list.h"
 

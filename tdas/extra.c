@@ -24,65 +24,6 @@ void *_mystrdup(const char *token) {
   return newToken;
 }
 
-char **leer_linea_csv(FILE *archivo, char separador) {
-    static char linea[MAX_LINE_LENGTH];
-    static char *campos[MAX_FIELDS];
-    int idx = 0;
-
-    if (fgets(linea, MAX_LINE_LENGTH, archivo) == NULL)
-        return NULL;  // fin de fichero
-
-    // quitar salto de línea
-    linea[strcspn(linea, "\r\n")] = '\0';
-
-    char *ptr = linea;
-    while (*ptr && idx < MAX_FIELDS - 1) {
-        char *start;
-
-        if (*ptr == '\"') {
-            // campo entrecomillado
-            ptr++;              // saltar la comilla inicial
-            start = ptr;
-
-            // compactar contenido: convertir "" → " y copiar el resto
-            char *dest = ptr;
-            while (*ptr) {
-                if (*ptr == '\"' && *(ptr + 1) == '\"') {
-                    *dest++ = '\"';  // una comilla literal
-                    ptr += 2;        // saltar ambas
-                }
-                else if (*ptr == '\"') {
-                    ptr++;           // fin del campo
-                    break;
-                }
-                else {
-                    *dest++ = *ptr++;
-                }
-            }
-            *dest = '\0';        // terminar cadena
-
-            // ahora ptr apunta justo después de la comilla de cierre
-            if (*ptr == separador) ptr++;
-        }
-        else {
-            // campo sin comillas
-            start = ptr;
-            while (*ptr && *ptr != separador)
-                ptr++;
-            if (*ptr == separador) {
-                *ptr = '\0';
-                ptr++;
-            }
-        }
-
-        campos[idx++] = start;
-    }
-
-    campos[idx] = NULL;
-    return campos;
-}
-
-
 List *split_string(const char *str, const char *delim) {
   List *result = list_create();
   char *token = strtok((char *)str, delim);
@@ -121,50 +62,6 @@ void presioneEnterParaContinuar() {
   int c;
   while((c=getchar())!='\n' && c != EOF);
 }
-/*
-// Función recursiva (DFS) para encontrar un camino aleatorio garantizado
-int build_safe_path(int x, int y, int safe[N][N], int visited[N][N]) {
-    // Verificar límites y si ya visitamos la celda
-    if (x < 0 || y < 0 || x >= N || y >= N || visited[x][y]) {
-        return 0;
-    }
-
-    visited[x][y] = 1;
-    safe[x][y] = 1; // Lo marcamos temporalmente como parte del camino
-
-    // Condición de éxito: Llegamos a la meta
-    if (x == N - 1 && y == N - 1) {
-        return 1;
-    }
-
-    // Direcciones: Derecha, Abajo, Izquierda, Arriba
-    int dirs[4][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-
-    // Mezclar las direcciones aleatoriamente para que el camino no sea predecible
-    for (int i = 0; i < 4; i++) {
-        int r = rand() % 4;
-        int tempX = dirs[i][0];
-        int tempY = dirs[i][1];
-        dirs[i][0] = dirs[r][0];
-        dirs[i][1] = dirs[r][1];
-        dirs[r][0] = tempX;
-        dirs[r][1] = tempY;
-    }
-
-    // Explorar los vecinos en el orden aleatorio
-    for (int i = 0; i < 4; i++) {
-        int nx = x + dirs[i][0];
-        int ny = y + dirs[i][1];
-        if (build_safe_path(nx, ny, safe, visited)) {
-            return 1; // Si este camino llega a la meta, detenemos la búsqueda
-        }
-    }
-
-    // Backtracking: Si llegamos a un callejón sin salida, desmarcamos el camino
-    safe[x][y] = 0;
-    return 0;
-}
-*/
 
 // Función principal para generar el laberinto
 void generate_maze(int maze[N][N], int difficulty) {
@@ -193,6 +90,7 @@ void generate_maze(int maze[N][N], int difficulty) {
         }
     }
 }
+
 // Se lee únicamente 1 carácter y en caso de no ser válido se retorna carácter nulo
 char readCharOption() {
   char linea[MAX_LINEA];
