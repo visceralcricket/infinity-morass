@@ -1,5 +1,5 @@
-#ifndef MAP_H
-#define MAP_H
+#ifndef HASHMAP_H
+#define HASHMAP_H
 
 /* +++
                         === Disclaimer ===
