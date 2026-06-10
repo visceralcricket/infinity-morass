@@ -18,5 +18,5 @@
 
 * Se limpió y afinó el archivo **"extra.c"** para dejar fuera las funciones que no sirven: split_string **NO** debe ser eliminada, primero considerar su potencial uso para la lectura del nombre del jugador y otras posibles utilidades.
 
-[![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/feature%2Fmain-menu)](https://github.com/visceralcricket/infinity-morass/commits/feature/main-menu)
+[![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/main)](https://github.com/visceralcricket/infinity-morass/commits/main)
 
