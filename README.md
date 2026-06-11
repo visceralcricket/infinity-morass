@@ -1,10 +1,15 @@
 # **infinity-morass**
 
+> **IMPORTANTE**
+* Se utiliza convención **"camelCase"** para programar la totalidad del programa a lo largo de todos los archivos, por favor tener presente esto al momento de contribuir al proyecto.
+
 ## ***Historial de cambios***
 
-* Se crearon 2 archivos nuevos para distribuir el main y dejarlo más limpio:
+* Se crearon **2** archivos nuevos para distribuir el main y dejarlo más limpio:
 ---
+* 
   + **`game.h`** tiene todos los `#include` para las librerías, las definiciones para los movimientos, las teclas que se van a leer para mover al personaje y los prototipos de las entidades.
+
   + **`game.c`** tiene las entidades en sí, como el `Player`, `Enemy`, `Stats`, las funciones para el grafo y una función para manejar el input en Windows.
 ---
 

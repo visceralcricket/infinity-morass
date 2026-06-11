@@ -87,6 +87,12 @@ void renderExploration(int maze[N][N], Player player) {
 }
 
 void runExplorationMode(int maze[N][N]) {
+    /* +++
+        Aquí falta hacer una funcionalidad donde se pueda leer
+        el username del jugador para almacenarlo en la estructura
+        y luego usarlo para guardar su progreso.
+    
+    --- */
     Player player = {
         "tmpName",
         0, 0,
