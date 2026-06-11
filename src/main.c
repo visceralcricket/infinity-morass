@@ -12,7 +12,7 @@ void showMainMenu();
 
 int main() {
     char option;
-    int currentMode = MAIN_MENU;
+    GameMode currentMode = MODE_MAIN_MENU;
     int maze[N][N] = {0};
     int mazeGenerated = 0;
     // Inicializar semilla aleatoria para generar laberintos únicos
@@ -28,17 +28,18 @@ int main() {
         switch(option) {
 
             case '1':
-                // currentMode = EXPLORATION_MODE;
+                mazeGenerated = 1;
+                runExplorationMode(maze[N][N]);
                 break;
             case '2':
-                // ...
+                // void showGlossary(maze);
                 break;
             case '3':
-                // currentMode = SETTINGS_MODE;
+                // currentMode = MODE_SETTINGS;
                 break;
         }
 
-    } while(currentMode == MAIN_MENU && option != '4');
+    } while(currentMode == MODE_MAIN_MENU && option != '4');
 
     limpiarPantalla();
     printf("Cerrando programa.. gracias por su paciencia.\n");
@@ -46,37 +47,63 @@ int main() {
     return 0;
 }
 
-void printRawMaze(int maze[N][N]) {
-
-    char tile;
-    separador1();
-    printf("    Topología actual del Laberinto\n");
-    separador1();
-    for(int i=0; i<N; i++) {
-        for(int j=0; j<N; j++) {
-            tile = (maze[i][j] == 1) ? WALL : EMPTY;
-            if(i==0 && j==0) tile = START;
-            if(i==N-1 && j==N-1) tile = GOAL;
-            printf("%c ", tile);
-        }
-        printf("\n");
-    } 
-    separador1();
-    presioneEnterParaContinuar();
-}
-
 void showMainMenu() {
     limpiarPantalla();
     separador1();
     puts("\t|---- Infinity-Morass: A hyper-link to the Future ----|");
     separador2();
-    puts("\n\tOpciones de juego\n< ");
+    puts("\n\tOpciones de juego\n\t< ");
     puts("\t1) Iniciar nueva partida");
     puts("\t2) Ver glosario");
     puts("\t3) Opciones");
     puts("\t4) Salir del juego");
 
     separador2();
+}
+
+void renderExploration(int maze[N][N], Player player) {
+    limpiarPantalla();
+    separador1();
+    printf("\tModo exploración - Presione ESC para salir\n");
+    separador1();
+
+    for(int i=0; i<N; i++) {
+        printf("\t");
+        for(int j=0; j<N; j++) {
+            if(i==player.y && j==player.x) printf("P "); // Jugador
+            else {
+                char tile = (maze[i][j] == 1) ? WALL : EMPTY;
+                if(i==0 && j==0) tile = START; // Considerar cambiar esto luego
+                if(i== N-1 && j == N-1) tile = GOAL;
+                printf("%c ", tile);
+            }
+        }
+        printf("\n");
+    }
+    separador1();
+}
+
+void runExplorationMode(int maze[N][N]) {
+    Player player = {
+        0, 0,
+        {100, 10, 5, 5},
+        NULL
+    }; // Considerar cambiar por casilla aleatoria
+    bool playing = true;
+
+    while(playing) {
+        // Renderizar estado actual
+        renderExploration(maze, player);
+        // Procesar el input de este frame (pasar punteros)
+        handleWindowsInput(&player, &playing, maze);
+
+        if(player.y == N-1 && player.x == N-1) {
+            renderExploration(maze, player);
+            printf("\n\t¡Has llegado a la meta!\n");
+            presioneTeclaParaContinuar();
+            playing = false;
+        }
+    }
 }
 
 // void showGlossary() {}

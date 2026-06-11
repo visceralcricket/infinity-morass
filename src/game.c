@@ -1,27 +1,5 @@
 #include "game.h"
 
-// El laberinto comienza desde la esquina SUPERIOR-IZQUIERDA (UPPER-LEFT)
- struct State {
-    int currentRow; // modifies "y" axis
-    int currentColumn; // modifies "x" axis
-    // int accumulated; // Real cost (g) of moves
-    State *parent; // Pointer to predecessor state
-};
-
-struct Stats {
-    int hp, speed, attack, defense;
-};
-
-struct Enemy {
-    Stats combatStats;
-    char idEnemigo[MAX_ID];
-};
-
-struct Player {
-    Stats combatStats;
-    List *inventory;
-};
-
 void cleanGarbage(List *states) {
     State *tmpState = (State *) list_first(states);
     while(tmpState) {
@@ -120,33 +98,45 @@ List *getAdjacentNodes(State *currentState, int maze[N][N], int targetRow, int t
     return adjacentList;
 }
 // Faltaría implementar manejo de input para Linux
-void manejarInputWindows() {
+void handleWindowsInput(Player *player, bool *playing, int maze[N][N]) {
     bool playing = true;
     while(playing) {
         int key = _getch();
+
         // Verificar si es tecla especial (como las flechas)
         if(key == 0 || key == 224) {
-            int direction = _getch();
-
-            switch(direction) {
-                case UP_ARROW: // Flecha arriba
-                    printf("Moviéndose al Norte..\n");
+            int specialCode = _getch();
+            switch(specialCode) {
+                default:
+                    break;
+            }
+        }
+        
+        else if(key == ESC_KEY) *playing = false;
+            
+        else {
+            switch(key) {
+                case W_KEY_UPPER:
+                case W_KEY_LOWER:
+                    printf("\tMoviéndose al Norte..\n");
                     // jugador.y -= 1;
                     break;
-                case DOWN_ARROW: // Flecha abajo
-                    printf("Moviéndose al Sur..\n");
+                case A_KEY_UPPER:
+                case A_KEY_LOWER:
+                    printf("\tMoviéndose al Sur..\n");
                     // jugador.y += 1;
                     break;
-                case LEFT_ARROW:
-                    printf("Moviéndose al Este..\n");
+                case S_KEY_UPPER:
+                case S_KEY_LOWER:
+                    printf("\tMoviéndose al Este..\n");
                     // jugador.x += 1;
                     break;
-                case RIGHT_ARROW:
-                    printf("Moviéndose al Oeste..\n");
+                case D_KEY_UPPER:
+                case D_KEY_LOWER:
+                    printf("\tMoviéndose al Oeste..\n");
                     // jugador.x -= 1;
                     break;
             }
         }
-        else if(key == ESC_KEY) playing = false;
     }    
 }

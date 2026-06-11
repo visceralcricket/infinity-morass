@@ -1,6 +1,6 @@
 #ifndef EXTRA_H
 #define EXTRA_H
-#define N 10
+#define N 15
 
 #include <stdio.h>
 #include <stdlib.h>
