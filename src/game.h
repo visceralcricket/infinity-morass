@@ -17,7 +17,8 @@
 #define INF INT_MAX
 #define INT_ERROR -1
 #define MAX_ID 30
-#define N 15 // <- Maze's fixed size
+#define MAX_USERNAME 20
+#define N 50 // <- Maze's fixed size
 
 // ======== Maze symbols ========
 #define WALL '#' // Obstacle
@@ -67,8 +68,11 @@ typedef struct State State;
 typedef struct Stats Stats;
 typedef struct Enemy Enemy;
 typedef struct Player Player;
+// Estructura para guardar progreso del jugador o jugadores
+// typedef struct PlayerData PlayerData;
 
-// El laberinto comienza desde la esquina SUPERIOR-IZQUIERDA (UPPER-LEFT)
+// El laberinto comienza desde la esquina SUPERIOR-IZQUIERDA (UPPER-LEFT), considerar
+// cambiar esto a un inicio generado aleatoriamente
  struct State {
     int currentRow; // modifies "y" axis
     int currentColumn; // modifies "x" axis
@@ -77,6 +81,7 @@ typedef struct Player Player;
 };
 
 struct Stats {
+    // int level <- Considerar añadir esta mecánica
     int hp, speed, attack, defense;
 };
 
@@ -91,6 +96,13 @@ struct Player {
     List *inventory;
 };
 
+/*
+struct PlayerData {
+    char username[MAX_USERNAME];
+    int level, score;
+};
+*/
+
 // ==================== Prototypes ====================
 
 // Reduce code-writing in cleaning Lists (like garbageCollector) that store data of the type State
@@ -101,8 +113,10 @@ int isFinal(State *currentState, int targetRow, int targetColumn);
 State *createNewState();
 State *transition(State *currentState, Action accion);
 List *getAdjacentNodes(State *currentState, int maze[N][N], int targetRow, int targetColumn);
+
 // Función recursiva BSF para construir un camino seguro
 int buildSafePath(int x, int y, int safe[N][N], int visited[N][N]);
+
 // Maze_generator function
 void generateMaze(int maze[N][N], int difficulty);
 

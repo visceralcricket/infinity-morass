@@ -22,7 +22,7 @@ int main() {
 
     do {
         showMainMenu();
-        printf("\nIngrese su opción\n< ");
+        printf("\n\t\t" FORMAT_BOLD "Ingrese su opción\n\t\t" FORMAT_RESET FORMAT_DIM "<" FORMAT_RESET " ");
         option = readCharOption();
 
         if(option == '4') break;
@@ -31,7 +31,7 @@ int main() {
 
             case '1':
                 if(!mazeGenerated) {
-                    generateMaze(maze, 25);
+                    generateMaze(maze, 20);
                     mazeGenerated = 1;
                 }
                 runExplorationMode(maze);
@@ -55,13 +55,15 @@ int main() {
 void showMainMenu() {
     limpiarPantalla();
     separador1();
-    puts(" |---- Infinity-Morass: A hyper-link to the Future ----|");
+    puts(" \t|---- Infinity-" COLOR_CYAN FORMAT_BOLD "Morass" FORMAT_RESET ": A hyper-link to the Future ----|");
     separador2();
-    puts("\n\tOpciones de juego\n\t< ");
-    puts("\t1) Iniciar nueva partida");
-    puts("\t2) Ver glosario");
-    puts("\t3) Opciones");
-    puts("\t4) Salir del juego");
+    // \033[1m -> Comienza a escribir texto en bold(negrita)
+    // \033[0m -> Esto resetea el formato de nueva a su estado normal
+    puts("\n\t\t" FORMAT_BOLD "Opciones de juego" FORMAT_RESET "\n");
+    puts("\t\t1) Iniciar nueva partida");
+    puts("\t\t2) Ver glosario");
+    puts("\t\t3) Opciones");
+    puts("\t\t4) Salir del juego");
 
     separador2();
 }
@@ -69,7 +71,7 @@ void showMainMenu() {
 void renderExploration(int maze[N][N], Player player) {
     limpiarPantalla();
     separador1();
-    printf("\tModo exploración - Presione ESC para salir\n");
+    printf("\tPresione " FORMAT_BOLD "ESC" FORMAT_RESET " para salir\n");
     separador1();
 
     for(int i=0; i<N; i++) {

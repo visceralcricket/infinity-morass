@@ -8,6 +8,21 @@
 #include <ctype.h> // Necesario para readCharOption
 #include "list.h"
 
+// ======== Terminal UI formatting (ANSI Codes) ========
+#define FORMAT_RESET "\033[0m"
+#define FORMAT_BOLD "\033[1m"
+#define FORMAT_DIM "\033[2m"
+
+// ======== Text colors ========
+
+#define COLOR_RED "\033[31m"
+#define COLOR_GREEN "\033[32m"
+#define COLOR_YELLOW "\033[33m"
+#define COLOR_BLUE "\033[34m"
+#define COLOR_MAGENTA "\033[35m"
+#define COLOR_CYAN "\033[36m"
+#define COLOR_WHITE "\033[37m"
+
 // strdup propio para asegurar portabilidad
 void *_mystrdup(const char *token);
 
@@ -19,10 +34,10 @@ void presioneTeclaParaContinuar();
 // Leer input de tal forma que los posibles errores en el mismo sean tratados correctamente.
 char readCharOption();
 
-// Separador de 40 dashes '-'
+// Separador de 2 tabulados + 40 dashes '-'
 void separador1();
 
-// Separador de 40 símbolos igual '='
+// Separador de 2 tabulados + 40 símbolos igual '='
 void separador2();
 
 #endif

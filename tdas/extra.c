@@ -50,9 +50,9 @@ char readCharOption() {
 
 // Separadores
 void separador1() {
-  puts("\t----------------------------------------");
+  puts("\t\t" FORMAT_DIM "----------------------------------------" FORMAT_RESET);
 }
 
 void separador2() {
-  puts("\t========================================");
+  puts("\t\t" FORMAT_BOLD "========================================" FORMAT_RESET);
 }
