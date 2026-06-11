@@ -19,6 +19,9 @@
 
 * Se limpió y afinó el archivo **`extra.c`** para dejar fuera las funciones que no sirven: `split_string` **NO** debe ser eliminada, primero considerar su potencial uso para la lectura del nombre del jugador y otras posibles utilidades.
 
+---
+* Se desplazó la carpeta con los TDAs dentro de la carpeta donde estaban ubicados main, game.c y game.h ("**src/**") para mantener todo el código fuente en un único directorio.
+
 ## **Distribución de directorios**
 
 > **`src/`**
@@ -31,4 +34,4 @@
 >
 > * **`game.c`**: Implementación de la lógica interna del juego. Contiene los algoritmos de generación procedimental de laberintos (`generateMaze`, `buildSafePath`), las funciones algorítmicas para el recorrido espacial en grafos y el motor de procesamiento de inputs dependiente de la plataforma (`handleWindowsInput`).
 
-[![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/feature%2Fmain-menu)](https://github.com/visceralcricket/infinity-morass/commits/feature/main-menu)
+[![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/main-dev)](https://github.com/visceralcricket/infinity-morass/commits/feature/main-menu)
