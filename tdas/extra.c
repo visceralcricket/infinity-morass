@@ -69,7 +69,7 @@ void generate_maze(int maze[N][N], int difficulty) {
     int visited[N][N] = {0};
 
     // 1. Trazar el camino seguro desde el inicio (0,0) a la meta (N-1, N-1)
-    build_safe_path(0, 0, safe, visited);
+    // build_safe_path(0, 0, safe, visited);
 
     // 2. Rellenar el resto de la matriz basándonos en la dificultad
     for (int i = 0; i < N; i++) {

@@ -43,16 +43,12 @@
 // strdup propio para asegurar portabilidad
 void *_mystrdup(const char *token);
 
-char **leer_linea_csv(FILE *archivo, char separador);
-
 List *split_string(const char *str, const char *delim);
 
 // Función para limpiar la pantalla
 void limpiarPantalla();
 
 void presioneEnterParaContinuar();
-
-int build_safe_path(int x, int y, int safe[N][N], int visited[N][N]);
 
 void generate_maze(int maze[N][N], int difficulty);
 
