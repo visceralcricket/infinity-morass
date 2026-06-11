@@ -4,8 +4,10 @@
 // separador1, separador2 y readCharOption se movieron al archivo extra.c para 
 // mantener portabilidad y reducir copy-paste de los mismos en cada código fuente.
 
-void printRawMaze(int maze[N][N]);
+// ======== Prototypes ========
 void showMainMenu();
+void renderExploration(int maze[N][N], Player player);
+void runExplorationMode(int maze[N][N]);
 // void showGlossary();
 
 // ==================== Main ====================
@@ -28,8 +30,11 @@ int main() {
         switch(option) {
 
             case '1':
-                mazeGenerated = 1;
-                runExplorationMode(maze[N][N]);
+                if(!mazeGenerated) {
+                    generateMaze(maze, 25);
+                    mazeGenerated = 1;
+                }
+                runExplorationMode(maze);
                 break;
             case '2':
                 // void showGlossary(maze);
@@ -99,7 +104,7 @@ void runExplorationMode(int maze[N][N]) {
 
         if(player.y == N-1 && player.x == N-1) {
             renderExploration(maze, player);
-            printf("\n\t¡Has llegado a la meta!\n");
+            printf("\n\tHas llegado a la meta!\n");
             presioneTeclaParaContinuar();
             playing = false;
         }
