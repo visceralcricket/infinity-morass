@@ -18,7 +18,7 @@
 #define INT_ERROR -1
 #define MAX_ID 30
 #define MAX_USERNAME 20
-#define N 50 // <- Maze's fixed size
+#define N 30 // <- Maze's fixed size
 
 // ======== Maze symbols ========
 #define WALL '#' // Obstacle
@@ -40,6 +40,7 @@ typedef enum {
 
 // ======== Gameplay inputs ========
 #define ESC_KEY 27
+// ======== Arrow keys ========
 #define UP_ARROW 72
 #define DOWN_ARROW 80
 #define LEFT_ARROW 75
@@ -91,6 +92,7 @@ struct Enemy {
 };
 
 struct Player {
+    // char username{MAX_USERNAME}
     int x, y;
     Stats combatStats;
     List *inventory;

@@ -14,7 +14,6 @@
 #define FORMAT_DIM "\033[2m"
 
 // ======== Text colors ========
-
 #define COLOR_RED "\033[31m"
 #define COLOR_GREEN "\033[32m"
 #define COLOR_YELLOW "\033[33m"
