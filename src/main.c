@@ -55,7 +55,7 @@ int main() {
 void showMainMenu() {
     limpiarPantalla();
     separador1();
-    puts("\t|---- Infinity-Morass: A hyper-link to the Future ----|");
+    puts(" |---- Infinity-Morass: A hyper-link to the Future ----|");
     separador2();
     puts("\n\tOpciones de juego\n\t< ");
     puts("\t1) Iniciar nueva partida");
