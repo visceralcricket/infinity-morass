@@ -25,7 +25,7 @@ int main() {
         printf("\n\t\t" FORMAT_BOLD "Ingrese su opción\n\t\t" FORMAT_RESET FORMAT_DIM "<" FORMAT_RESET " ");
         option = readCharOption();
 
-        if(option == '4') break;
+        if(option == '3') break;
 
         switch(option) {
 
@@ -39,12 +39,9 @@ int main() {
             case '2':
                 // void showGlossary(maze);
                 break;
-            case '3':
-                // currentMode = MODE_SETTINGS;
-                break;
         }
 
-    } while(currentMode == MODE_MAIN_MENU && option != '4');
+    } while(currentMode == MODE_MAIN_MENU && option != '3');
 
     limpiarPantalla();
     printf("Cerrando programa.. gracias por su paciencia.\n");
@@ -62,8 +59,7 @@ void showMainMenu() {
     puts("\n\t\t" FORMAT_BOLD "Opciones de juego" FORMAT_RESET "\n");
     puts("\t\t1) Iniciar nueva partida");
     puts("\t\t2) Ver glosario");
-    puts("\t\t3) Opciones");
-    puts("\t\t4) Salir del juego");
+    puts("\t\t3) Salir del juego");
 
     separador2();
 }
@@ -92,6 +88,7 @@ void renderExploration(int maze[N][N], Player player) {
 
 void runExplorationMode(int maze[N][N]) {
     Player player = {
+        "tmpName",
         0, 0,
         {100, 10, 5, 5},
         NULL

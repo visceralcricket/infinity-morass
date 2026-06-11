@@ -18,6 +18,8 @@
 #define INT_ERROR -1
 #define MAX_ID 30
 #define MAX_USERNAME 20
+#define MAX_OBJECT_NAME 25
+#define MAX_LORE_LENGTH 256
 #define N 30 // <- Maze's fixed size
 
 // ======== Maze symbols ========
@@ -34,12 +36,12 @@ typedef enum {
     MODE_EXPLORATION,
     MODE_MAP_VIEW,
     MODE_INVENTORY_VIEW,
-    MODE_COMBAT,
-    MODE_SETTINGS
+    MODE_COMBAT
 } GameMode;
 
 // ======== Gameplay inputs ========
 #define ESC_KEY 27
+
 // ======== Arrow keys ========
 #define UP_ARROW 72
 #define DOWN_ARROW 80
@@ -64,9 +66,15 @@ typedef enum {
     RIGHT = 4
 } Action;
 
+typedef enum {
+    ITEM_ORDINARY = 0,
+    ITEM_KEY
+} ItemType;
+
 // Structures' definitions
 typedef struct State State;
 typedef struct Stats Stats;
+typedef struct GameObject GameObject;
 typedef struct Enemy Enemy;
 typedef struct Player Player;
 // Estructura para guardar progreso del jugador o jugadores
@@ -83,16 +91,28 @@ typedef struct Player Player;
 
 struct Stats {
     // int level <- Considerar añadir esta mecánica
-    int hp, speed, attack, defense;
+    int currentHp, maxHp, speed, attack, defense;
+};
+
+struct GameObject {
+    char name[MAX_OBJECT_NAME];
+    ItemType type;
+    int x, y;
+    union {
+        Stats stats;
+        char lore[MAX_LORE_LENGTH];
+    } properties;
 };
 
 struct Enemy {
+    int x, y;
     Stats combatStats;
     char idEnemigo[MAX_ID];
+    List *drops;
 };
 
 struct Player {
-    // char username{MAX_USERNAME}
+    char username[MAX_USERNAME];
     int x, y;
     Stats combatStats;
     List *inventory;
@@ -100,8 +120,10 @@ struct Player {
 
 /*
 struct PlayerData {
-    char username[MAX_USERNAME];
-    int level, score;
+    // char username[MAX_USERNAME];
+    State *currentState;
+    Player *player;
+    int level, floor;
 };
 */
 
