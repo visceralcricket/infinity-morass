@@ -39,10 +39,69 @@ Enemy* generateEnemy(char name[MAX_USERNAME])
     return enemy;
 }
 
+
 void generateStatsCommonEnemy(Enemy* enemy, int difficulty)
 {
+    float mult;
 
+
+    switch(difficulty) 
+    {
+    case 1: mult = 0.80f; break;
+
+    case 2: mult = 1.0f;  break;
+
+    case 3: mult = 2.0f;  break;
+    
+    default: mult = 1.0f; break;
+    }              mult = 2.0f;
+
+
+
+    if(strcmp(enemy->enemyName, "Zombi") == 0) {
+        enemy->combatStats.attack  = 2;
+        enemy->combatStats.defense = 4;
+        enemy->combatStats.maxHp   = 12;
+        enemy->combatStats.currentHp = enemy->combatStats.maxHp;
+        enemy->combatStats.speed   = 2;
+    }
+    else if(strcmp(enemy->enemyName, "Esquelo") == 0) {
+        enemy->combatStats.attack  = 4;
+        enemy->combatStats.defense = 0;
+        enemy->combatStats.maxHp   = 8;
+        enemy->combatStats.currentHp = enemy->combatStats.maxHp;
+        enemy->combatStats.speed   = 5;
+    }
+    else if(strcmp(enemy->enemyName, "Slime") == 0) {
+        enemy->combatStats.attack  = 1;
+        enemy->combatStats.defense = 2;
+        enemy->combatStats.maxHp   = 35;
+        enemy->combatStats.currentHp = enemy->combatStats.maxHp;
+        enemy->combatStats.speed   = 1;
+    }
+    else if(strcmp(enemy->enemyName, "Demonio") == 0) {
+        enemy->combatStats.attack  = 6;
+        enemy->combatStats.defense = 6;
+        enemy->combatStats.maxHp   = 6;
+        enemy->combatStats.currentHp = enemy->combatStats.maxHp;
+        enemy->combatStats.speed   = 6;
+    }
+    else if(strcmp(enemy->enemyName, "Sucubo") == 0) {
+        enemy->combatStats.attack  = 10;
+        enemy->combatStats.defense = 0;
+        enemy->combatStats.maxHp   = 5;
+        enemy->combatStats.currentHp = enemy->combatStats.maxHp;
+        enemy->combatStats.speed   = 10;
+    }
+    else if(strcmp(enemy->enemyName, "Goblin") == 0) {
+        enemy->combatStats.attack  = 2;
+        enemy->combatStats.defense = 2;
+        enemy->combatStats.maxHp   = 2;
+        enemy->combatStats.currentHp = enemy->combatStats.maxHp;
+        enemy->combatStats.speed   = 2;
+    }
 }
 
-//
-// ["Zombi", "Esquelo", "Pipe"]
+
+// dificultad 1-3
+// ["Zombi", "Esquelo", "Slime", "Demonio", "Sucubo", "Goblin"]
