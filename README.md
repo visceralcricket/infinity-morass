@@ -3,6 +3,8 @@
 > **IMPORTANTE**
 * Se utiliza convención **"camelCase"** para programar la totalidad del programa a lo largo de todos los archivos, por favor tener presente esto al momento de contribuir al proyecto.
 
+* Comando para compilar: `>gcc -I. src/*.c src/tdas/*.c -o prueba`
+
 ## ***Historial de cambios***
 
 * Se crearon **2** archivos nuevos para distribuir el main y dejarlo más limpio:
