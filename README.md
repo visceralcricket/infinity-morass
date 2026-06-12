@@ -4,6 +4,8 @@
 * Se utiliza convención **"camelCase"** para programar la totalidad del programa a lo largo de todos los archivos, por favor tener presente esto al momento de contribuir al proyecto.
 
 * Comando para compilar: `>gcc -I. src/*.c src/tdas/*.c -o prueba`
+  
+* Comando para establecer UTF-8: `[Console]::OutputEncoding = [System.text.Encoding]::UTF8`
 
 ## ***Historial de cambios***
 
