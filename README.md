@@ -38,4 +38,4 @@
 >
 > * **`game.c`**: Implementación de la lógica interna del juego. Contiene los algoritmos de generación procedimental de laberintos (`generateMaze`, `buildSafePath`), las funciones algorítmicas para el recorrido espacial en grafos y el motor de procesamiento de inputs dependiente de la plataforma (`handleWindowsInput`).
 
-[![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/main-dev)](https://github.com/visceralcricket/infinity-morass/commits/feature/main-menu)
+[![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/main-dev)](https://github.com/visceralcricket/infinity-morass/commits/feature/main-menu) 
