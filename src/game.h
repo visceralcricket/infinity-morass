@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h> // Necesario para identificadores/flags
-// #include <string.h>
+#include <string.h>
 // #include <ctype.h>
 #include <limits.h> // Necessary for using INF (infinity)
 #include "tdas/list.h"
@@ -17,6 +17,10 @@
 #define INF INT_MAX
 #define INT_ERROR -1
 #define MAX_ID 30
+#define MAX_USERNAME 20
+#define MAX_OBJECT_NAME 25
+#define MAX_LORE_LENGTH 256
+#define N 30 // <- Maze's fixed size
 
 // ======== Maze symbols ========
 #define WALL '#' // Obstacle
@@ -25,20 +29,34 @@
 #define START 'I' // Starting position of the agent
 #define GOAL 'M' // Goal tile
 
-// ======== Menu modes ========
-#define MAIN_MENU 0
-#define EXPLORATION_MODE 1
-#define MAP_VIEW 2
-#define INVENTORY_VIEW 3
-#define COMBAT_MODE 4
-#define SETTINGS_MODE 5
+// ======== Menu modes enum structure ========
+
+typedef enum {
+    MODE_MAIN_MENU = 0,
+    MODE_EXPLORATION,
+    MODE_MAP_VIEW,
+    MODE_INVENTORY_VIEW,
+    MODE_COMBAT
+} GameMode;
 
 // ======== Gameplay inputs ========
 #define ESC_KEY 27
+
+// ======== Arrow keys ========
 #define UP_ARROW 72
 #define DOWN_ARROW 80
 #define LEFT_ARROW 75
 #define RIGHT_ARROW 77
+
+// ======== WASD key codes ========
+#define W_KEY_UPPER 87
+#define W_KEY_LOWER 119
+#define A_KEY_UPPER 65
+#define A_KEY_LOWER 97
+#define S_KEY_UPPER 83
+#define S_KEY_LOWER 115
+#define D_KEY_UPPER 68
+#define D_KEY_LOWER 100
 
 // Estructura simple para enumerar movimientos/acciones
 typedef enum {
@@ -48,12 +66,66 @@ typedef enum {
     RIGHT = 4
 } Action;
 
+typedef enum {
+    ITEM_ORDINARY = 0,
+    ITEM_KEY
+} ItemType;
+
 // Structures' definitions
 typedef struct State State;
 typedef struct Stats Stats;
+typedef struct GameObject GameObject;
 typedef struct Enemy Enemy;
 typedef struct Player Player;
+// Estructura para guardar progreso del jugador o jugadores
+// typedef struct PlayerData PlayerData;
 
+// El laberinto comienza desde la esquina SUPERIOR-IZQUIERDA (UPPER-LEFT), considerar
+// cambiar esto a un inicio generado aleatoriamente
+ struct State {
+    int currentRow; // modifies "y" axis
+    int currentColumn; // modifies "x" axis
+    // int accumulated; // Real cost (g) of moves
+    State *parent; // Pointer to predecessor state
+};
+
+struct Stats {
+    // int level <- Considerar añadir esta mecánica
+    int currentHp, maxHp, speed, attack, defense;
+};
+
+struct GameObject {
+    char name[MAX_OBJECT_NAME];
+    ItemType type;
+    int x, y;
+    union {
+        Stats stats;
+        char lore[MAX_LORE_LENGTH];
+    } properties;
+};
+
+struct Enemy {
+    int x, y;
+    Stats combatStats;
+    List *drops;
+    char enemyName[MAX_USERNAME];
+};
+
+struct Player {
+    char username[MAX_USERNAME];
+    int x, y;
+    Stats combatStats;
+    List *inventory;
+};
+
+/*
+struct PlayerData {
+    // char username[MAX_USERNAME];
+    State *currentState;
+    Player *player;
+    int level, floor;
+};
+*/
 
 // ==================== Prototypes ====================
 
@@ -66,7 +138,13 @@ State *createNewState();
 State *transition(State *currentState, Action accion);
 List *getAdjacentNodes(State *currentState, int maze[N][N], int targetRow, int targetColumn);
 
+// Función recursiva BSF para construir un camino seguro
+int buildSafePath(int x, int y, int safe[N][N], int visited[N][N]);
+
+// Maze_generator function
+void generateMaze(int maze[N][N], int difficulty);
+
 // Format, aka output/input functions
-void manejarInputWindows();
+void handleWindowsInput(Player *player, bool *playing, int maze[N][N]);
 
 #endif
