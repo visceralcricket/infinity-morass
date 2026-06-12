@@ -107,8 +107,8 @@ struct GameObject {
 struct Enemy {
     int x, y;
     Stats combatStats;
-    char idEnemigo[MAX_ID];
     List *drops;
+    char enemyName[MAX_USERNAME];
 };
 
 struct Player {
