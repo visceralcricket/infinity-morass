@@ -23,6 +23,10 @@
 
 // crear objetos
 
+GameObject* generateObject(char name[MAX_OBJECT_NAME], char lore[])
+{
+
+}
 
 
 

@@ -67,9 +67,15 @@ typedef enum {
 } Action;
 
 typedef enum {
-    ITEM_ORDINARY = 0,
+    ITEM_CONSUMABLE,
+    ITEM_EQUIPPABLE,
     ITEM_KEY
 } ItemType;
+
+typedef enum {
+    OBJECT_MAP,
+    OBJECT_INVENTORY
+} ItemState;
 
 // Structures' definitions
 typedef struct State State;
@@ -96,12 +102,18 @@ struct Stats {
 
 struct GameObject {
     char name[MAX_OBJECT_NAME];
-    ItemType type;
     int x, y;
-    union {
-        Stats stats;
-        char lore[MAX_LORE_LENGTH];
-    } properties;
+    Stats stats;
+    char lore[MAX_LORE_LENGTH];
+    ItemType equip;
+    ItemState state;
+
+    union 
+    {
+        struct { int x, y; };    // si está en el mapa
+        struct { int slot; };    // si está en inventario
+    } pos;
+    
 };
 
 struct Enemy {
