@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h> // Necesario para identificadores/flags
-// #include <string.h>
+#include <string.h>
 // #include <ctype.h>
 #include <limits.h> // Necessary for using INF (infinity)
 #include "tdas/list.h"
