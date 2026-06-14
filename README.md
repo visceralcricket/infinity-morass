@@ -26,6 +26,14 @@
 ---
 * Se desplazó la carpeta con los TDAs dentro de la carpeta donde estaban ubicados main, game.c y game.h ("**src/**") para mantener todo el código fuente en un único directorio.
 
+* Se mejoró el sistema de navegación del mapa para una experiencia de juego más fluida además de la implementación de una funcionalidad para generar salidas / entradas a los siguientes niveles(mazmorras) de forma aleatoria.
+
+* Se finalizó el sistema de carga de partidas guardadas en el sistema en base al nombre del usuario.
+
+* Se refactorizó la estructura de lista enlazada simple a una lista enlazada doble (**"list.c", "list.h"**)
+
+* Se incluyó el sistema de generación de enemigos **"enemy-gen.c"**.
+
 ## **Distribución de directorios**
 
 > **`src/`**
