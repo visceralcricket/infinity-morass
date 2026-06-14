@@ -36,9 +36,9 @@ int main() {
     if(fgets(sessionPlayer.username, sizeof(sessionPlayer.username), stdin)) {
         sessionPlayer.username[strcspn(sessionPlayer.username, "\n")] = 0;
     }
-
     else strcpy(sessionPlayer.username, "Guest");
-    // Aquí en el futuro deberá llamarse a la función loadGame (cargar partida guardada en base al username)
+
+    
     if(loadGame(&sessionPlayer)) {
         printf("\n\t\t" COLOR_GREEN "Perfil encontrado. Partida cargada exitosamente." FORMAT_RESET "\n");
     }
@@ -48,7 +48,9 @@ int main() {
         // Solo incializamos una lista nueva si el jugador es nuevo
         sessionPlayer.inventory = listCreate();
     }
-
+    
+    printf("\t\t");
+    presioneTeclaParaContinuar();
     char option;
     GameMode currentMode = MODE_MAIN_MENU;
     
@@ -108,9 +110,11 @@ void showMainMenu(char *username) {
 }
 
 void renderExploration(int maze[N][N], Player player) {
+    printf(MOVE_CURSOR HIDE_CURSOR);
+    
     limpiarPantalla();
     separador1();
-    printf("\tPresione " FORMAT_BOLD "ESC" FORMAT_RESET " para salir\n");
+    printf("\t\t\tPresione " COLOR_MAGENTA "ESC" FORMAT_RESET " para salir\n");
     separador1();
 
     for(int i=0; i<N; i++) {
@@ -136,6 +140,7 @@ void runExplorationMode(int maze[N][N], Player *player) {
     bool playing = true;
     // Considerar NO resetear las coordenadas del jugador
     player->x = player->y = 0;
+    limpiarPantalla(); // Sólo limpiar pantalla una vez
 
     while(playing) {
         // Renderizar estado actual
@@ -146,11 +151,12 @@ void runExplorationMode(int maze[N][N], Player *player) {
 
         if(player->y == N-1 && player->x == N-1) {
             renderExploration(maze, *player);
-            printf("\n\tHas llegado a la meta!\n");
+            printf("\n\tHas llegado a la " COLOR_YELLOW "meta" FORMAT_RESET "!\n");
             presioneTeclaParaContinuar();
             playing = false;
         }
     }
+    printf(SHOW_CURSOR);
 }
 
 // void showGlossary() {}

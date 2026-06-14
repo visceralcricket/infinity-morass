@@ -7,11 +7,6 @@
 // Guardar el progreso de un jugador en un archivo binario (.sav)
 bool saveGame(Player *player);
 
-/* +++
-Aquí faltará una función que permita cargar cada partida mediante
-su correspondiente archivo .sav
---- */
-
-// bool loadGame(Player *player, const char *username);
+bool loadGame(Player *player);
 
 #endif
