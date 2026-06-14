@@ -16,7 +16,7 @@ struct List {
 
 typedef List List;
 
-List *list_create() {
+List *listCreate() {
   List *newList = (List *)malloc(sizeof(List));
   if (newList == NULL) {
     return NULL; // Memory allocation failed
@@ -28,7 +28,7 @@ List *list_create() {
   return newList;
 }
 
-void *list_first(List *L) {
+void *listFirst(List *L) {
   if (L == NULL || L->head == NULL) {
     return NULL; // Empty list or without a head
   }
@@ -36,7 +36,7 @@ void *list_first(List *L) {
   return L->current->data;
 }
 
-void *list_next(List *L) {
+void *listNext(List *L) {
   if (L == NULL || L->current == NULL || L->current->next == NULL) {
     return NULL; // Same as previous + no node to next
   }
@@ -44,7 +44,7 @@ void *list_next(List *L) {
   return L->current->data;
 }
 
-void list_pushFront(List *L, void *data) {
+void listPushFront(List *L, void *data) {
   if (L == NULL) {
     return;
   }
@@ -61,7 +61,7 @@ void list_pushFront(List *L, void *data) {
   L->size++;
 }
 
-void list_pushBack(List *L, void *data) {
+void listPushBack(List *L, void *data) {
   if (L == NULL) {
     return; // Non-initialized list
   }
@@ -81,7 +81,7 @@ void list_pushBack(List *L, void *data) {
   L->size++;
 }
 
-void list_pushCurrent(List *L, void *data) {
+void listpushCurrent(List *L, void *data) {
   if (L == NULL || L->current == NULL) {
     return; // Empty list or current node not defined
   }
@@ -100,7 +100,7 @@ void list_pushCurrent(List *L, void *data) {
 
 
 
-void *list_popFront(List *L) {
+void *listPopFront(List *L) {
   if (L == NULL || L->head == NULL) {
     return NULL;
   }
@@ -116,12 +116,12 @@ void *list_popFront(List *L) {
   return data;
 }
 
-void *list_popBack(List *L) {
+void *listPopBack(List *L) {
   if (L == NULL || L->head == NULL) {
     return NULL;
   }
   if (L->head == L->tail) { // Only 1 node in the list
-    return list_popFront(L);
+    return listPopFront(L);
   }
   Node *current = L->head;
   while (current->next != L->tail) {
@@ -135,16 +135,16 @@ void *list_popBack(List *L) {
   return data;
 }
 
-int list_size(List *L){
+int listSize(List *L){
     return L->size;
 }
 
-void *list_popCurrent(List *L) {
+void *listPopCurrent(List *L) {
   if (L == NULL || L->current == NULL) {
     return NULL;
   }
   if (L->current == L->head) {
-    return list_popFront(L);
+    return listPopFront(L);
   }
   Node *temp = L->head;
   if(!temp) return NULL;
@@ -166,7 +166,7 @@ void *list_popCurrent(List *L) {
   return data;
 }
 
-void list_clean(List *L) {
+void listClean(List *L) {
   if (L == NULL) {
     return;
   }

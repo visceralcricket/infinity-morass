@@ -18,6 +18,7 @@
 #define INT_ERROR -1
 #define MAX_ID 30
 #define MAX_USERNAME 20
+#define MAX_FILENAME (MAX_USERNAME+15)
 #define MAX_OBJECT_NAME 25
 #define MAX_LORE_LENGTH 256
 #define N 30 // <- Maze's fixed size

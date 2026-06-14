@@ -18,7 +18,7 @@ int main() {
     Player sessionPlayer = {
         "", 0, 0,
         {100, 10, 5, 5},
-        NULL  // IMPORTANTE: aquí debería llamarse a list_create() para inicializar inventario
+        NULL  // IMPORTANTE: aquí debería llamarse a listCreate() para inicializar inventario
     };
 
     int maze[N][N] = {0};
@@ -32,13 +32,22 @@ int main() {
     puts("\t\tPor favor, ingrese su" FORMAT_BOLD COLOR_RED " nombre.." FORMAT_RESET);
     separador1();
     printf("\n\t\t" FORMAT_DIM COLOR_RED "< " FORMAT_RESET);
+    
     if(fgets(sessionPlayer.username, sizeof(sessionPlayer.username), stdin)) {
         sessionPlayer.username[strcspn(sessionPlayer.username, "\n")] = 0;
     }
 
     else strcpy(sessionPlayer.username, "Guest");
     // Aquí en el futuro deberá llamarse a la función loadGame (cargar partida guardada en base al username)
-    if(!sessionPlayer.inventory) sessionPlayer.inventory = list_create();
+    if(loadGame(&sessionPlayer)) {
+        printf("\n\t\t" COLOR_GREEN "Perfil encontrado. Partida cargada exitosamente." FORMAT_RESET "\n");
+    }
+    
+    else {
+        printf("\n\t\t" COLOR_CYAN "Perfil nuevo. Inicializando matriz de datos.." FORMAT_RESET "\n");
+        // Solo incializamos una lista nueva si el jugador es nuevo
+        sessionPlayer.inventory = listCreate();
+    }
 
     char option;
     GameMode currentMode = MODE_MAIN_MENU;

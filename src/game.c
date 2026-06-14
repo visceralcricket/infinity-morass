@@ -1,12 +1,12 @@
 #include "game.h"
 
 void cleanGarbage(List *states) {
-    State *tmpState = (State *) list_first(states);
+    State *tmpState = (State *) listFirst(states);
     while(tmpState) {
         free(tmpState);
-        tmpState = list_next(states);
+        tmpState = listNext(states);
     }
-    list_clean(states);
+    listClean(states);
     free(states);
 }
 
@@ -61,7 +61,7 @@ State *transition(State *currentState, Action accion) {
 List *getAdjacentNodes(State *currentState, int maze[N][N], int targetRow, int targetColumn) {
     if(!currentState) return NULL;
 
-    List *adjacentList = list_create();
+    List *adjacentList = listCreate();
     if(!adjacentList) return NULL;
     Action actions[] = {UP, DOWN, LEFT, RIGHT};
 
@@ -91,7 +91,7 @@ List *getAdjacentNodes(State *currentState, int maze[N][N], int targetRow, int t
                 State *validState = transition(currentState, tmpAction);
                 if(!validState) continue;
 
-                list_pushBack(adjacentList, validState);
+                listPushBack(adjacentList, validState);
             }
         }
     }
