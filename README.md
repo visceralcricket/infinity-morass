@@ -38,6 +38,11 @@
 
 * Se refactorizó la implementación de la estructura **"hashmap"** para que se adhiera correctamente a los requisitos del programa.
 
+* Añadido archivo "**MakeFile**" para automatizar compilación del programa; para hacer uso del mismo, abra powershell o su terminal de elección ubicado en el directorio "*infinity-morass*" y utilice el siguiente comando:
+
+  > `mingw32-make`
+* Con esto realizado, se creará un ejecutable .exe en el directorio donde está ubicado para abrir el programa.
+
 ## **Distribución de directorios**
 
 > * **`src/`**: Directorio principal del código fuente. Contiene las funcionalides del programa y la lógica central del mismo.
