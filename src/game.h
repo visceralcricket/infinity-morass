@@ -22,6 +22,7 @@
 #define MAX_OBJECT_NAME 25
 #define MAX_LORE_LENGTH 256
 #define N 30 // <- Maze's fixed size
+#define MAX_NUM_EXITS 3
 
 // ======== Maze symbols ========
 #define WALL '#' // Obstacle
@@ -29,6 +30,7 @@
 #define PATH '.' // Path for the agent
 #define START 'I' // Starting position of the agent
 #define GOAL 'M' // Goal tile
+#define EXIT_TILE 2
 
 // ======== Menu modes enum structure ========
 
@@ -154,8 +156,9 @@ List *getAdjacentNodes(State *currentState, int maze[N][N], int targetRow, int t
 // Función recursiva BSF para construir un camino seguro
 int buildSafePath(int x, int y, int safe[N][N], int visited[N][N]);
 
-// Maze_generator function
+// Maze-handling functions
 void generateMaze(int maze[N][N], int difficulty);
+void placeExits(int maze[N][N], int numExits);
 
 // Format, aka output/input functions
 void handleWindowsInput(Player *player, bool *playing, int maze[N][N]);
