@@ -1,5 +1,5 @@
 # **infinity-morass**
-`versión: 1.4.0`
+`versión: 1.5.0`
 
 > **IMPORTANTE**
 * Se utiliza convención **"camelCase"** para programar la totalidad del programa a lo largo de todos los archivos, por favor tener presente esto al momento de contribuir al proyecto.
