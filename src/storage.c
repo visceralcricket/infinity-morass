@@ -49,7 +49,7 @@ bool saveGame(Player *player) {
 bool loadGame(Player *player) {
 
     char filename[MAX_FILENAME];
-    snprintf(filename, sizeof(filename), "saves/&s.sav", player->username);
+    snprintf(filename, sizeof(filename), "saves/%s.sav", player->username);
 
     FILE *file = fopen(filename, "rb");
     if(!file) return false;

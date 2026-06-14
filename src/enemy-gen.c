@@ -1,14 +1,7 @@
-#include <limits.h> // Necessary for using INF (infinity)
 #include "tdas/list.h"
 #include "tdas/extra.h"
 #include "tdas/hashmap.h"
 
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <stdbool.h> // Necesario para identificadores/flags
-#include <string.h>
 #include "game.h"
 
 
@@ -22,12 +15,12 @@
 #define N 30 // <- Maze's fixed size
 
 // crear objetos
-
+/*
 GameObject* generateObject(char name[MAX_OBJECT_NAME], char lore[])
 {
 
 }
-
+*/
 
 
 Enemy* generateEnemy(char name[MAX_USERNAME])

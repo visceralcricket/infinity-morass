@@ -169,6 +169,20 @@ void generateMaze(int maze[N][N], int difficulty) {
     }
 }
 
+void placeExits(int maze[N][N], int numExits) {
+
+    int placed = 0;
+    while(placed < numExits) {
+        int randomX = rand() % N;
+        int randomY = rand() % N;
+
+        if(maze[randomY][randomX] == 0 && (randomX != 0 || randomY != 0)) {
+            maze[randomY][randomX] = EXIT_TILE;
+            placed++;
+        }
+    }
+}
+
 // Faltaría implementar manejo de input para Linux
 // Actualizamos la firma para recibir el puntero del jugador y el flag del bucle
 void handleWindowsInput(Player *player, bool *playing, int maze[N][N]) {

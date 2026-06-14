@@ -12,14 +12,17 @@ void *listFirst(List *L);
 // Moves pointer 'current' to the next node and returns its pointer
 void *listNext(List *L);
 
+// Moves pointer 'current' to the previous node and returns its pointer
+void *listPrev(List *L);
+
 // Inserts a new node at the start of the list
-void listPushFront(List *L, void *dato);
+void listPushFront(List *L, void *data);
 
 // Inserts a new node at the end of the list
-void listPushBack(List *L, void *dato);
+void listPushBack(List *L, void *data);
 
-// // Inserts a new node right after the 'current' one
-void listPushCurrent(List *L, void *dato);
+// Inserts a new node right after the 'current' one
+void listPushCurrent(List *L, void *data);
 
 // Deletes the first element of the list
 void *listPopFront(List *L);
@@ -34,6 +37,6 @@ void *listPopCurrent(List *L);
 void listClean(List *L);
 
 // Returns the logical size of the list
-int listSize(List* L);
+int listSize(List *L);
 
 #endif
