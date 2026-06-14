@@ -34,16 +34,37 @@
 
 * Se incluyó el sistema de generación de enemigos **"enemy-gen.c"**.
 
+* Se añadieron nuevas carpetas en las que organizar el proyecto.
+
+* Se refactorizó la implementación de la estructura **"hashmap"** para que se adhiera correctamente a los requisitos del programa.
+
 ## **Distribución de directorios**
 
-> **`src/`**
-> Directorio principal del código fuente. Contiene el orquestador y la lógica central del dominio.
+> * **`src/`**: Directorio principal del código fuente. Contiene las funcionalides del programa y la lógica central del mismo.
 >
-
+---
 > * **`main.c`**: Archivo principal del programa. Contiene el bucle de estados en los que se encuentra el jugador y gestiona la transición entre la interfaz del menú principal y los distintos modos de juego interactivos (como `runExplorationMode`). Relega la lógica pesada a los archivos **`game`** para mantener una arquitectura limpia y modular.
 >
-> * **`game.h`**: Cabecera/encabezado de la arquitectura del programa. Concentra la declaración de estructuras de memoria (`Player`, `Enemy`, `State`), enumeraciones de estado (`GameMode`), macros estructurales (como las dimensiones topológicas de la matriz `N`) y expone los prototipos públicos del motor del juego.
+> * **`engine/`**
 >
-> * **`game.c`**: Implementación de la lógica interna del juego. Contiene los algoritmos de generación procedimental de laberintos (`generateMaze`, `buildSafePath`), las funciones algorítmicas para el recorrido espacial en grafos y el motor de procesamiento de inputs dependiente de la plataforma (`handleWindowsInput`).
+  >   * **`game.c`**: Implementación de la lógica interna del juego. Contiene los algoritmos de generación procedimental de laberintos (`generateMaze`, `buildSafePath`), las funciones algorítmicas para el recorrido espacial en grafos y el motor de procesamiento de inputs dependiente de la plataforma (`handleWindowsInput`).
+>
+  >   * **`game.h`**: Cabecera/encabezado de la arquitectura del programa. Concentra la declaración de estructuras de memoria (`Player`, `Enemy`, `State`), enumeraciones de estado (`GameMode`), macros estructurales (como las dimensiones topológicas de la matriz `N`) y expone los prototipos públicos del motor del juego.
+>
+  >   * **`enemy-gen.c`**: Archivo destinado a la generación y gestión de las entidades *"enemigo"* para su correcta integración en el programa.
+
+> * **`io/`**
+>
+  >   * **`storage.c`**: Gestor de partidas guardadas del jugador en base a su nombre de usuario: utiliza archivos **.sav** para almacenar el perfil del jugador.
+  >
+  >   * **`storage.h`**: Encabezado de dicho gestor; contiene prototipos e inclusión de las librerías necesarias para funcionar correctamente.
+
+> * **`ui/`**
+>
+  >   * **`render.c`**: Archivo dedicado a la visualización y renderización del programa en el terminal correspondiente.
+  >
+  >   * **`render.h`**: Encabezado de dicho archivo; contiene prototipos e inclusión de las librerías necesarias para funcionar correctamente.
+
+
 
 [![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/main-dev)](https://github.com/visceralcricket/infinity-morass/commits/feature/main-menu) 
