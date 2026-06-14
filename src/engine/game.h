@@ -8,9 +8,9 @@
 #include <string.h>
 // #include <ctype.h>
 #include <limits.h> // Necessary for using INF (infinity)
-#include "tdas/list.h"
-#include "tdas/extra.h"
-#include "tdas/hashmap.h"
+#include "../tdas/list.h"
+#include "../tdas/extra.h"
+#include "../tdas/hashmap.h"
 // #include "tdas/heap.h"
 
 // ======== General definitions ========
@@ -151,7 +151,7 @@ void cleanGarbage(List *states);
 int isFinal(State *currentState, int targetRow, int targetColumn);
 State *createNewState();
 State *transition(State *currentState, Action accion);
-List *getAdjacentNodes(State *currentState, int maze[N][N], int targetRow, int targetColumn);
+List *getAdjacentNodes(State *currentState, int maze[N][N]);
 
 // Función recursiva BSF para construir un camino seguro
 int buildSafePath(int x, int y, int safe[N][N], int visited[N][N]);

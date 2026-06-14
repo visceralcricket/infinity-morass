@@ -58,7 +58,7 @@ State *transition(State *currentState, Action accion) {
 }
 
 // Return a list with all the valid, adjacent State(s) to the current one
-List *getAdjacentNodes(State *currentState, int maze[N][N], int targetRow, int targetColumn) {
+List *getAdjacentNodes(State *currentState, int maze[N][N]) {
     if(!currentState) return NULL;
 
     List *adjacentList = listCreate();

@@ -1,10 +1,8 @@
-#include "tdas/list.h"
-#include "tdas/extra.h"
-#include "tdas/hashmap.h"
+#include "../tdas/list.h"
+#include "../tdas/extra.h"
+#include "../tdas/hashmap.h"
 
-#include "game.h"
-
-
+#include "../engine/game.h"
 
 #define INF INT_MAX
 #define INT_ERROR -1
