@@ -57,3 +57,46 @@ void renderExploration(int maze[N][N], Player player) {
     printf("\n");
     separador1();
 }
+
+void renderSettingsOverlay() {
+
+    int startRow = 5;
+    int startCol = 75;
+
+    SET_CURSOR_POS(startRow, startCol);
+    printf(FORMAT_BOLD COLOR_YELLOW "=== PAUSA ===" FORMAT_RESET);
+
+    SET_CURSOR_POS(startRow+2, startCol);
+    printf("1) Continuar");
+
+    SET_CURSOR_POS(startRow+3, startCol);
+    printf("2) Ver Inventario");;
+
+    SET_CURSOR_POS(startRow+4, startCol);
+    printf("3) Guardar Partida");
+
+    SET_CURSOR_POS(startRow+5, startCol);
+    printf("4) Salir al menú principal");
+
+    SET_CURSOR_POS(N+4, 0);
+}
+
+void renderInventoryOverlay(Player *player) {
+
+    int startRow = 5;
+    int startCol = 75;
+
+    SET_CURSOR_POS(startRow, startCol);
+    printf(FORMAT_BOLD COLOR_CYAN "==== INVENTARIO ====" FORMAT_RESET);
+
+    int currentRow = startRow+2;
+    if(!(player->inventory) || listSize(player->inventory) == 0) {
+        SET_CURSOR_POS(currentRow, startCol);
+        printf(FORMAT_DIM "El inventario está vacío.." FORMAT_RESET);
+    }
+
+    else {
+
+    }
+    SET_CURSOR_POS(N+4, 0);
+}

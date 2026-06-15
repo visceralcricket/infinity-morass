@@ -9,4 +9,10 @@ void showMainMenu(char *username);
 // Renderizar mazmorras
 void renderExploration(int maze[N][N], Player player);
 
+// Sub-menú superpuesto para los ajustes del juego
+void renderSettingsOverlay();
+
+// Sub-menú superpuesto para inventario del jugador
+void renderInventoryOverlay(Player *player);
+
 #endif

@@ -23,6 +23,8 @@
 #define COLOR_WHITE "\033[37m"
 
 // ======== Cursor repositioning ========
+// Establecer coordenadas en las que posicionar el cursor
+#define SET_CURSOR_POS(row, col) printf("\033[%d;%dH", (row), (col))
 #define MOVE_CURSOR "\033[H"
 #define HIDE_CURSOR "\033[?25l"
 #define SHOW_CURSOR "\033[?25h"

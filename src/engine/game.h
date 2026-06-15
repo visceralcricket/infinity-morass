@@ -37,7 +37,7 @@
 typedef enum {
     MODE_MAIN_MENU = 0,
     MODE_EXPLORATION,
-    MODE_MAP_VIEW,
+    MODE_SETTINGS,
     MODE_INVENTORY_VIEW,
     MODE_COMBAT
 } GameMode;
@@ -161,6 +161,10 @@ void generateMaze(int maze[N][N], int difficulty);
 void placeExits(int maze[N][N], int numExits);
 
 // Format, aka output/input functions
-void handleWindowsInput(Player *player, bool *playing, int maze[N][N]);
+void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode);
+
+void handleSettingsInput(bool *playing, GameMode *currentSubMode);
+
+void handleInventoryInput(Player *player, GameMode *currentSubMode);
 
 #endif

@@ -54,7 +54,7 @@ int main() {
     presioneTeclaParaContinuar();
     char option;
     GameMode currentMode = MODE_MAIN_MENU;
-    
+
     do {
         showMainMenu(sessionPlayer.username);
         printf("\n\t\t" FORMAT_BOLD "Ingrese su opción\n\t\t" FORMAT_RESET FORMAT_DIM "<" FORMAT_RESET " ");
@@ -102,40 +102,76 @@ void runExplorationMode(int maze[N][N], Player *player) {
     
     bool playing = true;
     int prevX = 0, prevY = 0;
+    GameMode currentSubMode = MODE_EXPLORATION;
 
     player->x = player->y = 0;
     limpiarPantalla(); // Sólo limpiar pantalla una vez
 
     while(playing) {
-        // Renderizar estado actual
+
+        // ============== Fase 1: Renderizar estado actual ==============
         renderExploration(maze, *player);
-        prevX = player->x;
-        prevY = player->y;
-        // Procesar el input de este frame (pasar punteros)
-        handleWindowsInput(player, &playing, maze);
+        
+        // Dibujar menús superpuestos si es necesario
+        switch(currentSubMode) {
 
-        if(maze[player->y][player->x] == EXIT_TILE) {
-            renderExploration(maze, *player); // Actualizar pantalla
-            printf("\n\t" FORMAT_BOLD COLOR_YELLOW "Una puerta misteriosa se revela ante ti." FORMAT_RESET);
-            printf("\n\tDeseas descender al siguiente nivel? (S/N)\n\t< ");
+            case MODE_SETTINGS:
+                renderSettingsOverlay();
+                break;
 
-            char choice = readCharOption();
-            if(choice=='S' || choice == 's') {
-                printf("\n\tDescendiendo a las " COLOR_BLUE "profundidades.." FORMAT_RESET);
-                printf("\n\t");
-                presioneTeclaParaContinuar();
+            case MODE_INVENTORY_VIEW:
+                renderInventoryOverlay(player);
+                break;
 
-                generateMaze(maze, 20);
-                placeExits(maze, MAX_NUM_EXITS);
+            case MODE_EXPLORATION:
+                break;
 
-                player->x = player->y = 0;
-                limpiarPantalla();
-            }
-            else {
-                player->x = prevX;
-                player->y = prevY;
-                limpiarPantalla();
-            }
+            default:
+                break;
+        }
+        // Lógica e input general (controllers)
+        switch(currentSubMode) {
+            case MODE_SETTINGS:
+                // handleSettingsInput(&playing, currentSubMode);
+                break;
+            case MODE_INVENTORY_VIEW:
+                // handleInventoryInput(&playing, currentSubMode);
+                break;
+
+            case MODE_EXPLORATION:
+                // Guardar coordenadas ANTES de procesar movimiento
+                prevX = player->x;
+                prevY = player->y;
+                // Procesar el input de este frame (pasar punteros)
+                handleWindowsInput(player, maze, &currentSubMode);
+
+                if(maze[player->y][player->x] == EXIT_TILE) {
+                    renderExploration(maze, *player); // Actualizar pantalla
+                    printf("\n\t" FORMAT_BOLD COLOR_YELLOW "Una puerta misteriosa se revela ante ti." FORMAT_RESET);
+                    printf("\n\tDeseas descender al siguiente nivel? (S/N)\n\t< ");
+
+                    char choice = readCharOption();
+                    if(choice=='S' || choice == 's') {
+                        printf("\n\tDescendiendo a las " COLOR_BLUE "profundidades.." FORMAT_RESET);
+                        printf("\n\t");
+                        presioneTeclaParaContinuar();
+
+                        generateMaze(maze, 20);
+                        placeExits(maze, MAX_NUM_EXITS);
+
+                        player->x = player->y = 0;
+                        limpiarPantalla();
+                    }
+                    else {
+                        player->x = prevX;
+                        player->y = prevY;
+                        limpiarPantalla();
+                    }
+                }
+                break;
+            
+            default:
+                break;
         }
     }
     printf(SHOW_CURSOR);

@@ -185,7 +185,7 @@ void placeExits(int maze[N][N], int numExits) {
 
 // Faltaría implementar manejo de input para Linux
 // Actualizamos la firma para recibir el puntero del jugador y el flag del bucle
-void handleWindowsInput(Player *player, bool *playing, int maze[N][N]) {
+void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode) {
     int key = _getch();
 
     if(key == 0 || key == 224) {
@@ -196,7 +196,7 @@ void handleWindowsInput(Player *player, bool *playing, int maze[N][N]) {
         }
     } 
     else if(key == ESC_KEY) {
-        *playing = false; // Modificar booleano original mediante su puntero
+        *currentSubMode = MODE_SETTINGS;
     } 
     else {
         switch(key) {
@@ -226,3 +226,50 @@ void handleWindowsInput(Player *player, bool *playing, int maze[N][N]) {
         }
     }
 }
+
+void handleSettingsInput(bool *playing, GameMode *currentSubMode) {
+    int key = _getch();
+
+    switch(key) {
+        case '1': // Continuar
+
+        // Presionar ESC de nuevo para salir de las opciones
+        case ESC_KEY:
+            *currentSubMode = MODE_EXPLORATION;
+            break;
+
+        case '2':
+            *currentSubMode = MODE_INVENTORY_VIEW;
+            break;
+
+        case '3':
+            *currentSubMode = MODE_EXPLORATION;
+            break;
+
+        case '4':
+            *playing = false;
+            break;
+    }
+}
+
+void handleInventoryInput(Player *player, GameMode *currentSubMode) {
+    int key = _getch();
+
+    // Normalizar letras mayúsculas
+    if(key >= 'A' && key <= 'Z') key += 32;
+
+    switch(key) {
+        case ESC_KEY:
+            *currentSubMode = MODE_SETTINGS;
+            break;
+
+        case 'a':
+            if(player->inventory) listPrev(player->inventory);
+            break;
+
+        case 'd':
+            if(player->inventory) listNext(player->inventory);
+            break;
+    }
+}
+

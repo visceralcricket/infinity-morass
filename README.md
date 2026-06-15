@@ -41,8 +41,11 @@
 
 * Añadido archivo "**MakeFile**" para automatizar compilación del programa; para hacer uso del mismo, abra powershell o su terminal de elección ubicado en el directorio "*infinity-morass*" y utilice el siguiente comando:
 
+
   > `mingw32-make`
 * Con esto realizado, se creará un ejecutable .exe en el directorio donde está ubicado para abrir el programa.
+
+* Se implementó versión inicial de la vista de inventario y sub-menú de ajustes (1.5.0)
 
 ## **Distribución de directorios**
 
