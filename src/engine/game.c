@@ -191,8 +191,7 @@ void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode
     if(key == 0 || key == 224) {
         int specialCode = _getch();
         switch(specialCode) {
-            default:
-                break;
+            default: break;
         }
     } 
     else if(key == ESC_KEY) {
@@ -244,6 +243,7 @@ void handleSettingsInput(bool *playing, GameMode *currentSubMode) {
 
         case '3':
             *currentSubMode = MODE_EXPLORATION;
+            // Guardar partida aquí
             break;
 
         case '4':

@@ -51,6 +51,8 @@
 
 * Parche (1.5.1): Arreglado bug que causaba que el programa se colgase; preparando un siguiente parche para evitar doble-output de ciertas partes del menú exploración y pérdida total de respuesta a input al abrir el menú de ajustes sobre el mapa.
 
+* Parche (1.5.2): Se arregló el duplicado del menú de exploración y se verificó que los input handlers sean llamados correctamente, pero el programa sigue colgándose y dejando de responder a cualquier tipo de input al entrar al sub-menú de ajustes en el mapa.
+
 ## **Distribución de directorios**
 
 > * **`src/`**: Directorio principal del código fuente. Contiene las funcionalides del programa y la lógica central del mismo.

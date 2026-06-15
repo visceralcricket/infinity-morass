@@ -132,10 +132,10 @@ void runExplorationMode(int maze[N][N], Player *player) {
         // Lógica e input general (controllers)
         switch(currentSubMode) {
             case MODE_SETTINGS:
-                // handleSettingsInput(&playing, currentSubMode);
+                handleSettingsInput(&playing, &currentSubMode);
                 break;
             case MODE_INVENTORY_VIEW:
-                // handleInventoryInput(&playing, currentSubMode);
+                handleInventoryInput(player, &currentSubMode);
                 break;
 
             case MODE_EXPLORATION:
