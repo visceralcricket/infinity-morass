@@ -1,5 +1,8 @@
 # **infinity-morass**
-`versión: 1.5.0`
+
+<img src="https://img.shields.io/badge/version-1.5.0-blue" alt="version">
+
+[![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/main)](https://github.com/visceralcricket/infinity-morass/commits/main)
 
 > **IMPORTANTE**
 * Se utiliza convención **"camelCase"** para programar la totalidad del programa a lo largo de todos los archivos, por favor tener presente esto al momento de contribuir al proyecto.
@@ -93,6 +96,3 @@
   >
   >   * **`render.h`**: Encabezado de dicho archivo; contiene prototipos e inclusión de las librerías necesarias para funcionar correctamente.
 
-
-
-[![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/main-dev)](https://github.com/visceralcricket/infinity-morass/commits/feature/main-menu) 
