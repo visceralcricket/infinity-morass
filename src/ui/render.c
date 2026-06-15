@@ -17,7 +17,6 @@ void showMainMenu(char *username) {
 void renderExploration(int maze[N][N], Player player) {
     printf(MOVE_CURSOR HIDE_CURSOR);
     
-    limpiarPantalla();
     separador1();
     printf("\t\t\tPresione " COLOR_MAGENTA "ESC" FORMAT_RESET " para salir\n");
     separador1();

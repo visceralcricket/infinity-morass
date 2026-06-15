@@ -35,17 +35,18 @@ void presioneTeclaParaContinuar() {
 
 // Se lee únicamente 1 carácter y en caso de no ser válido se retorna carácter nulo
 char readCharOption() {
+
   char linea[MAX_LINEA];
-  if(!fgets(linea, sizeof(linea), stdin)) return '\0';
+
+  // return '\0'; modificado a exit(0);
+  if(!fgets(linea, sizeof(linea), stdin)) exit(0);
+
   if(strchr(linea, '\n') == NULL) {
     int c;
-    while((c=getchar())!='\n' && c != EOF);
+    while((c = getchar()) != '\n' && c != EOF);
   }
 
-  int i=0;
-  while(linea[i] && isspace((unsigned char) linea[i])) i++;
-
-  return linea[i] ? linea[i] : '\0';
+  return linea[0];
 }
 
 // Separadores

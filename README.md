@@ -43,9 +43,13 @@
 
 
   > `mingw32-make`
-* Con esto realizado, se creará un ejecutable .exe en el directorio donde está ubicado para abrir el programa.
+  
+  Con esto realizado, se creará un ejecutable .exe en el directorio donde está ubicado para abrir el programa.
+---
 
 * Se implementó versión inicial de la vista de inventario y sub-menú de ajustes (1.5.0)
+
+* Parche (1.5.1): Arreglado bug que causaba que el programa se colgase; preparando un siguiente parche para evitar doble-output de ciertas partes del menú exploración y pérdida total de respuesta a input al abrir el menú de ajustes sobre el mapa.
 
 ## **Distribución de directorios**
 
