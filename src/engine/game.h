@@ -8,9 +8,9 @@
 #include <string.h>
 // #include <ctype.h>
 #include <limits.h> // Necessary for using INF (infinity)
-#include "tdas/list.h"
-#include "tdas/extra.h"
-#include "tdas/hashmap.h"
+#include "../tdas/list.h"
+#include "../tdas/extra.h"
+#include "../tdas/hashmap.h"
 // #include "tdas/heap.h"
 
 // ======== General definitions ========
@@ -21,7 +21,7 @@
 #define MAX_FILENAME (MAX_USERNAME+15)
 #define MAX_OBJECT_NAME 25
 #define MAX_LORE_LENGTH 256
-#define N 30 // <- Maze's fixed size
+#define N 25 // <- Maze's fixed size
 #define MAX_NUM_EXITS 3
 
 // ======== Maze symbols ========
@@ -37,7 +37,7 @@
 typedef enum {
     MODE_MAIN_MENU = 0,
     MODE_EXPLORATION,
-    MODE_MAP_VIEW,
+    MODE_SETTINGS,
     MODE_INVENTORY_VIEW,
     MODE_COMBAT
 } GameMode;
@@ -151,7 +151,7 @@ void cleanGarbage(List *states);
 int isFinal(State *currentState, int targetRow, int targetColumn);
 State *createNewState();
 State *transition(State *currentState, Action accion);
-List *getAdjacentNodes(State *currentState, int maze[N][N], int targetRow, int targetColumn);
+List *getAdjacentNodes(State *currentState, int maze[N][N]);
 
 // Función recursiva BSF para construir un camino seguro
 int buildSafePath(int x, int y, int safe[N][N], int visited[N][N]);
@@ -160,7 +160,9 @@ int buildSafePath(int x, int y, int safe[N][N], int visited[N][N]);
 void generateMaze(int maze[N][N], int difficulty);
 void placeExits(int maze[N][N], int numExits);
 
-// Format, aka output/input functions
-void handleWindowsInput(Player *player, bool *playing, int maze[N][N]);
+// ==================== Input handlers ====================
+void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode);
+void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode);
+void handleInventoryInput(Player *player, GameMode *currentSubMode);
 
 #endif

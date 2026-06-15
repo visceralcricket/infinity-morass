@@ -1,7 +1,7 @@
 #ifndef STORAGE_H
 #define STORAGE_H
 
-#include "game.h"
+#include "../engine/game.h"
 #include <stdbool.h>
 
 // Guardar el progreso de un jugador en un archivo binario (.sav)

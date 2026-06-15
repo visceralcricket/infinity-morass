@@ -1,5 +1,9 @@
 # **infinity-morass**
 
+<img src="https://img.shields.io/badge/version-1.5.4-blue" alt="version">
+
+[![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/main)](https://github.com/visceralcricket/infinity-morass/commits/main)
+
 > **IMPORTANTE**
 * Se utiliza convención **"camelCase"** para programar la totalidad del programa a lo largo de todos los archivos, por favor tener presente esto al momento de contribuir al proyecto.
 
@@ -24,6 +28,9 @@
 * Se limpió y afinó el archivo **`extra.c`** para dejar fuera las funciones que no sirven: `split_string` **NO** debe ser eliminada, primero considerar su potencial uso para la lectura del nombre del jugador y otras posibles utilidades.
 
 ---
+### **Versión 1.4.0 (14-06-2026)**
+> Refactorización y pulido del programa con nuevas funcionalidades y cambios para la experiencia del usuario (Quality of Life)
+
 * Se desplazó la carpeta con los TDAs dentro de la carpeta donde estaban ubicados main, game.c y game.h ("**src/**") para mantener todo el código fuente en un único directorio.
 
 * Se mejoró el sistema de navegación del mapa para una experiencia de juego más fluida además de la implementación de una funcionalidad para generar salidas / entradas a los siguientes niveles(mazmorras) de forma aleatoria.
@@ -34,16 +41,58 @@
 
 * Se incluyó el sistema de generación de enemigos **"enemy-gen.c"**.
 
+* Se añadieron nuevas carpetas en las que organizar el proyecto.
+
+* Se refactorizó la implementación de la estructura **"hashmap"** para que se adhiera correctamente a los requisitos del programa.
+
+* Añadido archivo "**MakeFile**" para automatizar compilación del programa; para hacer uso del mismo, abra powershell o su terminal de elección ubicado en el directorio "*infinity-morass*" y utilice el siguiente comando:
+
+
+  > `mingw32-make`
+  
+  Con esto realizado, se creará un ejecutable .exe en el directorio donde está ubicado para abrir el programa.
+---
+### **Versión 1.5.0 (15-06-2026)**
+
+> Se implementó funcionalidad de la vista de inventario y sub-menú de ajustes *in-game* con distintas opciones.
+
+* Parche 1.5.1
+  + Arreglado bug que causaba que el programa se colgase.
+  + preparando un siguiente parche para evitar doble-output de ciertas partes del menú exploración y pérdida total de respuesta a input al abrir el menú de ajustes sobre el mapa.
+
+* Parche 1.5.2
+  + Se arregló el duplicado del menú de exploración y se verificó que los input handlers sean llamados correctamente.
+  + Programa continúa colgándose y dejando de responder a cualquier tipo de input al entrar al sub-menú de ajustes en el mapa durante su ejecución.
+
+* Parche 1.5.3
+  + Problemas con cuelgue de programa y sub-menú de ajustes *in-game* solucionados.
+  + Se añadió la inclusión del archivo **"storage.h"** en **"game.c"** para poder hacer uso de la funcionalidad guardar juego.
+  + Se refactorizó ligeramente función **"getCharOption"** en **"extra.c"** para asegurar el procesamiento correcto de input y forzar cierre del programa en caso donde el terminal no sea capaz de leer input del usuario adecuadamente.
+
 ## **Distribución de directorios**
 
-> **`src/`**
-> Directorio principal del código fuente. Contiene el orquestador y la lógica central del dominio.
+> * **`src/`**: Directorio principal del código fuente. Contiene las funcionalides del programa y la lógica central del mismo.
 >
-
+---
 > * **`main.c`**: Archivo principal del programa. Contiene el bucle de estados en los que se encuentra el jugador y gestiona la transición entre la interfaz del menú principal y los distintos modos de juego interactivos (como `runExplorationMode`). Relega la lógica pesada a los archivos **`game`** para mantener una arquitectura limpia y modular.
 >
-> * **`game.h`**: Cabecera/encabezado de la arquitectura del programa. Concentra la declaración de estructuras de memoria (`Player`, `Enemy`, `State`), enumeraciones de estado (`GameMode`), macros estructurales (como las dimensiones topológicas de la matriz `N`) y expone los prototipos públicos del motor del juego.
+> * **`engine/`**
 >
-> * **`game.c`**: Implementación de la lógica interna del juego. Contiene los algoritmos de generación procedimental de laberintos (`generateMaze`, `buildSafePath`), las funciones algorítmicas para el recorrido espacial en grafos y el motor de procesamiento de inputs dependiente de la plataforma (`handleWindowsInput`).
+  >   * **`game.c`**: Implementación de la lógica interna del juego. Contiene los algoritmos de generación procedimental de laberintos (`generateMaze`, `buildSafePath`), las funciones algorítmicas para el recorrido espacial en grafos y el motor de procesamiento de inputs dependiente de la plataforma (`handleWindowsInput`).
+>
+  >   * **`game.h`**: Cabecera/encabezado de la arquitectura del programa. Concentra la declaración de estructuras de memoria (`Player`, `Enemy`, `State`), enumeraciones de estado (`GameMode`), macros estructurales (como las dimensiones topológicas de la matriz `N`) y expone los prototipos públicos del motor del juego.
+>
+  >   * **`enemy-gen.c`**: Archivo destinado a la generación y gestión de las entidades *"enemigo"* para su correcta integración en el programa.
 
-[![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/main-dev)](https://github.com/visceralcricket/infinity-morass/commits/feature/main-menu) 
+> * **`io/`**
+>
+  >   * **`storage.c`**: Gestor de partidas guardadas del jugador en base a su nombre de usuario: utiliza archivos **.sav** para almacenar el perfil del jugador.
+  >
+  >   * **`storage.h`**: Encabezado de dicho gestor; contiene prototipos e inclusión de las librerías necesarias para funcionar correctamente.
+
+> * **`ui/`**
+>
+  >   * **`render.c`**: Archivo dedicado a la visualización y renderización del programa en el terminal correspondiente.
+  >
+  >   * **`render.h`**: Encabezado de dicho archivo; contiene prototipos e inclusión de las librerías necesarias para funcionar correctamente.
+

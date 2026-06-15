@@ -1,4 +1,5 @@
 #include "game.h"
+#include "io/storage.h"
 
 void cleanGarbage(List *states) {
     State *tmpState = (State *) listFirst(states);
@@ -58,7 +59,7 @@ State *transition(State *currentState, Action accion) {
 }
 
 // Return a list with all the valid, adjacent State(s) to the current one
-List *getAdjacentNodes(State *currentState, int maze[N][N], int targetRow, int targetColumn) {
+List *getAdjacentNodes(State *currentState, int maze[N][N]) {
     if(!currentState) return NULL;
 
     List *adjacentList = listCreate();
@@ -185,18 +186,17 @@ void placeExits(int maze[N][N], int numExits) {
 
 // Faltaría implementar manejo de input para Linux
 // Actualizamos la firma para recibir el puntero del jugador y el flag del bucle
-void handleWindowsInput(Player *player, bool *playing, int maze[N][N]) {
+void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode) {
     int key = _getch();
 
     if(key == 0 || key == 224) {
         int specialCode = _getch();
         switch(specialCode) {
-            default:
-                break;
+            default: break;
         }
     } 
     else if(key == ESC_KEY) {
-        *playing = false; // Modificar booleano original mediante su puntero
+        *currentSubMode = MODE_SETTINGS;
     } 
     else {
         switch(key) {
@@ -226,3 +226,57 @@ void handleWindowsInput(Player *player, bool *playing, int maze[N][N]) {
         }
     }
 }
+
+void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode) {
+    int key = _getch();
+
+    switch(key) {
+        case '1': // Continuar
+
+        // Presionar ESC de nuevo para salir de las opciones
+        case ESC_KEY:
+            limpiarPantalla();
+            *currentSubMode = MODE_EXPLORATION;
+            break;
+
+        case '2':
+            limpiarPantalla();
+            *currentSubMode = MODE_INVENTORY_VIEW;
+            break;
+
+        case '3':
+            // Guardamos la partida sin cambiar de GameMode y sin limpiar pantalla
+            saveGame(player);
+
+            SET_CURSOR_POS(12, 75);
+            printf(FORMAT_BOLD COLOR_GREEN "Guardado completado." FORMAT_RESET);
+            break;
+
+        case '4':
+            *playing = false;
+            break;
+    }
+}
+
+void handleInventoryInput(Player *player, GameMode *currentSubMode) {
+    int key = _getch();
+
+    // Normalizar letras mayúsculas
+    if(key >= 'A' && key <= 'Z') key += 32;
+
+    switch(key) {
+        case ESC_KEY:
+            limpiarPantalla();
+            *currentSubMode = MODE_SETTINGS;
+            break;
+
+        case 'a':
+            if(player->inventory) listPrev(player->inventory);
+            break;
+
+        case 'd':
+            if(player->inventory) listNext(player->inventory);
+            break;
+    }
+}
+
