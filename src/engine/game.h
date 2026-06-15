@@ -21,7 +21,7 @@
 #define MAX_FILENAME (MAX_USERNAME+15)
 #define MAX_OBJECT_NAME 25
 #define MAX_LORE_LENGTH 256
-#define N 20 // <- Maze's fixed size
+#define N 25 // <- Maze's fixed size
 #define MAX_NUM_EXITS 3
 
 // ======== Maze symbols ========
@@ -162,7 +162,7 @@ void placeExits(int maze[N][N], int numExits);
 
 // ==================== Input handlers ====================
 void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode);
-void handleSettingsInput(bool *playing, GameMode *currentSubMode);
+void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode);
 void handleInventoryInput(Player *player, GameMode *currentSubMode);
 
 #endif

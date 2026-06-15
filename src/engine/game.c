@@ -1,4 +1,5 @@
 #include "game.h"
+#include "io/storage.h"
 
 void cleanGarbage(List *states) {
     State *tmpState = (State *) listFirst(states);
@@ -226,7 +227,7 @@ void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode
     }
 }
 
-void handleSettingsInput(bool *playing, GameMode *currentSubMode) {
+void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode) {
     int key = _getch();
 
     switch(key) {
@@ -234,16 +235,21 @@ void handleSettingsInput(bool *playing, GameMode *currentSubMode) {
 
         // Presionar ESC de nuevo para salir de las opciones
         case ESC_KEY:
+            limpiarPantalla();
             *currentSubMode = MODE_EXPLORATION;
             break;
 
         case '2':
+            limpiarPantalla();
             *currentSubMode = MODE_INVENTORY_VIEW;
             break;
 
         case '3':
-            *currentSubMode = MODE_EXPLORATION;
-            // Guardar partida aquí
+            // Guardamos la partida sin cambiar de GameMode y sin limpiar pantalla
+            saveGame(player);
+
+            SET_CURSOR_POS(12, 75);
+            printf(FORMAT_BOLD COLOR_GREEN "Guardado completado." FORMAT_RESET);
             break;
 
         case '4':
@@ -260,6 +266,7 @@ void handleInventoryInput(Player *player, GameMode *currentSubMode) {
 
     switch(key) {
         case ESC_KEY:
+            limpiarPantalla();
             *currentSubMode = MODE_SETTINGS;
             break;
 

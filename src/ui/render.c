@@ -18,7 +18,7 @@ void renderExploration(int maze[N][N], Player player) {
     printf(MOVE_CURSOR HIDE_CURSOR);
     
     separador1();
-    printf("\t\t\tPresione " COLOR_MAGENTA "ESC" FORMAT_RESET " para salir\n");
+    printf("\t\tPresione " COLOR_MAGENTA "ESC" FORMAT_RESET " para pausar el juego\n");
     separador1();
 
     printf("\t.");
@@ -54,7 +54,6 @@ void renderExploration(int maze[N][N], Player player) {
         else printf("  ");
     }
     printf("\n");
-    separador1();
 }
 
 void renderSettingsOverlay() {
@@ -96,6 +95,6 @@ void renderInventoryOverlay(Player *player) {
 
     else {
 
-    }
+    }    
     SET_CURSOR_POS(N+4, 0);
 }

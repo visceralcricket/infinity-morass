@@ -25,6 +25,9 @@
 * Se limpió y afinó el archivo **`extra.c`** para dejar fuera las funciones que no sirven: `split_string` **NO** debe ser eliminada, primero considerar su potencial uso para la lectura del nombre del jugador y otras posibles utilidades.
 
 ---
+### **Versión 1.4.0 (14-06-2026)**
+> Refactorización y pulido del programa con nuevas funcionalidades y cambios para la experiencia del usuario (Quality of Life)
+
 * Se desplazó la carpeta con los TDAs dentro de la carpeta donde estaban ubicados main, game.c y game.h ("**src/**") para mantener todo el código fuente en un único directorio.
 
 * Se mejoró el sistema de navegación del mapa para una experiencia de juego más fluida además de la implementación de una funcionalidad para generar salidas / entradas a los siguientes niveles(mazmorras) de forma aleatoria.
@@ -46,12 +49,22 @@
   
   Con esto realizado, se creará un ejecutable .exe en el directorio donde está ubicado para abrir el programa.
 ---
+### **Versión 1.5.0 (15-06-2026)**
 
-* Se implementó versión inicial de la vista de inventario y sub-menú de ajustes (1.5.0)
+> Se implementó funcionalidad de la vista de inventario y sub-menú de ajustes *in-game* con distintas opciones.
 
-* Parche (1.5.1): Arreglado bug que causaba que el programa se colgase; preparando un siguiente parche para evitar doble-output de ciertas partes del menú exploración y pérdida total de respuesta a input al abrir el menú de ajustes sobre el mapa.
+* Parche 1.5.1
+  + Arreglado bug que causaba que el programa se colgase.
+  + preparando un siguiente parche para evitar doble-output de ciertas partes del menú exploración y pérdida total de respuesta a input al abrir el menú de ajustes sobre el mapa.
 
-* Parche (1.5.2): Se arregló el duplicado del menú de exploración y se verificó que los input handlers sean llamados correctamente, pero el programa sigue colgándose y dejando de responder a cualquier tipo de input al entrar al sub-menú de ajustes en el mapa.
+* Parche 1.5.2
+  + Se arregló el duplicado del menú de exploración y se verificó que los input handlers sean llamados correctamente.
+  + Programa continúa colgándose y dejando de responder a cualquier tipo de input al entrar al sub-menú de ajustes en el mapa durante su ejecución.
+
+* Parche 1.5.3
+  + Problemas con cuelgue de programa y sub-menú de ajustes *in-game* solucionados.
+  + Se añadió la inclusión del archivo **"storage.h"** en **"game.c"** para poder hacer uso de la funcionalidad guardar juego.
+  + Se refactorizó ligeramente función **"getCharOption"** en **"extra.c"** para asegurar el procesamiento correcto de input y forzar cierre del programa en caso donde el terminal no sea capaz de leer input del usuario adecuadamente.
 
 ## **Distribución de directorios**
 

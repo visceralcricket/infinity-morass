@@ -28,7 +28,7 @@ void *_mystrdup(const char *token) {
 void limpiarPantalla() { system(CLEAR_COMMAND); }
 
 void presioneTeclaParaContinuar() {
-  puts("Presione cualquier tecla para continuar...");
+  puts("Presione cualquier tecla para continuar.");
   int c;
   while((c=getchar())!='\n' && c != EOF);
 }

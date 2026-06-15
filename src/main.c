@@ -129,10 +129,16 @@ void runExplorationMode(int maze[N][N], Player *player) {
             default:
                 break;
         }
+        /* +++
+        IMPORTANTE: Debemos obligar al terminal a que no deje ningún tipo de
+        texto encolado para el stdout, así nos aseguramos de que ningún texto
+        quede encolado en el output e interrumpa al programa. 
+        --- */
+        fflush(stdout);
         // Lógica e input general (controllers)
         switch(currentSubMode) {
             case MODE_SETTINGS:
-                handleSettingsInput(&playing, &currentSubMode);
+                handleSettingsInput(player, &playing, &currentSubMode);
                 break;
             case MODE_INVENTORY_VIEW:
                 handleInventoryInput(player, &currentSubMode);
@@ -152,7 +158,7 @@ void runExplorationMode(int maze[N][N], Player *player) {
 
                     char choice = readCharOption();
                     if(choice=='S' || choice == 's') {
-                        printf("\n\tDescendiendo a las " COLOR_BLUE "profundidades.." FORMAT_RESET);
+                        printf("\n\t" FORMAT_BOLD "Descendiendo a las " COLOR_BLUE "profundidades. . ." FORMAT_RESET);
                         printf("\n\t");
                         presioneTeclaParaContinuar();
 
