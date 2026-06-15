@@ -1,6 +1,6 @@
 # **infinity-morass**
 
-<img src="https://img.shields.io/badge/version-1.5.0-blue" alt="version">
+<img src="https://img.shields.io/badge/version-1.5.4-blue" alt="version">
 
 [![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/main)](https://github.com/visceralcricket/infinity-morass/commits/main)
 
