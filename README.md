@@ -28,7 +28,7 @@
 * Se limpió y afinó el archivo **`extra.c`** para dejar fuera las funciones que no sirven: `split_string` **NO** debe ser eliminada, primero considerar su potencial uso para la lectura del nombre del jugador y otras posibles utilidades.
 
 ---
-### **Versión 1.4.0 (14-06-2026)**
+### **Versión 1.4.0** (14-06-2026)
 > Refactorización y pulido del programa con nuevas funcionalidades y cambios para la experiencia del usuario (Quality of Life)
 
 * Se desplazó la carpeta con los TDAs dentro de la carpeta donde estaban ubicados main, game.c y game.h ("**src/**") para mantener todo el código fuente en un único directorio.
@@ -52,7 +52,7 @@
   
   Con esto realizado, se creará un ejecutable .exe en el directorio donde está ubicado para abrir el programa.
 ---
-### **Versión 1.5.0 (15-06-2026)**
+### **Versión 1.5.0** (15-06-2026)
 
 > Se implementó funcionalidad de la vista de inventario y sub-menú de ajustes *in-game* con distintas opciones.
 
