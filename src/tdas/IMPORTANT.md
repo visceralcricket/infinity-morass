@@ -1,5 +1,4 @@
-# ***INFORMACIÓN IMPORTANTE SOBRE LOS TDAs***
----
+# **Información importante sobre los TDAs**
 
 ## **Especificaciones**
 

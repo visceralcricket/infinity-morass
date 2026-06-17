@@ -40,9 +40,9 @@
 
     * **`render.h`**: Encabezado de dicho archivo; contiene prototipos e inclusión de las librerías necesarias para funcionar correctamente.
 
-  * **`.gitignore`**: Archivo utilizado para excluir ficheros de tipo innecesario a la hora de actualizar el repositorio.
+* **`.gitignore`**: Archivo utilizado para excluir ficheros de tipo innecesario a la hora de actualizar el repositorio.
 
-  * **`Makefile`**: Archivo utilizado para automatizar la compilación del programa en local con el comando: `mingw32-make` y que crea el ejecutable final: `infinity-morass.exe`
+* **`Makefile`**: Archivo utilizado para automatizar la compilación del programa en local con el comando: `mingw32-make` y que crea el ejecutable final: `infinity-morass.exe`
 
 
 ## **Changelog (historial de cambios)**
