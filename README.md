@@ -1,10 +1,14 @@
 # **infinity-morass**
+> *Roguelike de calabozos basado en terminal de texto.*
 
-<img src="https://img.shields.io/badge/version-1.5.4-blue" alt="version">
+<img src="https://img.shields.io/badge/version-1.5.5-blue" alt="version">
 
 [![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/main)](https://github.com/visceralcricket/infinity-morass/commits/main)
 
-> **IMPORTANTE**
+## **Premisa**
+* **"Infinity-morass"** es un juego roguelike de calabozos basado en terminal de texto donde tu objetivo es claro, conciso e incuestionable: convertirte en el ser más poderoso de estas mazmorras y derrotando a quien sea que ose entrometerte en tu camino — no es como que este infierno tenga algo más que enemigos y estorbos para tí — verdad...?
+
+## **IMPORTANTE**
 * Se utiliza convención **"camelCase"** para programar la totalidad del programa a lo largo de todos los archivos, por favor tener presente esto al momento de contribuir al proyecto.
 
 * Comando para compilar: `mingw32-make`
@@ -48,21 +52,35 @@
 
 > Se implementó funcionalidad de la vista de inventario y sub-menú de ajustes *in-game* con distintas opciones.
 
-* Parche 1.5.1
-  + Arreglado bug que causaba que el programa se colgase.
-  + preparando un siguiente parche para evitar doble-output de ciertas partes del menú exploración y pérdida total de respuesta a input al abrir el menú de ajustes sobre el mapa.
+* Parche 1.5.5
+  + Mejora de la documentación, organización y redacción del README mediante algunos cambios:
 
-* Parche 1.5.2
-  + Se arregló el duplicado del menú de exploración y se verificó que los input handlers sean llamados correctamente.
-  + Programa continúa colgándose y dejando de responder a cualquier tipo de input al entrar al sub-menú de ajustes en el mapa durante su ejecución.
+    + Se renombró la sección **"Historial de cambios"** a **"Changelog"** para mayor claridad.
+
+    + Se trasladó la distribución de directorios a la parte superior del archivo.
+
+    + Se afinó formato de la distribución de directorios para que se vea más claro y conciso.
+
+    + Se jerarquizó el Changelog en orden cronológico inverso para dejar los parches y versiones más recientes en la parte superior.
+
+    + Se añadió una pequeña sección para explicar la premisa del juego.
+
+* Parche 1.5.4
+  + Ajustes y adiciones menores al formato del README.
 
 * Parche 1.5.3
   + Problemas con cuelgue de programa y sub-menú de ajustes *in-game* solucionados.
   + Se añadió la inclusión del archivo **"storage.h"** en **"game.c"** para poder hacer uso de la funcionalidad guardar juego.
   + Se refactorizó ligeramente función **"getCharOption"** en **"extra.c"** para asegurar el procesamiento correcto de input y forzar cierre del programa en caso donde el terminal no sea capaz de leer input del usuario adecuadamente.
 
-* Parche 1.5.4
-  + Ajustes y adiciones menores al formato del README.
+* Parche 1.5.2
+  + Se arregló el duplicado del menú de exploración y se verificó que los input handlers sean llamados correctamente.
+  + Programa continúa colgándose y dejando de responder a cualquier tipo de input al entrar al sub-menú de ajustes en el mapa durante su ejecución.
+
+* Parche 1.5.1
+  + Arreglado bug que causaba que el programa se colgase.
+  + preparando un siguiente parche para evitar doble-output de ciertas partes del menú exploración y pérdida total de respuesta a input al abrir el menú de ajustes sobre el mapa.
+
 
 ### **Versión 1.4.0** (14-06-2026)
 > Refactorización y pulido del programa con nuevas funcionalidades y cambios para la experiencia del usuario (Quality of Life)
@@ -103,5 +121,5 @@
 
 * Se renombró **`map.c`** y **`map.h`** a **`hashmap.c`** y **`hashmap.h`** para que sea un poco más autoexplicativo.
 
-* Se limpió y afinó el archivo **`extra.c`** para dejar fuera las funciones que no sirven: `split_string` **NO** debe ser eliminada, primero considerar su potencial uso para la lectura del nombre del jugador y otras posibles utilidades.
+* Se limpió y afinó el archivo **`extra.c`** para dejar fuera las funciones que no se van a utilizar.
 ---
