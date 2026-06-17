@@ -169,9 +169,8 @@ void generateMaze(int maze[N][N], int difficulty) {
         }
     }
 }
-
+// Función para generar salidas / entradas a siguiente nivel aleatoriamente
 void placeExits(int maze[N][N], int numExits) {
-
     int placed = 0;
     while(placed < numExits) {
         int randomX = rand() % N;
@@ -258,6 +257,7 @@ void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode
     }
 }
 
+// Manejar input dentro del sub-submenú inventario en pausa
 void handleInventoryInput(Player *player, GameMode *currentSubMode) {
     int key = _getch();
 
