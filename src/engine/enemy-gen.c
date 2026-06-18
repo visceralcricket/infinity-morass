@@ -4,16 +4,26 @@
 
 #include "../engine/game.h"
 
-// crear objetos
-/*
-GameObject* generateObject(char name[MAX_OBJECT_NAME], char lore[])
-{
+typedef struct {
+    const char *name;
+    bool isBoss;
+    int difficulty;
+} EnemyTemplate;
 
-}
-*/
+static const EnemyTemplate enemyTemplates[] = {
+    {"Zombi", false, 1},
+    {"Esqueleto", false, 1},
+    {"Slime", false, 1},
+    {"Demonio", false, 1},
+    {"Súcubo", false, 1},
+    {"Goblin", false, 1},
+    {"Bandolero", true, 1},
+    {"Aberración Cósmica", true, 1},
+    {"Gólem Antiguo", true, 1},
+    {"Jefe de carrera", true, 1}
+};
 
-
-Enemy* generateEnemy(char name[MAX_USERNAME])
+Enemy* generateEnemy(const char *name)
 {
     Enemy *enemy = (Enemy*) malloc(sizeof(Enemy));
     if(!enemy) return NULL;
@@ -62,7 +72,7 @@ void generateStatsCommonEnemy(Enemy* enemy, int difficulty)
         enemy->combatStats.currentHp = enemy->combatStats.maxHp;
         enemy->combatStats.speed     = 6 * difficulty;
     }
-    else if(strcmp(enemy->enemyName, "Sucubo") == 0) {
+    else if(strcmp(enemy->enemyName, "Súcubo") == 0) {
         enemy->combatStats.attack    = 10 * difficulty;
         enemy->combatStats.defense   = 0  * difficulty;
         enemy->combatStats.maxHp     = 5  * difficulty;
@@ -87,14 +97,14 @@ void generateStatsBossEnemy(Enemy* enemy, int difficulty)
         enemy->combatStats.currentHp = enemy->combatStats.maxHp;
         enemy->combatStats.speed     = 14 * difficulty;
     }
-    else if(strcmp(enemy->enemyName, "Aberracion Cosmica") == 0) {
+    else if(strcmp(enemy->enemyName, "Aberración Cósmica") == 0) {
         enemy->combatStats.attack    = 9 * difficulty;
         enemy->combatStats.defense   = 13 * difficulty;
         enemy->combatStats.maxHp     = 40 * difficulty;
         enemy->combatStats.currentHp = enemy->combatStats.maxHp;
         enemy->combatStats.speed     = 4 * difficulty;
     }
-    else if(strcmp(enemy->enemyName, "Robot Antiguo") == 0) { // palabras de androide 16
+    else if(strcmp(enemy->enemyName, "Gólem Antiguo") == 0) { // palabras de androide 16
         enemy->combatStats.attack    = 14 * difficulty;
         enemy->combatStats.defense   = 6 * difficulty;
         enemy->combatStats.maxHp     = 30 * difficulty;
@@ -110,6 +120,21 @@ void generateStatsBossEnemy(Enemy* enemy, int difficulty)
     }
 }
 
+Map *createEnemiesMap() {
+    Map *map = mapCreate();
+    if(!map) return NULL;
+    int count = sizeof(enemyTemplates) / sizeof(enemyTemplates[0]);
 
+    for(int i=0; i < count; ++i) {
+        const EnemyTemplate *tpl = &enemyTemplates[i];
 
+        Enemy *enemy = generateEnemy((char *)tpl->name);
+        if(!enemy) continue;
 
+        if(tpl->isBoss) generateStatsBossEnemy(enemy, tpl->difficulty);
+        else generateStatsCommonEnemy(enemy, tpl->difficulty);
+
+        mapInsert(map, enemy->enemyName, enemy);
+    }
+    return map;
+}
