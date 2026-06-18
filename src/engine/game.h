@@ -22,7 +22,7 @@
 #define MAX_OBJECT_NAME 25
 #define MAX_LORE_LENGTH 256
 #define N 25 // <- Maze's fixed size
-#define MAX_NUM_EXITS 3
+#define MAX_NUM_EXITS 2 // Máximo 2 salidas por mazmorra
 
 // ======== Maze symbols ========
 #define WALL '#' // Obstacle

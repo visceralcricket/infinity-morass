@@ -1,12 +1,12 @@
 # **infinity-morass**
 > *Roguelike de calabozos basado en terminal de texto.*
 
-<img src="https://img.shields.io/badge/version-1.5.5-blue" alt="version">
+<img src="https://img.shields.io/badge/version-1.6.2-blue" alt="version">
 
 [![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/main)](https://github.com/visceralcricket/infinity-morass/commits/main)
 
 ## **Premisa**
-* **"Infinity-morass"** es un juego roguelike de calabozos basado en terminal de texto donde tu objetivo es claro, conciso e incuestionable: convertirte en el ser más poderoso de estas mazmorras y derrotando a quien sea que ose entrometerte en tu camino — no es como que este infierno tenga algo más que enemigos y estorbos para tí — verdad...?
+* **"Infinity-morass"** es un juego roguelike de calabozos basado en terminal de texto donde tu objetivo es claro, conciso e incuestionable: convertirte en el ser más poderoso de estas mazmorras y derrotando a quien sea que ose entrometerse en tu camino — no es como que este infierno tenga algo más que enemigos y estorbos para tí — verdad...?
 
 ## **IMPORTANTE**
 * Se utiliza convención **"camelCase"** para programar la totalidad del programa a lo largo de todos los archivos, por favor tener presente esto al momento de contribuir al proyecto.
@@ -47,6 +47,16 @@
 
 ## **Changelog (historial de cambios)**
 <small>*Nota: Este changelog está en orden cronológico inverso.*</small>
+
+### **Versión 1.6.0** (18-06-2026)
+> Se continuó implementando la funcionalidad de generación, mapeo y tracking de entidades enemigos.
+
+* Parche 1.6.1
+  + Se refactorizó la estructura principal de la funcionalidad de generación y mapeo de enemigos, comprimiendo la lógica inicial de comparar nombre a nombre y asignar las estadísticas a una plantilla EnemyTemplate genérica.
+  + Se cambiaron los nombres de los archivos **"enemy-gen.c"** a **"engen.c"** para mejor legibilidad y armonía con los nombres del resto de archivos.
+
+* Parche 1.6.2
+  + Se modificó la cantidad de salidas por mazmorra para una experiencia de juego más fluida.
 
 ### **Versión 1.5.0** (15-06-2026)
 
