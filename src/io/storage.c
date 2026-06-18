@@ -23,15 +23,12 @@ bool saveGame(Player *player) {
     FILE *file = fopen(filename, "wb");
     if(!file) return false;
 
-    fwrite(player, sizeof(Player), 1, file);
-    /* +++
-    Aquí faltará el tamaño real del inventario del jugador además de
-    un puntero a la dirección de memoria de player->inventory, por ahora
-    se va a ignorar el puntero al inventario del jugador.
-    --- */
-    
-    int inventorySize = 0;
-    if(player->inventory) inventorySize = listSize(player->inventory);
+    fwrite(player->username, sizeof(player->username), 1, file);
+    fwrite(&player->x, sizeof(player->x), 1, file);
+    fwrite(&player->y, sizeof(player->y), 1, file);
+    fwrite(&player->combatStats, sizeof(player->combatStats), 1, file);
+
+    int inventorySize = player->inventory ? listSize(player->inventory) : 0;
     fwrite(&inventorySize, sizeof(int), 1, file);
 
     if(inventorySize > 0) {
@@ -54,8 +51,14 @@ bool loadGame(Player *player) {
     FILE *file = fopen(filename, "rb");
     if(!file) return false;
     // Leer estadísticas base del jugador
-    fread(player, sizeof(Player), 1, file);
-    // IMPORTANTE: el puntero player->inventory leído es basura, hay que crear una lista nueva
+    
+    fread(player->username, sizeof(player->username), 1, file);
+    fread(&player->x, sizeof(player->x), 1, file);
+    fread(&player->y, sizeof(player->y), 1, file);
+    fread(&player->combatStats, sizeof(player->combatStats), 1, file);
+
+    // IMPORTANTE: Guardamos el inventario objeto por objeto, por ende el puntero al inventario del jugador
+    // podría ser puntero colgante, por ende debemos crear un puntero nuevo
     player->inventory = listCreate();
 
     int inventorySize = 0;

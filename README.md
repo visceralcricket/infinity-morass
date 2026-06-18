@@ -1,7 +1,7 @@
 # **infinity-morass**
 > *Roguelike de calabozos basado en terminal de texto.*
 
-<img src="https://img.shields.io/badge/version-1.6.3-blue" alt="version">
+<img src="https://img.shields.io/badge/version-1.6.4-blue" alt="version">
 
 [![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/main)](https://github.com/visceralcricket/infinity-morass/commits/main)
 
@@ -67,6 +67,13 @@
   + Se refinó la implementación de la generación de enemigos y además se incluyó un sistema básico para poder visualizar y verificar el correcto procesamiento de la generación y mapeo de los enemigos mediante el TDA Mapa.
 
   + Actualmente no se pueden generar enemigos múltiples veces por cada mazmorra, sino que una única vez en la primera mazmorra a modo de prueba del sistema.
+
+* Parche 1.6.4
+  + Ligeras optimizaciones en la lógica de lectura de input para dispositivos Windows.
+
+  + Se refactorizó la forma en que se guardan los archivos del jugador de tal forma que se escriba cada uno de sus parámetros uno a uno en el archivo .sav para asegurar integridad de los datos y evitar que el programa colapse en caso de que el nombre del usuario pase de un arreglo finito a un puntero.
+
+  + Cambios menores en ciertos flujos de lógica que requerían ajustes para funcionar mejor.
 
 
 ### **Versión 1.5.0** (15-06-2026)

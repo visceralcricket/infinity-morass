@@ -17,7 +17,7 @@ int isFinal(State *currentState, int targetRow, int targetColumn) {
     return(currentState->currentRow == targetRow && currentState->currentColumn == targetColumn);
 }
 
-// Generic function to creade new States
+// Generic function to create new States
 State *createNewState() {
     State *newState = (State *) malloc(sizeof(*newState));
     if(!newState) return NULL;
@@ -206,36 +206,29 @@ void placeEnemies(int maze[N][N]) {
 void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode) {
     int key = _getch();
 
-    if(key == 0 || key == 224) {
-        int specialCode = _getch();
-        switch(specialCode) {
-            default: break;
-        }
-    } 
+    // Normalizar letras mayúsculas
+    if(key >= 'A' && key <= 'Z') key += 32;
+
     else if(key == ESC_KEY) {
         *currentSubMode = MODE_SETTINGS;
     } 
     else {
         switch(key) {
-            case W_KEY_UPPER:
             case W_KEY_LOWER:
                 if(player->y > 0 && maze[player->y - 1][player->x] != 1)
                     player->y -= 1;
                 break;
 
-            case A_KEY_UPPER:
             case A_KEY_LOWER:
                 if(player->x > 0 && maze[player->y][player->x - 1] != 1)
                     player->x -= 1;
                 break;
                 
-            case S_KEY_UPPER:
             case S_KEY_LOWER:
                 if(player->y < N - 1 && maze[player->y + 1][player->x] != 1)
                     player->y += 1;
                 break;
 
-            case D_KEY_UPPER:
             case D_KEY_LOWER:
                 if(player->x < N - 1 && maze[player->y][player->x + 1] != 1)
                     player->x += 1;

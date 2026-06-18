@@ -69,7 +69,7 @@ void renderSettingsOverlay() {
     printf("1) Continuar");
 
     SET_CURSOR_POS(startRow+3, startCol);
-    printf("2) Ver Inventario");;
+    printf("2) Ver Inventario");
 
     SET_CURSOR_POS(startRow+4, startCol);
     printf("3) Guardar Partida");
