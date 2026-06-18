@@ -183,6 +183,24 @@ void placeExits(int maze[N][N], int numExits) {
     }
 }
 
+/* +++
+Aquí idealmente debería ir el nivel de dificultar para afectar directamente la
+cantidad de enemigos que se van a generar por mazmorra, pero a fines de conveniencia
+y para comprobar que la generación de enemigos funciona correctamente, se va a ignorar.
+--- */
+void placeEnemies(int maze[N][N]) {
+    int placed = 0;
+    while(placed < MAX_ENEMIES_PER_DUNGEON) {
+        int randomX = rand() % N;
+        int randomY = rand() % N;
+
+        if(maze[randomY][randomX] == 0 && (randomX != 0 || randomY != 0)) {
+            maze[randomY][randomX] = ENEMY_TILE;
+            placed++;
+        }
+    }
+}
+
 // Faltaría implementar manejo de input para Linux
 // Actualizamos la firma para recibir el puntero del jugador y el flag del bucle
 void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode) {
@@ -222,6 +240,19 @@ void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode
                 if(player->x < N - 1 && maze[player->y][player->x + 1] != 1)
                     player->x += 1;
                 break;
+        }
+    }
+    if(maze[player->y][player->x] == ENEMY_TILE) {
+        Enemy *enemy = spawnRandomEnemy();
+        if(enemy) {
+            enemy->x = player->x;
+            enemy->y = player->y;
+            printf("\n\tHas encontrado a: %s\n\t", enemy->enemyName);
+            presioneTeclaParaContinuar();
+            limpiarPantalla();
+            free(enemy);
+            maze[player->y][player->x] = EMPTY;
+            // *currentSubMode = MODE_COMBAT;
         }
     }
 }
@@ -279,4 +310,3 @@ void handleInventoryInput(Player *player, GameMode *currentSubMode) {
             break;
     }
 }
-

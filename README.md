@@ -15,6 +15,8 @@
 * Ejecutable resultante: `infinity-morass.exe`  
 * Comando para establecer UTF-8: `[Console]::OutputEncoding = [System.text.Encoding]::UTF8`
 
+* TDA's utilizados hasta ahora: *"Lista, Mapa, Grafo (implícito)."*
+
 ## **Distribución de directorios**
 
 * **`src/`**: Directorio principal del código fuente. Contiene las funcionalidades del programa y la lógica central del mismo.
@@ -26,7 +28,8 @@
 
     * **`game.h`**: Cabecera/encabezado de la arquitectura del programa. Concentra la declaración de estructuras de memoria (`Player`, `Enemy`, `State`), enumeraciones de estado (`GameMode`), macros estructurales (como las dimensiones topológicas de la matriz `N`) y expone los prototipos públicos del motor del juego.
 
-    * **`enemy-gen.c`**: Archivo destinado a la generación y gestión de las entidades *"enemigo"* para su correcta integración en el programa.
+    * **`enmap.c`**: Archivo destinado a la generación y tracking de los enemigos para su correcta integración en el programa.
+    * **`enmap.h`**: Encabezado del archivo destinado a la generación y mapeo de los enemigos: contiene las definiciones de las entidades **"Enemigo"** y una plantilla genérica para estandarizar la asignación de stats.
 
   * **`io/`**
 
@@ -44,7 +47,6 @@
 
 * **`Makefile`**: Archivo utilizado para automatizar la compilación del programa en local con el comando: `mingw32-make` y que crea el ejecutable final: `infinity-morass.exe`
 
-
 ## **Changelog (historial de cambios)**
 <small>*Nota: Este changelog está en orden cronológico inverso.*</small>
 
@@ -53,10 +55,19 @@
 
 * Parche 1.6.1
   + Se refactorizó la estructura principal de la funcionalidad de generación y mapeo de enemigos, comprimiendo la lógica inicial de comparar nombre a nombre y asignar las estadísticas a una plantilla EnemyTemplate genérica.
+
   + Se cambiaron los nombres de los archivos **"enemy-gen.c"** a **"engen.c"** para mejor legibilidad y armonía con los nombres del resto de archivos.
 
 * Parche 1.6.2
   + Se modificó la cantidad de salidas por mazmorra para una experiencia de juego más fluida.
+
+* Parche 1.6.3
+  + Arreglado bug donde al probar la generación de un enemigo en el mapa el nombre del mismo se quedaba estancado/flotando en el terminal de texto hasta que el jugador entra a ajustes y le da a continuar partida.
+
+  + Se refinó la implementación de la generación de enemigos y además se incluyó un sistema básico para poder visualizar y verificar el correcto procesamiento de la generación y mapeo de los enemigos mediante el TDA Mapa.
+
+  + Actualmente no se pueden generar enemigos múltiples veces por cada mazmorra, sino que una única vez en la primera mazmorra a modo de prueba del sistema.
+
 
 ### **Versión 1.5.0** (15-06-2026)
 
@@ -80,15 +91,19 @@
 
 * Parche 1.5.3
   + Problemas con cuelgue de programa y sub-menú de ajustes *in-game* solucionados.
+  
   + Se añadió la inclusión del archivo **"storage.h"** en **"game.c"** para poder hacer uso de la funcionalidad guardar juego.
+
   + Se refactorizó ligeramente función **"getCharOption"** en **"extra.c"** para asegurar el procesamiento correcto de input y forzar cierre del programa en caso donde el terminal no sea capaz de leer input del usuario adecuadamente.
 
 * Parche 1.5.2
   + Se arregló el duplicado del menú de exploración y se verificó que los input handlers sean llamados correctamente.
+
   + Programa continúa colgándose y dejando de responder a cualquier tipo de input al entrar al sub-menú de ajustes en el mapa durante su ejecución.
 
 * Parche 1.5.1
   + Arreglado bug que causaba que el programa se colgase.
+
   + preparando un siguiente parche para evitar doble-output de ciertas partes del menú exploración y pérdida total de respuesta a input al abrir el menú de ajustes sobre el mapa.
 
 

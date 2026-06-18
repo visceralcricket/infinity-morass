@@ -38,10 +38,11 @@ void renderExploration(int maze[N][N], Player player) {
                 printf("P "); // Jugador
             }
             else {
-                char tile = (maze[i][j] == 1) ? WALL : EMPTY;
-
-                if(maze[i][j] == EXIT_TILE) tile = GOAL;
-                if(i==0 && j==0) tile = START;
+                char tile;
+                if(maze[i][j] == 1) tile = WALL;
+                else if(maze[i][j] == EXIT_TILE) tile = GOAL;
+                else if(maze[i][j] == ENEMY_TILE) tile = 'E';
+                else tile = EMPTY;
                 printf("%c ", tile);
             }
         }

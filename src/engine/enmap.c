@@ -23,6 +23,23 @@ Enemy* generateEnemy(const char *name)
     return enemy;
 }
 
+Enemy *spawnRandomEnemy(void) {
+    int count = sizeof(enemyTemplates) / sizeof(enemyTemplates[0]);
+    int randomIndex = rand() % count;
+    const EnemyTemplate *tpl = &enemyTemplates[randomIndex];
+
+    Enemy *enemy = generateEnemy((char *)tpl->name);
+    if(!enemy) return NULL;
+
+    enemy->x = -1;
+    enemy->y = -1;
+
+    if(tpl->isBoss) generateStatsBossEnemy(enemy, tpl->difficulty);
+    else generateStatsCommonEnemy(enemy, tpl->difficulty);
+
+    return enemy;
+}
+
 void generateStatsCommonEnemy(Enemy* enemy, int difficulty)
 {
     if(strcmp(enemy->enemyName, "Zombi") == 0) {
@@ -101,7 +118,7 @@ void generateStatsBossEnemy(Enemy* enemy, int difficulty)
     }
 }
 
-Map *createEnemiesMap() {
+Map *createEnemiesMap(void) {
     Map *map = mapCreate();
     if(!map) return NULL;
     int count = sizeof(enemyTemplates) / sizeof(enemyTemplates[0]);
