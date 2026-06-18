@@ -8,19 +8,22 @@
 #include <string.h>
 // #include <ctype.h>
 #include <limits.h> // Necessary for using INF (infinity)
-#include "tdas/list.h"
-#include "tdas/extra.h"
-#include "tdas/hashmap.h"
-#include "tdas/heap.h"
+#include "../tdas/list.h"
+#include "../tdas/extra.h"
+#include "../tdas/hashmap.h"
+// #include "tdas/heap.h"
 
 // ======== General definitions ========
 #define INF INT_MAX
 #define INT_ERROR -1
 #define MAX_ID 30
 #define MAX_USERNAME 20
+#define MAX_FILENAME (MAX_USERNAME+15)
 #define MAX_OBJECT_NAME 25
 #define MAX_LORE_LENGTH 256
-#define N 30 // <- Maze's fixed size
+#define N 25 // <- Maze's fixed size
+#define MAX_NUM_EXITS 2 // Máximo 2 salidas por mazmorra
+#define MAX_ENEMIES_PER_DUNGEON 5
 
 // ======== Maze symbols ========
 #define WALL '#' // Obstacle
@@ -28,13 +31,15 @@
 #define PATH '.' // Path for the agent
 #define START 'I' // Starting position of the agent
 #define GOAL 'M' // Goal tile
+#define ENEMY_TILE 'E'
+#define EXIT_TILE 2
 
 // ======== Menu modes enum structure ========
 
 typedef enum {
     MODE_MAIN_MENU = 0,
     MODE_EXPLORATION,
-    MODE_MAP_VIEW,
+    MODE_SETTINGS,
     MODE_INVENTORY_VIEW,
     MODE_COMBAT
 } GameMode;
@@ -67,9 +72,15 @@ typedef enum {
 } Action;
 
 typedef enum {
-    ITEM_ORDINARY = 0,
+    ITEM_CONSUMABLE,
+    ITEM_EQUIPPABLE,
     ITEM_KEY
 } ItemType;
+
+typedef enum {
+    OBJECT_MAP,
+    OBJECT_INVENTORY
+} ItemState;
 
 // Structures' definitions
 typedef struct State State;
@@ -96,12 +107,18 @@ struct Stats {
 
 struct GameObject {
     char name[MAX_OBJECT_NAME];
-    ItemType type;
     int x, y;
-    union {
-        Stats stats;
-        char lore[MAX_LORE_LENGTH];
-    } properties;
+    Stats stats;
+    char lore[MAX_LORE_LENGTH];
+    ItemType equip;
+    ItemState state;
+
+    union 
+    {
+        struct { int x, y; };    // si está en el mapa
+        struct { int slot; };    // si está en inventario
+    } pos;
+    
 };
 
 struct Enemy {
@@ -136,15 +153,26 @@ void cleanGarbage(List *states);
 int isFinal(State *currentState, int targetRow, int targetColumn);
 State *createNewState();
 State *transition(State *currentState, Action accion);
-List *getAdjacentNodes(State *currentState, int maze[N][N], int targetRow, int targetColumn);
+List *getAdjacentNodes(State *currentState, int maze[N][N]);
 
 // Función recursiva BSF para construir un camino seguro
 int buildSafePath(int x, int y, int safe[N][N], int visited[N][N]);
 
-// Maze_generator function
+// Maze-handling functions
 void generateMaze(int maze[N][N], int difficulty);
+void placeExits(int maze[N][N], int numExits);
+/* +++
+Esta función se verá de la siguiente forma en el futuro:
+void placeEnemies(int maze[N][N], Map *enemyMap, List *spawnedEnemies);
+Pero por fines prácticos se van a ignorar los últimos 2 parámetros.
+--- */
+void placeEnemies(int maze[N][N]);
 
-// Format, aka output/input functions
-void handleWindowsInput(Player *player, bool *playing, int maze[N][N]);
+// ==================== Input handlers ====================
+void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode);
+void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode);
+void handleInventoryInput(Player *player, GameMode *currentSubMode);
+
+#include "enmap.h"
 
 #endif

@@ -1,5 +1,6 @@
-#include "game.h"
-#include "storage.h"
+#include "engine/game.h"
+#include "io/storage.h"
+#include "ui/render.h"
 
 // --------------- Utilities ---------------
 // separador1, separador2 y readCharOption se movieron al archivo extra.c para 
@@ -17,8 +18,8 @@ int main() {
 
     Player sessionPlayer = {
         "", 0, 0,
-        {100, 10, 5, 5},
-        NULL  // IMPORTANTE: aquí debería llamarse a list_create() para inicializar inventario
+        {100, 10, 5, 5, 5},
+        NULL  // IMPORTANTE: aquí debería llamarse a listCreate() para inicializar inventario
     };
 
     int maze[N][N] = {0};
@@ -32,17 +33,28 @@ int main() {
     puts("\t\tPor favor, ingrese su" FORMAT_BOLD COLOR_RED " nombre.." FORMAT_RESET);
     separador1();
     printf("\n\t\t" FORMAT_DIM COLOR_RED "< " FORMAT_RESET);
+    
     if(fgets(sessionPlayer.username, sizeof(sessionPlayer.username), stdin)) {
         sessionPlayer.username[strcspn(sessionPlayer.username, "\n")] = 0;
     }
-
     else strcpy(sessionPlayer.username, "Guest");
-    // Aquí en el futuro deberá llamarse a la función loadGame (cargar partida guardada en base al username)
-    if(!sessionPlayer.inventory) sessionPlayer.inventory = list_create();
 
+    
+    if(loadGame(&sessionPlayer)) {
+        printf("\n\t\t" COLOR_GREEN "Perfil encontrado. Partida cargada exitosamente." FORMAT_RESET "\n");
+    }
+    
+    else {
+        printf("\n\t\t" COLOR_CYAN "Perfil nuevo. Inicializando matriz de datos.." FORMAT_RESET "\n");
+        // Solo incializamos una lista nueva si el jugador es nuevo
+        sessionPlayer.inventory = listCreate();
+    }
+    
+    printf("\t\t");
+    presioneTeclaParaContinuar();
     char option;
     GameMode currentMode = MODE_MAIN_MENU;
-    
+
     do {
         showMainMenu(sessionPlayer.username);
         printf("\n\t\t" FORMAT_BOLD "Ingrese su opción\n\t\t" FORMAT_RESET FORMAT_DIM "<" FORMAT_RESET " ");
@@ -57,6 +69,18 @@ int main() {
                 
                 if(!mazeGenerated) {
                     generateMaze(maze, 20);
+                    // Generar salidas, con MAX_NUM_EXITS = 3 (game.h)
+                    placeExits(maze, MAX_NUM_EXITS);
+                    Map *enemyMap = createEnemiesMap();
+                    if(enemyMap) {
+                        MapPair *pair = mapFirst(enemyMap);
+                        while(pair) {
+                            Enemy *enemy = (Enemy *) pair->value;
+                            printf("Entrada hashmap: %s\n", enemy->enemyName);
+                            pair = mapNext(enemyMap);
+                        }
+                    }
+                    placeEnemies(maze);
                     mazeGenerated = 1;
                 }
 
@@ -84,64 +108,89 @@ int main() {
     return 0;
 }
 
-void showMainMenu(char *username) {
-    limpiarPantalla();
-    separador1();
-    puts(" \t|---- Infinity-" COLOR_CYAN FORMAT_BOLD "Morass" FORMAT_RESET ": A hyper-link to the Future ----|");
-    printf("\t\t Bienvenido, " FORMAT_BOLD "%s" FORMAT_RESET "\n", username);
-    separador2();
-    puts("\n\t\t" FORMAT_BOLD "Opciones de juego" FORMAT_RESET "\n");
-    puts("\t\t1) Iniciar nueva partida");
-    puts("\t\t2) Ver glosario");
-    puts("\t\t3) Salir del juego");
-
-    separador2();
-}
-
-void renderExploration(int maze[N][N], Player player) {
-    limpiarPantalla();
-    separador1();
-    printf("\tPresione " FORMAT_BOLD "ESC" FORMAT_RESET " para salir\n");
-    separador1();
-
-    for(int i=0; i<N; i++) {
-        printf("\t");
-        for(int j=0; j<N; j++) {
-            if(i==player.y && j==player.x) printf("P "); // Jugador
-            else {
-                char tile = (maze[i][j] == 1) ? WALL : EMPTY;
-
-                // Considerar cambiar esto luego por una generación aleatoria de punto de partida
-                if(i==0 && j==0) tile = START;
-                if(i== N-1 && j == N-1) tile = GOAL;
-                printf("%c ", tile);
-            }
-        }
-        printf("\n");
-    }
-    separador1();
-}
-
 void runExplorationMode(int maze[N][N], Player *player) {
     
     bool playing = true;
-    // Considerar NO resetear las coordenadas del jugador
+    int prevX = 0, prevY = 0;
+    GameMode currentSubMode = MODE_EXPLORATION;
+
     player->x = player->y = 0;
+    limpiarPantalla(); // Sólo limpiar pantalla una vez
 
     while(playing) {
-        // Renderizar estado actual
+
+        // ============== Fase 1: Renderizar estado actual ==============
         renderExploration(maze, *player);
+        
+        // Dibujar menús superpuestos si es necesario
+        switch(currentSubMode) {
 
-        // Procesar el input de este frame (pasar punteros)
-        handleWindowsInput(player, &playing, maze);
+            case MODE_SETTINGS:
+                renderSettingsOverlay();
+                break;
 
-        if(player->y == N-1 && player->x == N-1) {
-            renderExploration(maze, *player);
-            printf("\n\tHas llegado a la meta!\n");
-            presioneTeclaParaContinuar();
-            playing = false;
+            case MODE_INVENTORY_VIEW:
+                renderInventoryOverlay(player);
+                break;
+
+            case MODE_EXPLORATION:
+                break;
+
+            default:
+                break;
+        }
+        /* +++
+        IMPORTANTE: Debemos obligar al terminal a que no deje ningún tipo de
+        texto encolado para el stdout, así nos aseguramos de que ningún texto
+        quede encolado en el output e interrumpa al programa. 
+        --- */
+        fflush(stdout);
+        // Lógica e input general (controllers)
+        switch(currentSubMode) {
+            case MODE_SETTINGS:
+                handleSettingsInput(player, &playing, &currentSubMode);
+                break;
+            case MODE_INVENTORY_VIEW:
+                handleInventoryInput(player, &currentSubMode);
+                break;
+
+            case MODE_EXPLORATION:
+                // Guardar coordenadas ANTES de procesar movimiento
+                prevX = player->x;
+                prevY = player->y;
+                // Procesar el input de este frame (pasar punteros)
+                handleWindowsInput(player, maze, &currentSubMode);
+
+                if(maze[player->y][player->x] == EXIT_TILE) {
+                    renderExploration(maze, *player); // Actualizar pantalla
+                    printf("\n\t" FORMAT_BOLD COLOR_YELLOW "Una puerta misteriosa se revela ante ti." FORMAT_RESET);
+                    printf("\n\tDeseas descender al siguiente nivel? (S/N)\n\t< ");
+
+                    char choice = readCharOption();
+                    if(choice=='S' || choice == 's') {
+                        printf("\n\t" FORMAT_BOLD "Descendiendo a las " COLOR_BLUE "profundidades. . ." FORMAT_RESET);
+                        printf("\n\t");
+                        presioneTeclaParaContinuar();
+
+                        generateMaze(maze, 20);
+                        placeExits(maze, MAX_NUM_EXITS);
+
+                        player->x = player->y = 0;
+                        limpiarPantalla();
+                    }
+                    else {
+                        player->x = prevX;
+                        player->y = prevY;
+                        limpiarPantalla();
+                    }
+                }
+                break;
+            
+            default:
+                break;
         }
     }
+    printf(SHOW_CURSOR);
 }
 
 // void showGlossary() {}

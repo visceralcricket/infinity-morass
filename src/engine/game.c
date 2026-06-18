@@ -1,12 +1,13 @@
 #include "game.h"
+#include "io/storage.h"
 
 void cleanGarbage(List *states) {
-    State *tmpState = (State *) list_first(states);
+    State *tmpState = (State *) listFirst(states);
     while(tmpState) {
         free(tmpState);
-        tmpState = list_next(states);
+        tmpState = listNext(states);
     }
-    list_clean(states);
+    listClean(states);
     free(states);
 }
 
@@ -58,10 +59,10 @@ State *transition(State *currentState, Action accion) {
 }
 
 // Return a list with all the valid, adjacent State(s) to the current one
-List *getAdjacentNodes(State *currentState, int maze[N][N], int targetRow, int targetColumn) {
+List *getAdjacentNodes(State *currentState, int maze[N][N]) {
     if(!currentState) return NULL;
 
-    List *adjacentList = list_create();
+    List *adjacentList = listCreate();
     if(!adjacentList) return NULL;
     Action actions[] = {UP, DOWN, LEFT, RIGHT};
 
@@ -91,7 +92,7 @@ List *getAdjacentNodes(State *currentState, int maze[N][N], int targetRow, int t
                 State *validState = transition(currentState, tmpAction);
                 if(!validState) continue;
 
-                list_pushBack(adjacentList, validState);
+                listPushBack(adjacentList, validState);
             }
         }
     }
@@ -168,21 +169,51 @@ void generateMaze(int maze[N][N], int difficulty) {
         }
     }
 }
+// Función para generar salidas / entradas a siguiente nivel aleatoriamente
+void placeExits(int maze[N][N], int numExits) {
+    int placed = 0;
+    while(placed < numExits) {
+        int randomX = rand() % N;
+        int randomY = rand() % N;
+
+        if(maze[randomY][randomX] == 0 && (randomX != 0 || randomY != 0)) {
+            maze[randomY][randomX] = EXIT_TILE;
+            placed++;
+        }
+    }
+}
+
+/* +++
+Aquí idealmente debería ir el nivel de dificultar para afectar directamente la
+cantidad de enemigos que se van a generar por mazmorra, pero a fines de conveniencia
+y para comprobar que la generación de enemigos funciona correctamente, se va a ignorar.
+--- */
+void placeEnemies(int maze[N][N]) {
+    int placed = 0;
+    while(placed < MAX_ENEMIES_PER_DUNGEON) {
+        int randomX = rand() % N;
+        int randomY = rand() % N;
+
+        if(maze[randomY][randomX] == 0 && (randomX != 0 || randomY != 0)) {
+            maze[randomY][randomX] = ENEMY_TILE;
+            placed++;
+        }
+    }
+}
 
 // Faltaría implementar manejo de input para Linux
 // Actualizamos la firma para recibir el puntero del jugador y el flag del bucle
-void handleWindowsInput(Player *player, bool *playing, int maze[N][N]) {
+void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode) {
     int key = _getch();
 
     if(key == 0 || key == 224) {
         int specialCode = _getch();
         switch(specialCode) {
-            default:
-                break;
+            default: break;
         }
     } 
     else if(key == ESC_KEY) {
-        *playing = false; // Modificar booleano original mediante su puntero
+        *currentSubMode = MODE_SETTINGS;
     } 
     else {
         switch(key) {
@@ -210,5 +241,72 @@ void handleWindowsInput(Player *player, bool *playing, int maze[N][N]) {
                     player->x += 1;
                 break;
         }
+    }
+    if(maze[player->y][player->x] == ENEMY_TILE) {
+        Enemy *enemy = spawnRandomEnemy();
+        if(enemy) {
+            enemy->x = player->x;
+            enemy->y = player->y;
+            printf("\n\tHas encontrado a: %s\n\t", enemy->enemyName);
+            presioneTeclaParaContinuar();
+            limpiarPantalla();
+            free(enemy);
+            maze[player->y][player->x] = EMPTY;
+            // *currentSubMode = MODE_COMBAT;
+        }
+    }
+}
+
+void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode) {
+    int key = _getch();
+
+    switch(key) {
+        case '1': // Continuar
+
+        // Presionar ESC de nuevo para salir de las opciones
+        case ESC_KEY:
+            limpiarPantalla();
+            *currentSubMode = MODE_EXPLORATION;
+            break;
+
+        case '2':
+            limpiarPantalla();
+            *currentSubMode = MODE_INVENTORY_VIEW;
+            break;
+
+        case '3':
+            // Guardamos la partida sin cambiar de GameMode y sin limpiar pantalla
+            saveGame(player);
+
+            SET_CURSOR_POS(12, 75);
+            printf(FORMAT_BOLD COLOR_GREEN "Guardado completado." FORMAT_RESET);
+            break;
+
+        case '4':
+            *playing = false;
+            break;
+    }
+}
+
+// Manejar input dentro del sub-submenú inventario en pausa
+void handleInventoryInput(Player *player, GameMode *currentSubMode) {
+    int key = _getch();
+
+    // Normalizar letras mayúsculas
+    if(key >= 'A' && key <= 'Z') key += 32;
+
+    switch(key) {
+        case ESC_KEY:
+            limpiarPantalla();
+            *currentSubMode = MODE_SETTINGS;
+            break;
+
+        case 'a':
+            if(player->inventory) listPrev(player->inventory);
+            break;
+
+        case 'd':
+            if(player->inventory) listNext(player->inventory);
+            break;
     }
 }

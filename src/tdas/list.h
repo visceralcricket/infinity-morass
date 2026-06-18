@@ -4,36 +4,39 @@
 typedef struct List List;
 
 // Creates a list and returns its pointer
-List *list_create();
+List *listCreate();
 
 // Returns the pointer to the first node of the list
-void *list_first(List *L);
+void *listFirst(List *L);
 
 // Moves pointer 'current' to the next node and returns its pointer
-void *list_next(List *L);
+void *listNext(List *L);
+
+// Moves pointer 'current' to the previous node and returns its pointer
+void *listPrev(List *L);
 
 // Inserts a new node at the start of the list
-void list_pushFront(List *L, void *dato);
+void listPushFront(List *L, void *data);
 
 // Inserts a new node at the end of the list
-void list_pushBack(List *L, void *dato);
+void listPushBack(List *L, void *data);
 
-// // Inserts a new node right after the 'current' one
-void list_pushCurrent(List *L, void *dato);
+// Inserts a new node right after the 'current' one
+void listPushCurrent(List *L, void *data);
 
 // Deletes the first element of the list
-void *list_popFront(List *L);
+void *listPopFront(List *L);
 
 // Deletes the last element of the list
-void *list_popBack(List *L);
+void *listPopBack(List *L);
 
 // Deletes the node 'current' of the list
-void *list_popCurrent(List *L);
+void *listPopCurrent(List *L);
 
 // Deletes all the nodes and leaves the list clean
-void list_clean(List *L);
+void listClean(List *L);
 
 // Returns the logical size of the list
-int list_size(List* L);
+int listSize(List *L);
 
 #endif

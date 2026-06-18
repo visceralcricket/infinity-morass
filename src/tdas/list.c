@@ -2,10 +2,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct Node {
+typedef struct Node Node;
+typedef struct List List;
+
+struct Node {
   void *data;
-  struct Node *next;
-} Node;
+  Node *next;
+  Node *prev;
+};
 
 struct List {
   Node *head;
@@ -14,13 +18,12 @@ struct List {
   int size;
 };
 
-typedef List List;
-
-List *list_create() {
+List *listCreate() {
   List *newList = (List *)malloc(sizeof(List));
-  if (newList == NULL) {
+  if (!newList) {
     return NULL; // Memory allocation failed
   }
+
   newList->head = NULL;
   newList->tail = NULL;
   newList->current = NULL;
@@ -28,150 +31,149 @@ List *list_create() {
   return newList;
 }
 
-void *list_first(List *L) {
-  if (L == NULL || L->head == NULL) {
+void *listFirst(List *L) {
+  if (!L || !L->head) {
     return NULL; // Empty list or without a head
   }
   L->current = L->head;
   return L->current->data;
 }
 
-void *list_next(List *L) {
-  if (L == NULL || L->current == NULL || L->current->next == NULL) {
+void *listNext(List *L) {
+  if (!L || !L->current || !L->current->next) {
     return NULL; // Same as previous + no node to next
   }
   L->current = L->current->next;
   return L->current->data;
 }
 
-void list_pushFront(List *L, void *data) {
-  if (L == NULL) {
-    return;
-  }
+void *listPrev(List *L) {
+  if(!L || !L->current || !L->current->prev) return NULL;
+  L->current = L->current->prev;
+  return L->current->data;
+}
+
+void listPushFront(List *L, void *data) {
+  if (!L) return;
+
   Node *newNode = (Node *)malloc(sizeof(Node));
-  if (newNode == NULL) {
-    return;
-  }
+  if (!newNode) return;
+
   newNode->data = data;
   newNode->next = L->head;
+  newNode->prev = NULL;
+
+  if(L->head) L->head->prev = newNode;
   L->head = newNode;
-  if (L->tail == NULL) { // If the list was empty => has no tail
-    L->tail = newNode;
-  }
+  // If the list was empty => has no tail
+  if(!L->tail) L->tail = newNode;
+
   L->size++;
 }
 
-void list_pushBack(List *L, void *data) {
-  if (L == NULL) {
-    return; // Non-initialized list
-  }
+void listPushBack(List *L, void *data) {
+  if (!L) return;
+
   Node *newNode = (Node *)malloc(sizeof(Node));
-  if (newNode == NULL) {
-    return;
-  }
+  if (!newNode) return;
+
   newNode->data = data;
   newNode->next = NULL;
-  if (L->tail == NULL) { // Same empty list with no tail as before
+  newNode->prev = L->tail;
+
+  if (!L->tail) { // Same empty list with no tail as before
     L->head = newNode;
     L->tail = newNode;
-  } else {
+  }
+
+  else {
     L->tail->next = newNode;
     L->tail = newNode;
   }
   L->size++;
 }
 
-void list_pushCurrent(List *L, void *data) {
-  if (L == NULL || L->current == NULL) {
-    return; // Empty list or current node not defined
-  }
+void listPushCurrent(List *L, void *data) {
+  if (!L || !L->current) return;
+
   Node *newNode = (Node *)malloc(sizeof(Node));
-  if (newNode == NULL) {
-    return;
-  }
+  if (!newNode) return;
+
   newNode->data = data;
   newNode->next = L->current->next;
+  newNode->prev = L->current;
+
+  if(L->current->next) L->current->next->prev = newNode;
+
   L->current->next = newNode;
-  if (L->current == L->tail) {
-    L->tail = newNode; // Update tail if it's added at the end of the list
-  }
+
+  // Update tail if it's added at the end of the list
+  if (!newNode->next) L->tail = newNode;
+
   L->size++;
 }
 
 
 
-void *list_popFront(List *L) {
-  if (L == NULL || L->head == NULL) {
-    return NULL;
-  }
-  Node *temp = L->head;
-
+void *listPopFront(List *L) {
+  if (!L || !L->head) return NULL;
+  
+  Node *tmp = L->head;
   L->head = L->head->next;
-  if (L->head == NULL) {
-    L->tail = NULL; // Update tail to make it a fully-empty list
-  }
-  void *data = temp->data;
-  free(temp);
+
+  if (!L->head) L->tail = NULL;
+  else L->head->prev = NULL;
+
+  void *data = tmp->data;
+  free(tmp);
   L->size--;
   return data;
 }
 
-void *list_popBack(List *L) {
-  if (L == NULL || L->head == NULL) {
-    return NULL;
-  }
-  if (L->head == L->tail) { // Only 1 node in the list
-    return list_popFront(L);
-  }
-  Node *current = L->head;
-  while (current->next != L->tail) {
-    current = current->next;
-  }
-  void *data = L->tail->data;
-  free(L->tail);
-  current->next = NULL;
-  L->tail = current;
+void *listPopBack(List *L) {
+  if (!L || !L->head) return NULL;
+
+  Node *tmp = L->tail;
+  L->tail = L->tail->prev;
+
+  if(!L->tail) L->head = NULL;
+  else L->tail->next = NULL;
+  
+  void *data = tmp->data;
+  free(tmp);
   L->size--;
   return data;
 }
 
-int list_size(List *L){
+void *listPopCurrent(List *L) {
+  if (!L || !L->current) return NULL;
+
+  Node *tmp = L->current;
+  if(tmp->prev) tmp->prev->next = tmp->next;
+  else L->head = tmp->next;
+  
+  if(tmp->next) tmp->next->prev = tmp->prev;
+  else L->tail = tmp->prev;
+
+  void *data = tmp->data;
+  L->current = tmp->next;
+  free(tmp);
+  L->size--;
+
+  return data;
+}
+
+int listSize(List *L){
+  if(!L) return 0;
     return L->size;
 }
 
-void *list_popCurrent(List *L) {
-  if (L == NULL || L->current == NULL) {
-    return NULL;
-  }
-  if (L->current == L->head) {
-    return list_popFront(L);
-  }
-  Node *temp = L->head;
-  if(!temp) return NULL;
+void listClean(List *L) {
+  if (!L) return;
 
-  while (temp != NULL && temp->next != L->current) {
-    temp = temp->next;
-  }
-
-  if(!temp) return NULL;
-
-  temp->next = L->current->next;
-  if (L->current == L->tail) {
-    L->tail = temp; // Update tail if it's equal to the node to delete
-  }
-  void *data = L->current->data;
-  free(L->current);
-  L->current = temp->next;
-  L->size--;
-  return data;
-}
-
-void list_clean(List *L) {
-  if (L == NULL) {
-    return;
-  }
   Node *current = L->head;
   Node *next;
+
   while (current != NULL) {
     next = current->next;
     free(current);

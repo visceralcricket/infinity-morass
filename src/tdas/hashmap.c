@@ -18,8 +18,7 @@ struct Map {
     long current; 
 };
 
-
-static long hash(char * key, long capacity) {
+static long hash(char *key, long capacity) {
     unsigned long hash = 0;
     char * ptr;
     for (ptr = key; *ptr != '\0'; ptr++) {
@@ -28,10 +27,11 @@ static long hash(char * key, long capacity) {
     return hash % capacity;
 }
 
-
-Map * map_create(int (*is_equal)(void* key1, void* key2)) {
+Map * mapCreate() {
     Map * map = (Map *)malloc(sizeof(Map));
-    map->capacity = 101; // Capacidad inicial por defecto
+    if(!map) return NULL;
+
+    map->capacity = MAX_MAP_SIZE; // Capacidad inicial por defecto
     map->buckets = (MapPair **)calloc(map->capacity, sizeof(MapPair *));
     map->size = 0;
     map->current = -1;
@@ -39,11 +39,11 @@ Map * map_create(int (*is_equal)(void* key1, void* key2)) {
 }
 
 
-MapPair * map_search(Map * map, void * key) {
+MapPair * mapSearch(Map * map, char *key) {
     long idx = hash((char *)key, map->capacity);
     while (map->buckets[idx] != NULL) {
         if (map->buckets[idx]->key != NULL && 
-            strcmp(map->buckets[idx]->key, (char *)key) == 0) {
+        strcmp((char *)map->buckets[idx]->key, (char *)key) == 0) {
             map->current = idx;
             return map->buckets[idx];
         }
@@ -52,16 +52,16 @@ MapPair * map_search(Map * map, void * key) {
     return NULL;
 }
 
-void map_remove(Map * map,  char * key) {    
-    MapPair *tmp = map_search(map, key); // Buscar key en mapa
+void mapRemove(Map * map,  char * key) {    
+    MapPair *tmp = mapSearch(map, key); // Buscar key en mapa
     if(tmp!=NULL) { // Si el par existe
         tmp->key = NULL; // Invalidar dicho par
         map->size--; // Actualizar size del arreglo
     }
 }
 
-static void enlarge(Map * map) {
-    MapPair ** old_buckets = map->buckets;
+static void enlarge(Map *map) {
+    MapPair **old_buckets = map->buckets;
     long old_capacity = map->capacity;
     map->capacity *= 2;
     map->buckets = (MapPair **)calloc(map->capacity, sizeof(MapPair *));
@@ -69,19 +69,20 @@ static void enlarge(Map * map) {
 
     for (long i = 0; i < old_capacity; i++) {
         if (old_buckets[i] != NULL) {
-            map_insert(map, old_buckets[i]->key, old_buckets[i]->value);
+            mapInsert(map, old_buckets[i]->key, old_buckets[i]->value);
             free(old_buckets[i]);
         }
     }
     free(old_buckets);
 }
 
-void map_insert(Map * map, void * key, void * value) {
+void mapInsert(Map * map, char *key, void *value) {
     if (map->size > map->capacity * 0.7) enlarge(map);
     
     long idx = hash((char *)key, map->capacity);
     while (map->buckets[idx] != NULL) {
-        if(map->buckets[idx]->key != NULL && (strcmp(map->buckets[idx]->key, (char *)key) == 0)) {
+        if(map->buckets[idx]->key != NULL && 
+        (strcmp((char *)map->buckets[idx]->key, (char *)key) == 0)) {
             map->buckets[idx]->value = value;
             return;
         }
@@ -96,7 +97,7 @@ void map_insert(Map * map, void * key, void * value) {
 }
 
 // Iteradores
-MapPair * map_first(Map * map) {
+MapPair * mapFirst(Map * map) {
     for (long i = 0; i < map->capacity; i++) {
         if (map->buckets[i] != NULL && map->buckets[i]->key != NULL) {  // Verificación necesaria
             map->current = i;
@@ -106,7 +107,7 @@ MapPair * map_first(Map * map) {
     return NULL;
 }
 
-MapPair * map_next(Map * map) {
+MapPair * mapNext(Map * map) {
     for (long i = map->current + 1; i < map->capacity; i++) {
         if (map->buckets[i] != NULL && map->buckets[i]->key != NULL) {  // Verificación necesaria
             map->current = i;
@@ -116,7 +117,7 @@ MapPair * map_next(Map * map) {
     return NULL;
 }
 
-void map_clean(Map * map) {
+void mapClean(Map * map) {
     for (long i = 0; i < map->capacity; i++) {
         if (map->buckets[i] != NULL) free(map->buckets[i]);
     }
