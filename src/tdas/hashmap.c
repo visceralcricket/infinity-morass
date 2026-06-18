@@ -18,7 +18,6 @@ struct Map {
     long current; 
 };
 
-
 static long hash(char *key, long capacity) {
     unsigned long hash = 0;
     char * ptr;

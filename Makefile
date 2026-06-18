@@ -6,7 +6,7 @@ TARGET = infinity-morass
 # Todos los archivos fuente (.c)
 SRCS = src/main.c \
 		src/engine/game.c \
-		src/engine/enemy-gen.c \
+		src/engine/enmap.c \
 		src/io/storage.c \
 		src/ui/render.c \
 		src/tdas/extra.c \

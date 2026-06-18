@@ -71,6 +71,16 @@ int main() {
                     generateMaze(maze, 20);
                     // Generar salidas, con MAX_NUM_EXITS = 3 (game.h)
                     placeExits(maze, MAX_NUM_EXITS);
+                    Map *enemyMap = createEnemiesMap();
+                    if(enemyMap) {
+                        MapPair *pair = mapFirst(enemyMap);
+                        while(pair) {
+                            Enemy *enemy = (Enemy *) pair->value;
+                            printf("Entrada hashmap: %s\n", enemy->enemyName);
+                            pair = mapNext(enemyMap);
+                        }
+                    }
+                    placeEnemies(maze);
                     mazeGenerated = 1;
                 }
 

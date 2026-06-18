@@ -169,9 +169,8 @@ void generateMaze(int maze[N][N], int difficulty) {
         }
     }
 }
-
+// Función para generar salidas / entradas a siguiente nivel aleatoriamente
 void placeExits(int maze[N][N], int numExits) {
-
     int placed = 0;
     while(placed < numExits) {
         int randomX = rand() % N;
@@ -179,6 +178,24 @@ void placeExits(int maze[N][N], int numExits) {
 
         if(maze[randomY][randomX] == 0 && (randomX != 0 || randomY != 0)) {
             maze[randomY][randomX] = EXIT_TILE;
+            placed++;
+        }
+    }
+}
+
+/* +++
+Aquí idealmente debería ir el nivel de dificultar para afectar directamente la
+cantidad de enemigos que se van a generar por mazmorra, pero a fines de conveniencia
+y para comprobar que la generación de enemigos funciona correctamente, se va a ignorar.
+--- */
+void placeEnemies(int maze[N][N]) {
+    int placed = 0;
+    while(placed < MAX_ENEMIES_PER_DUNGEON) {
+        int randomX = rand() % N;
+        int randomY = rand() % N;
+
+        if(maze[randomY][randomX] == 0 && (randomX != 0 || randomY != 0)) {
+            maze[randomY][randomX] = ENEMY_TILE;
             placed++;
         }
     }
@@ -225,6 +242,19 @@ void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode
                 break;
         }
     }
+    if(maze[player->y][player->x] == ENEMY_TILE) {
+        Enemy *enemy = spawnRandomEnemy();
+        if(enemy) {
+            enemy->x = player->x;
+            enemy->y = player->y;
+            printf("\n\tHas encontrado a: %s\n\t", enemy->enemyName);
+            presioneTeclaParaContinuar();
+            limpiarPantalla();
+            free(enemy);
+            maze[player->y][player->x] = EMPTY;
+            // *currentSubMode = MODE_COMBAT;
+        }
+    }
 }
 
 void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode) {
@@ -258,6 +288,7 @@ void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode
     }
 }
 
+// Manejar input dentro del sub-submenú inventario en pausa
 void handleInventoryInput(Player *player, GameMode *currentSubMode) {
     int key = _getch();
 
@@ -279,4 +310,3 @@ void handleInventoryInput(Player *player, GameMode *currentSubMode) {
             break;
     }
 }
-

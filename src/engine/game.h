@@ -22,7 +22,8 @@
 #define MAX_OBJECT_NAME 25
 #define MAX_LORE_LENGTH 256
 #define N 25 // <- Maze's fixed size
-#define MAX_NUM_EXITS 3
+#define MAX_NUM_EXITS 2 // Máximo 2 salidas por mazmorra
+#define MAX_ENEMIES_PER_DUNGEON 5
 
 // ======== Maze symbols ========
 #define WALL '#' // Obstacle
@@ -30,6 +31,7 @@
 #define PATH '.' // Path for the agent
 #define START 'I' // Starting position of the agent
 #define GOAL 'M' // Goal tile
+#define ENEMY_TILE 'E'
 #define EXIT_TILE 2
 
 // ======== Menu modes enum structure ========
@@ -159,10 +161,18 @@ int buildSafePath(int x, int y, int safe[N][N], int visited[N][N]);
 // Maze-handling functions
 void generateMaze(int maze[N][N], int difficulty);
 void placeExits(int maze[N][N], int numExits);
+/* +++
+Esta función se verá de la siguiente forma en el futuro:
+void placeEnemies(int maze[N][N], Map *enemyMap, List *spawnedEnemies);
+Pero por fines prácticos se van a ignorar los últimos 2 parámetros.
+--- */
+void placeEnemies(int maze[N][N]);
 
 // ==================== Input handlers ====================
 void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode);
 void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode);
 void handleInventoryInput(Player *player, GameMode *currentSubMode);
+
+#include "enmap.h"
 
 #endif

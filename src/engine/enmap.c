@@ -3,17 +3,9 @@
 #include "../tdas/hashmap.h"
 
 #include "../engine/game.h"
+#include "enmap.h"
 
-// crear objetos
-/*
-GameObject* generateObject(char name[MAX_OBJECT_NAME], char lore[])
-{
-
-}
-*/
-
-
-Enemy* generateEnemy(char name[MAX_USERNAME])
+Enemy* generateEnemy(const char *name)
 {
     Enemy *enemy = (Enemy*) malloc(sizeof(Enemy));
     if(!enemy) return NULL;
@@ -31,6 +23,22 @@ Enemy* generateEnemy(char name[MAX_USERNAME])
     return enemy;
 }
 
+Enemy *spawnRandomEnemy(void) {
+    int count = sizeof(enemyTemplates) / sizeof(enemyTemplates[0]);
+    int randomIndex = rand() % count;
+    const EnemyTemplate *tpl = &enemyTemplates[randomIndex];
+
+    Enemy *enemy = generateEnemy((char *)tpl->name);
+    if(!enemy) return NULL;
+
+    enemy->x = -1;
+    enemy->y = -1;
+
+    if(tpl->isBoss) generateStatsBossEnemy(enemy, tpl->difficulty);
+    else generateStatsCommonEnemy(enemy, tpl->difficulty);
+
+    return enemy;
+}
 
 void generateStatsCommonEnemy(Enemy* enemy, int difficulty)
 {
@@ -62,7 +70,7 @@ void generateStatsCommonEnemy(Enemy* enemy, int difficulty)
         enemy->combatStats.currentHp = enemy->combatStats.maxHp;
         enemy->combatStats.speed     = 6 * difficulty;
     }
-    else if(strcmp(enemy->enemyName, "Sucubo") == 0) {
+    else if(strcmp(enemy->enemyName, "Súcubo") == 0) {
         enemy->combatStats.attack    = 10 * difficulty;
         enemy->combatStats.defense   = 0  * difficulty;
         enemy->combatStats.maxHp     = 5  * difficulty;
@@ -87,14 +95,14 @@ void generateStatsBossEnemy(Enemy* enemy, int difficulty)
         enemy->combatStats.currentHp = enemy->combatStats.maxHp;
         enemy->combatStats.speed     = 14 * difficulty;
     }
-    else if(strcmp(enemy->enemyName, "Aberracion Cosmica") == 0) {
+    else if(strcmp(enemy->enemyName, "Aberración Cósmica") == 0) {
         enemy->combatStats.attack    = 9 * difficulty;
         enemy->combatStats.defense   = 13 * difficulty;
         enemy->combatStats.maxHp     = 40 * difficulty;
         enemy->combatStats.currentHp = enemy->combatStats.maxHp;
         enemy->combatStats.speed     = 4 * difficulty;
     }
-    else if(strcmp(enemy->enemyName, "Robot Antiguo") == 0) { // palabras de androide 16
+    else if(strcmp(enemy->enemyName, "Gólem Antiguo") == 0) { // palabras de androide 16
         enemy->combatStats.attack    = 14 * difficulty;
         enemy->combatStats.defense   = 6 * difficulty;
         enemy->combatStats.maxHp     = 30 * difficulty;
@@ -110,6 +118,21 @@ void generateStatsBossEnemy(Enemy* enemy, int difficulty)
     }
 }
 
+Map *createEnemiesMap(void) {
+    Map *map = mapCreate();
+    if(!map) return NULL;
+    int count = sizeof(enemyTemplates) / sizeof(enemyTemplates[0]);
 
+    for(int i=0; i < count; ++i) {
+        const EnemyTemplate *tpl = &enemyTemplates[i];
 
+        Enemy *enemy = generateEnemy((char *)tpl->name);
+        if(!enemy) continue;
 
+        if(tpl->isBoss) generateStatsBossEnemy(enemy, tpl->difficulty);
+        else generateStatsCommonEnemy(enemy, tpl->difficulty);
+
+        mapInsert(map, enemy->enemyName, enemy);
+    }
+    return map;
+}
