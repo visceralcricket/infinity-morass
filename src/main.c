@@ -78,6 +78,7 @@ int main() {
                             Enemy *enemy = (Enemy *) pair->value;
                             printf("Entrada hashmap: %s\n", enemy->enemyName);
                             pair = mapNext(enemyMap);
+                            presioneTeclaParaContinuar();
                         }
                     }
                     placeEnemies(maze);

@@ -89,14 +89,12 @@ typedef struct GameObject GameObject;
 typedef struct Enemy Enemy;
 typedef struct Player Player;
 // Estructura para guardar progreso del jugador o jugadores
-// typedef struct PlayerData PlayerData;
 
 // El laberinto comienza desde la esquina SUPERIOR-IZQUIERDA (UPPER-LEFT), considerar
 // cambiar esto a un inicio generado aleatoriamente
  struct State {
     int currentRow; // modifies "y" axis
     int currentColumn; // modifies "x" axis
-    // int accumulated; // Real cost (g) of moves
     State *parent; // Pointer to predecessor state
 };
 
@@ -135,19 +133,7 @@ struct Player {
     List *inventory;
 };
 
-/*
-struct PlayerData {
-    // char username[MAX_USERNAME];
-    State *currentState;
-    Player *player;
-    int level, floor;
-};
-*/
-
 // ==================== Prototypes ====================
-
-// Reduce code-writing in cleaning Lists (like garbageCollector) that store data of the type State
-void cleanGarbage(List *states);
 
 // Implicit-graph functions
 int isFinal(State *currentState, int targetRow, int targetColumn);
