@@ -3,6 +3,9 @@
 
 #include "../engine/game.h"
 
+#define MAX_SHIFT_ROW N+5
+#define MAX_SHIFT_COL N+50
+
 // Mostrar menú principal
 void showMainMenu(char *username);
 

@@ -82,8 +82,8 @@ void renderSettingsOverlay() {
 
 void renderInventoryOverlay(Player *player) {
 
-    int startRow = 5;
-    int startCol = 75;
+    int startRow = MAX_SHIFT_ROW;
+    int startCol = MAX_SHIFT_COL;
 
     SET_CURSOR_POS(startRow, startCol);
     printf(FORMAT_BOLD COLOR_CYAN "==== INVENTARIO ====" FORMAT_RESET);
