@@ -1,7 +1,7 @@
 # **infinity-morass**
 > *Roguelike de calabozos basado en terminal de texto.*
 
-<img src="https://img.shields.io/badge/version-1.6.4-blue" alt="version">
+<img src="https://img.shields.io/badge/version-1.6.5-blue" alt="version">
 
 [![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/main)](https://github.com/visceralcricket/infinity-morass/commits/main)
 
@@ -75,6 +75,8 @@
 
   + Cambios menores en ciertos flujos de lógica que requerían ajustes para funcionar mejor.
 
+* Parche 1.6.5
+  + Removidas funciones de grafos implícitos de las que no se hacían uso puesto que sus funciones estaban cubiertas por otros archivos a lo largo del motor del juego *(src/engine)*
 
 ### **Versión 1.5.0** (15-06-2026)
 

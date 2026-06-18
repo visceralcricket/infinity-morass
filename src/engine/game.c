@@ -1,104 +1,6 @@
 #include "game.h"
 #include "io/storage.h"
 
-void cleanGarbage(List *states) {
-    State *tmpState = (State *) listFirst(states);
-    while(tmpState) {
-        free(tmpState);
-        tmpState = listNext(states);
-    }
-    listClean(states);
-    free(states);
-}
-
-// Determine if the current state of the agent reached the goal
-int isFinal(State *currentState, int targetRow, int targetColumn) {
-    if(!currentState) return INT_ERROR;
-    return(currentState->currentRow == targetRow && currentState->currentColumn == targetColumn);
-}
-
-// Generic function to create new States
-State *createNewState() {
-    State *newState = (State *) malloc(sizeof(*newState));
-    if(!newState) return NULL;
-
-    newState->currentRow = newState->currentColumn = 0;
-    newState->parent = NULL;
-
-    return newState;
-}
-
-// Create the new state after executing a specific move/action
-State *transition(State *currentState, Action accion) {
-    if(!currentState) return NULL;
-    
-    State *newState = (State *) malloc(sizeof(*newState));
-    if(!newState) return NULL;
-
-    newState->currentColumn = currentState->currentColumn;
-    newState->currentRow = currentState->currentRow;
-
-    switch(accion) {
-        case UP:
-            --newState->currentRow;
-            break;
-        case DOWN:
-            ++newState->currentRow;
-            break;
-        case LEFT:
-            --newState->currentColumn;
-            break;
-        case RIGHT:
-            ++newState->currentColumn;
-            break;
-    }
-
-    newState->parent = currentState;
-
-    return newState;
-}
-
-// Return a list with all the valid, adjacent State(s) to the current one
-List *getAdjacentNodes(State *currentState, int maze[N][N]) {
-    if(!currentState) return NULL;
-
-    List *adjacentList = listCreate();
-    if(!adjacentList) return NULL;
-    Action actions[] = {UP, DOWN, LEFT, RIGHT};
-
-    for(int i=0; i<4; i++) {
-        Action tmpAction = actions[i];
-        int nextColumn = currentState->currentColumn;
-        int nextRow = currentState->currentRow;
-
-        switch(tmpAction) {
-            case UP:
-            --nextRow;
-            break;
-        case DOWN:
-            ++nextRow;
-            break;
-        case LEFT:
-            --nextColumn;
-            break;
-        case RIGHT:
-            ++nextColumn;
-            break;
-        }
-
-        if(nextRow >= 0 && nextRow < N && nextColumn >= 0 && nextColumn < N) {
-            // wall | obstace: 1, free spot: 0
-            if(maze[nextRow][nextColumn] != 1) {
-                State *validState = transition(currentState, tmpAction);
-                if(!validState) continue;
-
-                listPushBack(adjacentList, validState);
-            }
-        }
-    }
-    return adjacentList;
-}
-
 // Función recursiva (DFS) para encontrar un camino aleatorio garantizado
 int buildSafePath(int x, int y, int safe[N][N], int visited[N][N]) {
     // Verificar límites y si ya visitamos la celda
@@ -209,7 +111,7 @@ void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode
     // Normalizar letras mayúsculas
     if(key >= 'A' && key <= 'Z') key += 32;
 
-    else if(key == ESC_KEY) {
+    if(key == ESC_KEY) {
         *currentSubMode = MODE_SETTINGS;
     } 
     else {

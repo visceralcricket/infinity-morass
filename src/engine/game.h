@@ -135,12 +135,6 @@ struct Player {
 
 // ==================== Prototypes ====================
 
-// Implicit-graph functions
-int isFinal(State *currentState, int targetRow, int targetColumn);
-State *createNewState();
-State *transition(State *currentState, Action accion);
-List *getAdjacentNodes(State *currentState, int maze[N][N]);
-
 // Función recursiva BSF para construir un camino seguro
 int buildSafePath(int x, int y, int safe[N][N], int visited[N][N]);
 
