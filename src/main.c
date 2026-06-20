@@ -1,6 +1,7 @@
 #include "engine/game.h"
 #include "io/storage.h"
 #include "ui/render.h"
+#include "engine/combat-system.h"
 
 // --------------- Utilities ---------------
 // separador1, separador2 y readCharOption se movieron al archivo extra.c para 
@@ -20,7 +21,7 @@ int main() {
         .username = "",
         .x = 0,
         .y=  0,
-        .combatStats = {100, 10, 5, 5, 5},
+        .combatStats = {100, 100, 5, 5, 5},
         .inventory = NULL  // IMPORTANTE: aquí debería llamarse a listCreate() para inicializar inventario
     };
 
@@ -116,42 +117,32 @@ void runExplorationMode(int maze[N][N], Player *player) {
     bool playing = true;
     int prevX = 0, prevY = 0;
     GameMode currentSubMode = MODE_EXPLORATION;
+    Enemy *currentEnemy = NULL;   // <-- nuevo
 
     player->x = player->y = 0;
-    limpiarPantalla(); // Sólo limpiar pantalla una vez
+    limpiarPantalla();
 
     while(playing) {
 
-        // ============== Fase 1: Renderizar estado actual ==============
         renderExploration(maze, *player);
         
-        // Dibujar menús superpuestos si es necesario
         switch(currentSubMode) {
-
             case MODE_SETTINGS:
                 renderSettingsOverlay();
                 break;
-            
             case MODE_INVENTORY_VIEW:
                 renderInventoryOverlay(player);
                 break;
-
             case MODE_EXPLORATION:
                 break;
             case MODE_COMBAT:
-                renderCombatOverlay();
-                break;
-
+                break;   // combatMode maneja su propio render, acá no hace falta nada
             default:
                 break;
         }
-        /* +++
-        IMPORTANTE: Debemos obligar al terminal a que no deje ningún tipo de
-        texto encolado para el stdout, así nos aseguramos de que ningún texto
-        quede encolado en el output e interrumpa al programa. 
-        --- */
+
         fflush(stdout);
-        // Lógica e input general (controllers)
+
         switch(currentSubMode) {
             case MODE_SETTINGS:
                 handleSettingsInput(player, &playing, &currentSubMode);
@@ -161,14 +152,12 @@ void runExplorationMode(int maze[N][N], Player *player) {
                 break;
 
             case MODE_EXPLORATION:
-                // Guardar coordenadas ANTES de procesar movimiento
                 prevX = player->x;
                 prevY = player->y;
-                // Procesar el input de este frame (pasar punteros)
-                handleWindowsInput(player, maze, &currentSubMode);
+                handleWindowsInput(player, maze, &currentSubMode, &currentEnemy);  // <-- pasa el puntero
 
                 if(maze[player->y][player->x] == EXIT_TILE) {
-                    renderExploration(maze, *player); // Actualizar pantalla
+                    renderExploration(maze, *player);
                     printf("\n\t" FORMAT_BOLD COLOR_YELLOW "Una puerta misteriosa se revela ante ti." FORMAT_RESET);
                     printf("\n\tDeseas descender al siguiente nivel? (S/N)\n\t< ");
 
@@ -191,9 +180,14 @@ void runExplorationMode(int maze[N][N], Player *player) {
                     }
                 }
                 break;
-            
-            
+
             case MODE_COMBAT:
+                combatMode(player, currentEnemy);   // <-- acá se llama el sistema de combate completo
+                free(currentEnemy);
+                currentEnemy = NULL;
+                currentSubMode = MODE_EXPLORATION;
+                limpiarPantalla();
+                break;
             
             default:
                 break;

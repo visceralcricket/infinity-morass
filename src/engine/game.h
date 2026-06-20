@@ -149,7 +149,7 @@ Pero por fines prácticos se van a ignorar los últimos 2 parámetros.
 void placeEnemies(int maze[N][N]);
 
 // ==================== Input handlers ====================
-void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode);
+void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode, Enemy **currentEnemy);
 void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode);
 void handleInventoryInput(Player *player, GameMode *currentSubMode);
 

@@ -7,6 +7,7 @@ TARGET = infinity-morass
 SRCS = src/main.c \
 		src/engine/game.c \
 		src/engine/enmap.c \
+		src/engine/combat-system.c \
 		src/io/storage.c \
 		src/ui/render.c \
 		src/tdas/extra.c \
@@ -15,7 +16,7 @@ SRCS = src/main.c \
 		src/tdas/list.c
 
 # Reemplazar los archivos de extensión .c por .o para crear los archivos objeto
-OBJS = $(SRCS:.c = .o)
+OBJS = $(SRCS:.c=.o)
 
 # Regla principal: compilar todo el programa
 all: $(TARGET)
