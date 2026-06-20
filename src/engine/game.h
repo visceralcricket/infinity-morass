@@ -11,7 +11,7 @@
 #include "../tdas/list.h"
 #include "../tdas/extra.h"
 #include "../tdas/hashmap.h"
-// #include "tdas/heap.h"
+#include "tdas/heap.h"
 
 // ======== General definitions ========
 #define INF INT_MAX
@@ -88,7 +88,6 @@ typedef struct Stats Stats;
 typedef struct GameObject GameObject;
 typedef struct Enemy Enemy;
 typedef struct Player Player;
-// Estructura para guardar progreso del jugador o jugadores
 
 // El laberinto comienza desde la esquina SUPERIOR-IZQUIERDA (UPPER-LEFT), considerar
 // cambiar esto a un inicio generado aleatoriamente
@@ -120,10 +119,10 @@ struct GameObject {
 };
 
 struct Enemy {
+    char enemyName[MAX_USERNAME];
     int x, y;
     Stats combatStats;
     List *drops;
-    char enemyName[MAX_USERNAME];
 };
 
 struct Player {
@@ -134,7 +133,6 @@ struct Player {
 };
 
 // ==================== Prototypes ====================
-
 // Función recursiva BSF para construir un camino seguro
 int buildSafePath(int x, int y, int safe[N][N], int visited[N][N]);
 

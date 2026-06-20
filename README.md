@@ -31,6 +31,10 @@
     * **`enmap.c`**: Archivo destinado a la generación y tracking de los enemigos para su correcta integración en el programa.
     * **`enmap.h`**: Encabezado del archivo destinado a la generación y mapeo de los enemigos: contiene las definiciones de las entidades **"Enemigo"** y una plantilla genérica para estandarizar la asignación de stats.
 
+    * **`combat-system.c`**: Archivo en donde se encuentra implementada la función en donde se gestionan los turnos durante el combate y las acciones del jugador en la misma.
+    * **`combat-system.h`**: Encabezado del archivo de la función para el combate del jugador contra los enemigos.
+
+
   * **`io/`**
 
     * **`storage.c`**: Gestor de partidas guardadas del jugador en base a su nombre de usuario: utiliza archivos **.sav** para almacenar el perfil del jugador.
@@ -49,6 +53,9 @@
 
 ## **Changelog (historial de cambios)**
 <small>*Nota: Este changelog está en orden cronológico inverso.*</small>
+
+### **Versión 1.7.0** (19-06-2026)
+> Se implementó una versión inicial del sistema de combate y la visualización de esta misma.
 
 ### **Versión 1.6.0** (18-06-2026)
 > Se continuó implementando la funcionalidad de generación, mapeo y tracking de entidades enemigos.
