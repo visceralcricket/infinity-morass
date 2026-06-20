@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include "combat-system.h"
 #include "tdas/heap.h"
 #include "game.h"
@@ -14,9 +15,11 @@ void combatMode(Player *player, Enemy *enemy) {
 
     int playerNextTurn = playerPriority;
     int enemyNextTurn = enemyPriority;
+
     int turnCounter = 0;
     int option;
     int damage;
+    bool fleeCondition = false;
 
     void *currentTurn = NULL;
 
@@ -27,14 +30,15 @@ void combatMode(Player *player, Enemy *enemy) {
         turnCounter++;
 
         currentTurn = heap_top(colaTurnos);
-        if (currentTurn != NULL) {
-            heap_pop(colaTurnos);
-        }
+        heap_pop(colaTurnos);
 
         printf("\n\tTurno %d: ", turnCounter);
         if (currentTurn == player) {
             printf("\n\t¡Es tu turno! Elige una acción:\n");
             scanf("%d", &option);
+            while (option < 1 || option > 3) {
+                scanf("%d", &option);
+            }
             switch(option) {
                 case 1:
                     damage = player->combatStats.attack - enemy->combatStats.defense;
@@ -47,17 +51,23 @@ void combatMode(Player *player, Enemy *enemy) {
                     break;
                 case 3:
                     if (player->combatStats.speed > enemy->combatStats.speed) {
-                        printf("\n\tHas intentado huir, pero el enemigo es más rápido. ¡No puedes escapar!");
-                    } else {
                         printf("\n\tHas huido exitosamente del combate.");
-                        return;
+                        fleeCondition = true;
+                        break;
+                    } else {
+                        printf("\n\tHas intentado huir, pero el enemigo es más rápido. ¡No puedes escapar!");
+                        break;
                     }
+                default:
+                    break;
             }
+
+            if (fleeCondition) break;
+            
             playerNextTurn += playerPriority;
             heap_push(colaTurnos, player, INT_MAX - playerNextTurn);
         }
         else {
-            printf("\n\t¡Es turno del enemigo!\n");
             damage = enemy->combatStats.attack - player->combatStats.defense;
             if (damage <= 0) damage = 1;
             player->combatStats.currentHp -= damage;
