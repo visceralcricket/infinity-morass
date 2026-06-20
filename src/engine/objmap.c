@@ -1,8 +1,19 @@
-#include "../tdas/list.h"
-#include "../tdas/extra.h"
-#include "../tdas/hashmap.h"
-#include "../engine/game.h"
 #include "objmap.h"
+#include "game.h"
+
+static const ObjectTemplate objectTemplates[] = {
+    {"Poción pequeña", true, false},
+    {"Poción mediana", true, false},
+    {"Poción grande", true, false},
+    {"Espada ligera", false, false},
+    {"Espada pesada", false, false},
+    {"Ultra espadón", false, false},
+    {"Armadura ligera", false, false},
+    {"Armadura pesada", false, false},
+    {"Armadura berserker", false, false},
+    {"Llave de calabozo", false, true},
+    {"Rollo de historia", false, true}
+};
 
 GameObject* generateObject(const char *name)
 {
