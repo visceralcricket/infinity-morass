@@ -1,4 +1,6 @@
 #include "engine/game.h"
+#include "io/storage.h"
+#include "engine/combat.h"
 #include "ui/render.h"
 
 // --------------- Utilities ---------------

@@ -54,6 +54,8 @@
 ## **Changelog (historial de cambios)**
 <small>*Nota: Este changelog está en orden cronológico inverso.*</small>
 
+### **Versión 1.8.0** (20-06-2026) 
+
 ### **Versión 1.7.0** (20-06-2026)
 > Se implemento sistema de combate y menu de combate
 
