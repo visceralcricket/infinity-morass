@@ -8,24 +8,14 @@ combat-system se encuentran en la misma carpeta
 
 #include "../engine/game.h"
 
+#include "entities.h"
+#include "../tdas/hashmap.h"
+
 typedef struct {
     const char *name;
     bool isBoss;
     int difficulty;
 } EnemyTemplate;
-
-static const EnemyTemplate enemyTemplates[] = {
-    {"Zombi", false, 1},
-    {"Esqueleto", false, 1},
-    {"Slime", false, 1},
-    {"Demonio", false, 1},
-    {"Súcubo", false, 1},
-    {"Goblin", false, 1},
-    {"Bandolero", true, 1},
-    {"Aberración Cósmica", true, 1},
-    {"Gólem Antiguo", true, 1},
-    {"Jefe de carrera", true, 1}
-};
 
 // Función para generar el nodo de la entidad Enemy
 Enemy* generateEnemy(const char *name);

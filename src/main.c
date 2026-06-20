@@ -179,7 +179,7 @@ void runExplorationMode(int maze[N][N], Player *player) {
                 break;
             
             default:
-                break;
+            break;
         }
     }
     printf(SHOW_CURSOR);
