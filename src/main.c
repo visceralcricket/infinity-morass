@@ -20,7 +20,7 @@ int main() {
         .username = "",
         .x = 0,
         .y=  0,
-        .combatStats = {100, 10, 5, 5, 5},
+        .combatStats = {100, 100, 5, 5, 5},
         .inventory = NULL  // IMPORTANTE: aquí debería llamarse a listCreate() para inicializar inventario
     };
 
@@ -73,16 +73,7 @@ int main() {
                     generateMaze(maze, 20);
                     // Generar salidas, con MAX_NUM_EXITS = 3 (game.h)
                     placeExits(maze, MAX_NUM_EXITS);
-                    Map *enemyMap = createEnemiesMap();
-                    if(enemyMap) {
-                        MapPair *pair = mapFirst(enemyMap);
-                        while(pair) {
-                            Enemy *enemy = (Enemy *) pair->value;
-                            printf("Entrada hashmap: %s\n", enemy->enemyName);
-                            pair = mapNext(enemyMap);
-                            presioneTeclaParaContinuar();
-                        }
-                    }
+                    // Map *enemyMap = createEnemiesMap();
                     placeEnemies(maze);
                     mazeGenerated = 1;
                 }
@@ -191,12 +182,11 @@ void runExplorationMode(int maze[N][N], Player *player) {
                     }
                 }
                 break;
-            
-            
-            case MODE_COMBAT:
+
+                case MODE_COMBAT:
             
             default:
-                break;
+            break;
         }
     }
     printf(SHOW_CURSOR);
