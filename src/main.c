@@ -17,9 +17,11 @@ void runExplorationMode(int maze[N][N], Player *player);
 int main() {
 
     Player sessionPlayer = {
-        "", 0, 0,
-        {100, 10, 5, 5, 5},
-        NULL  // IMPORTANTE: aquí debería llamarse a listCreate() para inicializar inventario
+        .username = "",
+        .x = 0,
+        .y=  0,
+        .combatStats = {100, 10, 5, 5, 5},
+        .inventory = NULL  // IMPORTANTE: aquí debería llamarse a listCreate() para inicializar inventario
     };
 
     int maze[N][N] = {0};
@@ -129,12 +131,15 @@ void runExplorationMode(int maze[N][N], Player *player) {
             case MODE_SETTINGS:
                 renderSettingsOverlay();
                 break;
-
+            
             case MODE_INVENTORY_VIEW:
                 renderInventoryOverlay(player);
                 break;
 
             case MODE_EXPLORATION:
+                break;
+            case MODE_COMBAT:
+                renderCombatOverlay();
                 break;
 
             default:
@@ -186,6 +191,9 @@ void runExplorationMode(int maze[N][N], Player *player) {
                     }
                 }
                 break;
+            
+            
+            case MODE_COMBAT:
             
             default:
                 break;

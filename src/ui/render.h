@@ -18,4 +18,6 @@ void renderSettingsOverlay();
 // Sub-menú superpuesto para inventario del jugador
 void renderInventoryOverlay(Player *player);
 
+// Sub-menu superpuesto para el combate
+void renderCombatOverlay();
 #endif

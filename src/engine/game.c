@@ -143,11 +143,8 @@ void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode
             enemy->x = player->x;
             enemy->y = player->y;
             printf("\n\tHas encontrado a: %s\n\t", enemy->enemyName);
-            presioneTeclaParaContinuar();
-            limpiarPantalla();
-            free(enemy);
             maze[player->y][player->x] = EMPTY;
-            // *currentSubMode = MODE_COMBAT;
+            *currentSubMode = MODE_COMBAT;
         }
     }
 }
