@@ -50,6 +50,13 @@
 ## **Changelog (historial de cambios)**
 <small>*Nota: Este changelog está en orden cronológico inverso.*</small>
 
+### **Versión 1.7.0** (20-06-2026)
+> Se implemento sistema de combate y menu de combate
+
+* Bug actual version 1.7.0
+  + En el menu de commbate se puede buguear si se da Enter en un momento donde no es necesario, No afecta a la visualizacion del
+  mapa
+
 ### **Versión 1.6.0** (18-06-2026)
 > Se continuó implementando la funcionalidad de generación, mapeo y tracking de entidades enemigos.
 
