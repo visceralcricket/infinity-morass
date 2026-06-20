@@ -33,14 +33,6 @@ void presioneTeclaParaContinuar() {
   while((c=getchar())!='\n' && c != EOF);
 }
 
-void presioneTeclaParaContinuarEnPos(int row, int col) {
-  SET_CURSOR_POS(row, col);
-  puts("Presione cualquier tecla para continuar.");
-  int c;
-  while((c=getchar())!='\n' && c != EOF);
-}
-
-
 // Se lee únicamente 1 carácter y en caso de no ser válido se retorna carácter nulo
 char readCharOption() {
 

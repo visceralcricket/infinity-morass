@@ -1,6 +1,4 @@
 #include "game.h"
-#include "io/storage.h"
-#include "combat-system.h"
 
 // Función recursiva (DFS) para encontrar un camino aleatorio garantizado
 int buildSafePath(int x, int y, int safe[N][N], int visited[N][N]) {

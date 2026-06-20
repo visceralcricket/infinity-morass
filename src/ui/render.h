@@ -2,9 +2,12 @@
 #define RENDER_H
 
 #include "../engine/game.h"
-
+/*
 #define MAX_SHIFT_ROW N+5
 #define MAX_SHIFT_COL N+50
+*/
+#define OVERLAY_ROW 5
+#define OVERLAY_COL 75
 
 // Mostrar menú principal
 void showMainMenu(char *username);
@@ -19,5 +22,6 @@ void renderSettingsOverlay();
 void renderInventoryOverlay(Player *player);
 
 // Sub-menu superpuesto para el combate
-void renderCombatOverlay();
+void renderCombatOverlay(Player *player, Enemy *enemy, void *currentTurn, int turnCounter, bool *fleeCondition);
+
 #endif

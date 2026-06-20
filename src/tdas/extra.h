@@ -47,7 +47,4 @@ void separador1();
 // Separador de 2 tabulados + 40 símbolos igual '='
 void separador2();
 
-// presionar tecla para continuar del combate
-void presioneTeclaParaContinuarEnPos(int row, int col);
-
 #endif

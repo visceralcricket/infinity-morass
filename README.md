@@ -57,6 +57,17 @@
   + En el menu de commbate se puede buguear si se da Enter en un momento donde no es necesario, No afecta a la visualizacion del
   mapa
 
+* Parche 1.7.1
+  + Funciones que no tenían relación con los archivos donde estaban definidas se trasladaron a los archivos correctos
+  
+  + Removidas múltiples llamadas de librerías innecesarias
+  
+  + refactorizado nombre de archivo "**combat-system.c**" y su encabezado a "**combat.c**" y "**combat.h**" para tener nombres de archivos más breves y concisos.
+  
+  + Arreglado bug donde el submenú superpuesto del inventario in-game se mostraba a una altura considerablemente menor de la correcta.
+
+  + Removida verificación temporal del mapeo de enemigos en el TDA Mapa.
+
 ### **Versión 1.6.0** (18-06-2026)
 > Se continuó implementando la funcionalidad de generación, mapeo y tracking de entidades enemigos.
 

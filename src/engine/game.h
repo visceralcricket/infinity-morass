@@ -11,7 +11,9 @@
 #include "../tdas/list.h"
 #include "../tdas/extra.h"
 #include "../tdas/hashmap.h"
-// #include "tdas/heap.h"
+#include "tdas/heap.h"
+#include "io/storage.h"
+#include "combat.h"
 
 // ======== General definitions ========
 #define INF INT_MAX

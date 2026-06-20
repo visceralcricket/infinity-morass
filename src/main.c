@@ -1,7 +1,5 @@
 #include "engine/game.h"
-#include "io/storage.h"
 #include "ui/render.h"
-#include "engine/combat-system.h"
 
 // --------------- Utilities ---------------
 // separador1, separador2 y readCharOption se movieron al archivo extra.c para 
@@ -74,16 +72,7 @@ int main() {
                     generateMaze(maze, 20);
                     // Generar salidas, con MAX_NUM_EXITS = 3 (game.h)
                     placeExits(maze, MAX_NUM_EXITS);
-                    Map *enemyMap = createEnemiesMap();
-                    if(enemyMap) {
-                        MapPair *pair = mapFirst(enemyMap);
-                        while(pair) {
-                            Enemy *enemy = (Enemy *) pair->value;
-                            printf("Entrada hashmap: %s\n", enemy->enemyName);
-                            pair = mapNext(enemyMap);
-                            presioneTeclaParaContinuar();
-                        }
-                    }
+                    // Map *enemyMap = createEnemiesMap();
                     placeEnemies(maze);
                     mazeGenerated = 1;
                 }
