@@ -100,22 +100,3 @@ void renderInventoryOverlay(Player *player) {
     SET_CURSOR_POS(N+4, 0);
 }
 
-void renderCombatOverlay() {
-
-    int startRow = 5;
-    int startCol = 75;
-
-    SET_CURSOR_POS(startRow, startCol);
-    printf(FORMAT_BOLD COLOR_YELLOW "=== COMBATE ===" FORMAT_RESET);
-
-    SET_CURSOR_POS(startRow+2, startCol);
-    printf("1) Atacar");
-
-    SET_CURSOR_POS(startRow+3, startCol);
-    printf("2) Usar objeto");
-
-    SET_CURSOR_POS(startRow+4, startCol);
-    printf("3) Huir");
-
-    SET_CURSOR_POS(N+4, 0);
-}

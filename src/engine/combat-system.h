@@ -4,4 +4,6 @@
 
 void combatMode(Player *player, Enemy *enemy);
 
+
+void showCombat(Player *player, Enemy *enemy, void *currentTurn, int turnCounter, bool *fleeCondition);
 #endif
