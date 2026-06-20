@@ -1,7 +1,7 @@
 # **infinity-morass**
 > *Roguelike de calabozos basado en terminal de texto.*
 
-<img src="https://img.shields.io/badge/version-1.6.5-blue" alt="version">
+<img src="https://img.shields.io/badge/version-1.7.1-blue" alt="version">
 
 [![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/main)](https://github.com/visceralcricket/infinity-morass/commits/main)
 
@@ -54,8 +54,23 @@
 ## **Changelog (historial de cambios)**
 <small>*Nota: Este changelog está en orden cronológico inverso.*</small>
 
-### **Versión 1.7.0** (19-06-2026)
-> Se implementó una versión inicial del sistema de combate y la visualización de esta misma.
+### **Versión 1.7.0** (20-06-2026)
+> Se implemento sistema de combate y menu de combate
+
+* Bug actual version 1.7.0
+  + En el menu de commbate se puede buguear si se da Enter en un momento donde no es necesario, No afecta a la visualizacion del
+  mapa
+
+* Parche 1.7.1
+  + Funciones que no tenían relación con los archivos donde estaban definidas se trasladaron a los archivos correctos
+  
+  + Removidas múltiples llamadas de librerías innecesarias
+  
+  + refactorizado nombre de archivo "**combat-system.c**" y su encabezado a "**combat.c**" y "**combat.h**" para tener nombres de archivos más breves y concisos.
+  
+  + Arreglado bug donde el submenú superpuesto del inventario in-game se mostraba a una altura considerablemente menor de la correcta.
+
+  + Removida verificación temporal del mapeo de enemigos en el TDA Mapa.
 
 ### **Versión 1.6.0** (18-06-2026)
 > Se continuó implementando la funcionalidad de generación, mapeo y tracking de entidades enemigos.

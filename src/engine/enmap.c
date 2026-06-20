@@ -1,8 +1,3 @@
-#include "../tdas/list.h"
-#include "../tdas/extra.h"
-#include "../tdas/hashmap.h"
-
-#include "../engine/game.h"
 #include "enmap.h"
 
 static const EnemyTemplate enemyTemplates[] = {

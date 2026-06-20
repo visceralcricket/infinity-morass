@@ -1,4 +1,6 @@
-# Variables del compilador
+# Forzar a Make a usar CMD de Windows, evitando conflictos con sh.exe de Git Bash
+SHELL = cmd.exe
+
 CC = gcc
 CFLAGS = -Wall -Wextra -Isrc
 TARGET = infinity-morass
@@ -7,6 +9,7 @@ TARGET = infinity-morass
 SRCS = src/main.c \
 		src/engine/game.c \
 		src/engine/enmap.c \
+		src/engine/combat.c \
 		src/io/storage.c \
 		src/ui/render.c \
 		src/tdas/extra.c \
@@ -14,21 +17,17 @@ SRCS = src/main.c \
 		src/tdas/heap.c \
 		src/tdas/list.c
 
-# Reemplazar los archivos de extensión .c por .o para crear los archivos objeto
-OBJS = $(SRCS:.c = .o)
+OBJS = $(SRCS:.c=.o)
 
-# Regla principal: compilar todo el programa
 all: $(TARGET)
 
-# Regla para enlazar los archivos objeto en el ejecutable (.exe) final
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
 
-# Regla para compilar cada .c en un .o individualmente
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Limpiar todos los archivos compilados (build limpio)
+# Regla limpia, absoluta e infalible
 clean:
 	del /Q /S *.o
 	del /Q $(TARGET).exe

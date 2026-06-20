@@ -1,5 +1,12 @@
 #ifndef ENEMYGEN_H
 #define ENEMYGEN_H
+/*
+Sólo incluir encabezado del motor principal del juego. Sólo es necesario
+hacer #include "game.h" y no "../engine/game.h" porque los archivos game y
+combat-system se encuentran en la misma carpeta
+*/
+
+#include "../engine/game.h"
 
 #include "entities.h"
 #include "../tdas/hashmap.h"

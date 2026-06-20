@@ -28,6 +28,7 @@
 #define MOVE_CURSOR "\033[H"
 #define HIDE_CURSOR "\033[?25l"
 #define SHOW_CURSOR "\033[?25h"
+#define CLEAR_LINE_TO_END "\033[K"
 
 // strdup propio para asegurar portabilidad
 void *_mystrdup(const char *token);
