@@ -8,12 +8,12 @@
 typedef struct {
     const char *name;
     bool isConsumable;
-    bool isKey;
+    bool isEquippable;
 } ObjectTemplate;
 
 GameObject* generateObject(const char *name);
 
-GameObject *spawnRandomObject(void);
+GameObject *chooseRandomObject(void);
 
 void generateStatsConsumable(GameObject* object);
 

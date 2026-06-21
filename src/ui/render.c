@@ -41,7 +41,8 @@ void renderExploration(int maze[N][N], Player player) {
                 char tile;
                 if(maze[i][j] == 1) tile = WALL;
                 else if(maze[i][j] == EXIT_TILE) tile = GOAL;
-                else if(maze[i][j] == ENEMY_TILE) tile = 'E';
+                else if(maze[i][j] == ENEMY_TILE) tile = ENEMY_TILE;
+                else if(maze[i][j] == OBJECT_TILE) tile = OBJECT_TILE;
                 else tile = EMPTY;
                 printf("%c ", tile);
             }

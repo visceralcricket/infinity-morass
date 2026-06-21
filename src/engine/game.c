@@ -1,4 +1,5 @@
 #include "game.h"
+#include "objmap.h"
 #include "../io/storage.h"
 
 // Función recursiva (DFS) para encontrar un camino aleatorio garantizado
@@ -98,6 +99,20 @@ void placeEnemies(int maze[N][N]) {
 
         if(maze[randomY][randomX] == 0 && (randomX != 0 || randomY != 0)) {
             maze[randomY][randomX] = ENEMY_TILE;
+            placed++;
+        }
+    }
+}
+
+void placeObjects(int maze[N][N]) {
+    // GameObject *object = chooseRandomObject();
+    int placed = 0;
+    while(placed < MAX_OBJECTS_PER_LEVEL) {
+        int randomX = rand() % N;
+        int randomY = rand() % N;
+
+        if(maze[randomY][randomX] == 0 && (randomX != 0 || randomY != 0)) {
+            maze[randomY][randomX] = OBJECT_TILE;
             placed++;
         }
     }

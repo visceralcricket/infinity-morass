@@ -5,15 +5,32 @@ static const ObjectTemplate objectTemplates[] = {
     {"Poción pequeña", true, false},
     {"Poción mediana", true, false},
     {"Poción grande", true, false},
-    {"Espada ligera", false, false},
-    {"Espada pesada", false, false},
-    {"Ultra espadón", false, false},
-    {"Armadura ligera", false, false},
-    {"Armadura pesada", false, false},
-    {"Armadura berserker", false, false},
-    {"Llave de calabozo", false, true},
-    {"Rollo de historia", false, true}
+    {"Espada ligera", false, true},
+    {"Espada pesada", false, true},
+    {"Ultra espadón", false, true},
+    {"Armadura ligera", false, true},
+    {"Armadura pesada", false, true},
+    {"Armadura berserker", false, true},
+    {"Llave de calabozo", false, false},
+    {"Rollo de historia", false, false}
 };
+void handleGameObject(GameObject *currentObject) {
+    if(!currentObject) return;
+    switch(currentObject->equip) {
+
+        case ITEM_CONSUMABLE:
+            generateStatsConsumable(currentObject);
+            break;
+        case ITEM_EQUIPPABLE:
+            generateStatsEquipabble(currentObject);
+            break;
+        case ITEM_KEY:
+            generateStatsKey(currentObject);
+            break;
+        default:
+            break;
+    }
+}
 
 GameObject* generateObject(const char *name)
 {
@@ -33,7 +50,7 @@ GameObject* generateObject(const char *name)
     return object;
 }
 
-GameObject *spawnRandomObject(void) {
+GameObject *chooseRandomObject(void) {
     int count = sizeof(objectTemplates) / sizeof(objectTemplates[0]);
     int randomIndex = rand() % count;
     const ObjectTemplate *tpl = &objectTemplates[randomIndex];
@@ -41,12 +58,18 @@ GameObject *spawnRandomObject(void) {
     GameObject *object = generateObject((char *)tpl->name);
     if(!object) return NULL;
 
-    object->x = -1;
-    object->y = -1;
-
-    if(tpl->isConsumable) generateStatsConsumable(object);
-    else if(tpl->isKey) generateStatsKey(object);
-    else generateStatsEquipabble(object);
+    if(tpl->isConsumable) {
+        object->equip = ITEM_CONSUMABLE;
+        generateStatsConsumable(object);
+    }
+    else if(tpl->isEquippable) {
+        object->equip = ITEM_EQUIPPABLE;
+        generateStatsEquippable(object);
+    }
+    else {
+        object->equip = ITEM_KEY;
+        generateStatsEquipabble(object);
+    }
 
     return object;
 }
@@ -152,9 +175,9 @@ Map *createObjectsMap(void) {
         if(!object) continue;
 
         if(tpl->isConsumable) generateStatsConsumable(object);
-        else if(tpl->isKey) generateStatsKey(object);
-        else generateStatsEquipabble(object);
-
+        else if(tpl->isEquippable) generateStatsEquipabble(object);
+        else generateStatsKey(object);
+        
         mapInsert(map, object->name, object);
     }
     return map;

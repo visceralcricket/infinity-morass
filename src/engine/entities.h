@@ -38,9 +38,9 @@ struct GameObject {
     int x, y;
     Stats stats;
     char lore[MAX_LORE_LENGTH];
-    ItemType equip;
     ItemState state;
-
+    ItemType equip;
+    
     union 
     {
         struct { int x, y; };    // si está en el mapa
