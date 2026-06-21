@@ -17,12 +17,12 @@ typedef struct Heap{
 } Heap;
 
 
-void* heap_top(Heap* pq){
+void* heapTop(Heap* pq){
     if(pq->size==0) return NULL;
     return pq->heapArray[0].data;
 }
 
-void heap_push(Heap* pq, void* data, int priority){
+void heapPush(Heap* pq, void* data, int priority){
 
     if(pq->size+1>pq->capac){
         //printf("se expande de %i a ", pq->capac);
@@ -44,7 +44,7 @@ void heap_push(Heap* pq, void* data, int priority){
 }
 
 
-void heap_pop(Heap* pq){
+void heapPop(Heap* pq){
 
         pq->size--;
         pq->heapArray[0] = pq->heapArray[pq->size];
@@ -65,7 +65,7 @@ void heap_pop(Heap* pq){
         //printf("size = %i, top = %i\n", pq->size, pq->heapArray[0].data );
 }
 
-Heap* heap_create(){
+Heap* heapCreate(){
    Heap *pq=(Heap*) malloc(sizeof(Heap));
    pq->heapArray=(heapElem*) malloc(3*sizeof(heapElem));
    pq->size=0;
@@ -73,6 +73,6 @@ Heap* heap_create(){
    return pq;
 }
 
-void heap_destroy(Heap *pq) {
+void heapDestroy(Heap *pq) {
     free(pq->heapArray);
 }

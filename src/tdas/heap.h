@@ -3,14 +3,14 @@
 
 typedef struct Heap Heap;
 
-void* heap_top(Heap* pq);
+void* heapTop(Heap* pq);
 
-void heap_push(Heap* pq, void* data, int priority);
+void heapPush(Heap* pq, void* data, int priority);
 
-void heap_pop(Heap* pq);
+void heapPop(Heap* pq);
 
-Heap* heap_create();
+Heap* heapCreate();
 
-void heap_destroy(Heap *pq);
+void heapDestroy(Heap *pq);
 
 #endif
