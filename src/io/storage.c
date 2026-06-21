@@ -1,4 +1,5 @@
 #include "storage.h"
+#include "../engine/game.h"
 #include <string.h>
 
 // Macros para crear directorios correctamente dependiendo del OS

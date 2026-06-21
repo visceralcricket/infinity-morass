@@ -8,19 +8,14 @@
 #include <string.h>
 // #include <ctype.h>
 #include <limits.h> // Necessary for using INF (infinity)
-#include "../tdas/list.h"
+
 #include "../tdas/extra.h"
-#include "../tdas/hashmap.h"
-// #include "tdas/heap.h"
+#include "entities.h"
 
 // ======== General definitions ========
 #define INF INT_MAX
 #define INT_ERROR -1
-#define MAX_ID 30
-#define MAX_USERNAME 20
 #define MAX_FILENAME (MAX_USERNAME+15)
-#define MAX_OBJECT_NAME 25
-#define MAX_LORE_LENGTH 256
 #define N 25 // <- Maze's fixed size
 #define MAX_NUM_EXITS 2 // Máximo 2 salidas por mazmorra
 #define MAX_ENEMIES_PER_DUNGEON 5
@@ -71,24 +66,8 @@ typedef enum {
     RIGHT = 4
 } Action;
 
-typedef enum {
-    ITEM_CONSUMABLE,
-    ITEM_EQUIPPABLE,
-    ITEM_KEY
-} ItemType;
-
-typedef enum {
-    OBJECT_MAP,
-    OBJECT_INVENTORY
-} ItemState;
-
 // Structures' definitions
 typedef struct State State;
-typedef struct Stats Stats;
-typedef struct GameObject GameObject;
-typedef struct Enemy Enemy;
-typedef struct Player Player;
-// Estructura para guardar progreso del jugador o jugadores
 
 // El laberinto comienza desde la esquina SUPERIOR-IZQUIERDA (UPPER-LEFT), considerar
 // cambiar esto a un inicio generado aleatoriamente
@@ -98,43 +77,7 @@ typedef struct Player Player;
     State *parent; // Pointer to predecessor state
 };
 
-struct Stats {
-    // int level <- Considerar añadir esta mecánica
-    int currentHp, maxHp, speed, attack, defense;
-};
-
-struct GameObject {
-    char name[MAX_OBJECT_NAME];
-    int x, y;
-    Stats stats;
-    char lore[MAX_LORE_LENGTH];
-    ItemType equip;
-    ItemState state;
-
-    union 
-    {
-        struct { int x, y; };    // si está en el mapa
-        struct { int slot; };    // si está en inventario
-    } pos;
-    
-};
-
-struct Enemy {
-    int x, y;
-    Stats combatStats;
-    List *drops;
-    char enemyName[MAX_USERNAME];
-};
-
-struct Player {
-    char username[MAX_USERNAME];
-    int x, y;
-    Stats combatStats;
-    List *inventory;
-};
-
 // ==================== Prototypes ====================
-
 // Función recursiva BSF para construir un camino seguro
 int buildSafePath(int x, int y, int safe[N][N], int visited[N][N]);
 
@@ -149,7 +92,7 @@ Pero por fines prácticos se van a ignorar los últimos 2 parámetros.
 void placeEnemies(int maze[N][N]);
 
 // ==================== Input handlers ====================
-void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode);
+void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode, Enemy **currentEnemy);
 void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode);
 void handleInventoryInput(Player *player, GameMode *currentSubMode);
 

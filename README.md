@@ -1,12 +1,44 @@
 # **infinity-morass**
 > *Roguelike de calabozos basado en terminal de texto.*
 
-<img src="https://img.shields.io/badge/version-1.6.5-blue" alt="version">
+<img src="https://img.shields.io/badge/version-1.8.1-blue" alt="version">
 
 [![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/main)](https://github.com/visceralcricket/infinity-morass/commits/main)
 
 ## **Premisa**
 * **"Infinity-morass"** es un juego roguelike de calabozos basado en terminal de texto donde tu objetivo es claro, conciso e incuestionable: convertirte en el ser más poderoso de estas mazmorras y derrotando a quien sea que ose entrometerse en tu camino — no es como que este infierno tenga algo más que enemigos y estorbos para tí — verdad...?
+
+## **Cómo compilar y ejecutar el programa**
+
+Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de forma local en dispositivos Windows, asegúrese de tener instalado un entorno de desarrollo para C/C++ (como **MinGW-w64** o **MSYS2**) que tenga configuradas en sus variables de entorno tanto el compilador `gcc` como la herramienta de automatización `make`.
+
+### **Instrucciones paso a paso**
+
+1. **Descargar el repositorio:** Descargue el proyecto comprimido como `.zip` desde GitHub y extraiga la carpeta en el directorio de su elección.
+
+2. **Navegar a la raíz:** Abra su terminal de preferencia (PowerShell, CMD o Git Bash) y posiciónese dentro de la carpeta principal del proyecto:
+   ```bash
+   cd ruta/hacia/infinity-morass
+
+#### **Observaciones**
++ Forzar codificación (Obligatorio en Windows): Para evitar que el motor de texto renderice símbolos extraños y dibuje correctamente el arte ASCII, las tildes y los bordes del mapa, ejecute el siguiente comando:
+
++ PowerShell
+[Console]::OutputEncoding = [System.text.Encoding]::UTF8
+Compilar el código fuente: Ordénele al sistema construir el binario utilizando el Makefile incluido en la raíz:
+
++ Bash
+mingw32-make
+(Una vez finalizado el proceso, verá que se ha generado un nuevo archivo llamado infinity-morass.exe).
+
++ Iniciar la partida: Ejecute el binario compilado:
+
++ En PowerShell / Git Bash: .\infinity-morass.exe
+
++ En Símbolo del sistema (CMD): infinity-morass.exe
+
+**NOTA DE MANTENIMIENTO**
+  + Si usted es un desarrollador y desea realizar un rebuild limpio del juego tras modificar las estructuras internas, ejecute mingw32-make clean para fulminar los archivos objeto (.o) de la memoria caché.
 
 ## **IMPORTANTE**
 * Se utiliza convención **"camelCase"** para programar la totalidad del programa a lo largo de todos los archivos, por favor tener presente esto al momento de contribuir al proyecto.
@@ -15,21 +47,31 @@
 * Ejecutable resultante: `infinity-morass.exe`  
 * Comando para establecer UTF-8: `[Console]::OutputEncoding = [System.text.Encoding]::UTF8`
 
-* TDA's utilizados hasta ahora: *"Lista, Mapa, Grafo (implícito)."*
+* TDA's utilizados: *"Lista, Mapa, Grafo (implícito), Cola de Prioridad."*
 
 ## **Distribución de directorios**
+> _Cómo se organiza el programa?_
 
 * **`src/`**: Directorio principal del código fuente. Contiene las funcionalidades del programa y la lógica central del mismo.
 
   * **`main.c`**: Archivo principal del programa. Contiene el bucle de estados en los que se encuentra el jugador y gestiona la transición entre la interfaz del menú principal y los distintos modos de juego interactivos (como `runExplorationMode`). Relega la lógica pesada a los archivos **`game`** para mantener una arquitectura limpia y modular.
 
   * **`engine/`**
-    * **`game.c`**: Lógica interna del juego. Contiene los algoritmos de generación procedimental de laberintos (`generateMaze`, `buildSafePath`), las funciones algorítmicas para el recorrido espacial en grafos y el motor de procesamiento de inputs dependiente de la plataforma (`handleWindowsInput`).
 
+    * **`entities.h`**: Archivo dedicado completamente a almacenar la memoria para las entidades clave del programa, entre estas se encuentran: Player, Enemy, GameObject, definiciones relacionadas, etc.
+
+    * **`game.c`**: Lógica interna del juego. Contiene los algoritmos de generación procedimental de laberintos (`generateMaze`, `buildSafePath`), las funciones algorítmicas para el recorrido espacial en grafos y el motor de procesamiento de inputs dependiente de la plataforma (`handleWindowsInput`).
     * **`game.h`**: Cabecera/encabezado de la arquitectura del programa. Concentra la declaración de estructuras de memoria (`Player`, `Enemy`, `State`), enumeraciones de estado (`GameMode`), macros estructurales (como las dimensiones topológicas de la matriz `N`) y expone los prototipos públicos del motor del juego.
 
     * **`enmap.c`**: Archivo destinado a la generación y tracking de los enemigos para su correcta integración en el programa.
     * **`enmap.h`**: Encabezado del archivo destinado a la generación y mapeo de los enemigos: contiene las definiciones de las entidades **"Enemigo"** y una plantilla genérica para estandarizar la asignación de stats.
+
+    * **`combat.c`**: Archivo en donde se encuentra implementada la función en donde se gestionan los turnos durante el combate y las acciones del jugador en la misma.
+    * **`combat.h`**: Encabezado del archivo de la función para el combate del jugador contra los enemigos.
+
+    * **`objmap.c`**: Archivo encargado de manejar y gestionar las entidades de tipo objeto y distribuirlos a lo largo de un Mapa de forma ordenada.
+    * **`objmap.h`**: Encabezado de dicho archivo, encargado de enlazar e incluir las dependencias necesarias para que el sistema funcione correctamente.
+
 
   * **`io/`**
 
@@ -49,6 +91,45 @@
 
 ## **Changelog (historial de cambios)**
 <small>*Nota: Este changelog está en orden cronológico inverso.*</small>
+
+### **Versión 1.8.0** (20-06-2026) 
+> Integración inicial de funcionalidades: modo de juego de combate, sistema de combate y mejoras de calidad de vida.
+
+* Parche 1.8.1
+  + Removido bug presente a partir de la versión 1.7.0, haciendo uso de métodos más robustos para hacer la limpieza del buffer y la lectura de input, todos cambios principalmente concentrados en el archivo **"extra.c"**
+
+  + Refinado de los archivos encargados del renderizado del videojuego para garantizar la integridad y la fidelidad visual del programa tras haber incorporado el nuevo modo de juego de combate y sus respectivas mecánicas.
+
+  **Problemas conocidos**
+  + Al perder un combate y, por ende, ver su salud reducida a 0, el jugador **NO** es capaz de volver a comenzar la partida o reiniciar su personaje y/o estadísticas tras ser derrotado.
+
+  + El sistema de guardado aún no está implementado de tal forma que sea capaz de guardar la mazmorra en la que se encontraba el jugador para ofrecer una experiencia de juego más persistente.
+
+  + Los enemigos únicamente se generan de forma aleatoria en el primer nivel de la mazmorra, no en el resto de las mismas.
+
+  + Actualmente no existe una limitación para enemigos extremadamente poderosos, por ende la experiencia podriá sentirse abrumadora y desequilibrada.
+
+### **Versión 1.7.0** (20-06-2026)
+> Se implemento sistema de combate y menú de combate.
+
+* Parche 1.7.0
+  + Implementada versión incial de sistema de combate y menú interactivo de combate.
+
+  + En el menú de combate existe un bug donde, al darle a Enter en un momento donde no es necesario, el jugador puede escribir en el lado izquierdo de la pantalla pero sin tener impacto alguno en la experiencia de juego. No afecta a la visualizacion del mapa
+
+* Parche 1.7.1
+  + Funciones que no tenían relación con los archivos donde estaban definidas se trasladaron a los archivos correctos
+  
+  + Removidas múltiples llamadas de librerías innecesarias
+  
+  + refactorizado nombre de archivo "**combat-system.c**" y su encabezado a "**combat.c**" y "**combat.h**" para tener nombres de archivos más breves y concisos.
+  
+  + Arreglado bug donde el submenú superpuesto del inventario in-game se mostraba a una altura considerablemente menor de la correcta.
+
+  + Removida verificación temporal del mapeo de enemigos en el TDA Mapa.
+
+* Parche 1.7.2
+  + Se realizaron preparaciones generales para asegurar la correcta integración de las 
 
 ### **Versión 1.6.0** (18-06-2026)
 > Se continuó implementando la funcionalidad de generación, mapeo y tracking de entidades enemigos.

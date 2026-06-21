@@ -1,5 +1,5 @@
 #include "game.h"
-#include "io/storage.h"
+#include "../io/storage.h"
 
 // Función recursiva (DFS) para encontrar un camino aleatorio garantizado
 int buildSafePath(int x, int y, int safe[N][N], int visited[N][N]) {
@@ -105,10 +105,9 @@ void placeEnemies(int maze[N][N]) {
 
 // Faltaría implementar manejo de input para Linux
 // Actualizamos la firma para recibir el puntero del jugador y el flag del bucle
-void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode) {
+void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode, Enemy **currentEnemy) {
     int key = _getch();
 
-    // Normalizar letras mayúsculas
     if(key >= 'A' && key <= 'Z') key += 32;
 
     if(key == ESC_KEY) {
@@ -120,17 +119,14 @@ void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode
                 if(player->y > 0 && maze[player->y - 1][player->x] != 1)
                     player->y -= 1;
                 break;
-
             case A_KEY_LOWER:
                 if(player->x > 0 && maze[player->y][player->x - 1] != 1)
                     player->x -= 1;
                 break;
-                
             case S_KEY_LOWER:
                 if(player->y < N - 1 && maze[player->y + 1][player->x] != 1)
                     player->y += 1;
                 break;
-
             case D_KEY_LOWER:
                 if(player->x < N - 1 && maze[player->y][player->x + 1] != 1)
                     player->x += 1;
@@ -143,11 +139,9 @@ void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode
             enemy->x = player->x;
             enemy->y = player->y;
             printf("\n\tHas encontrado a: %s\n\t", enemy->enemyName);
-            presioneTeclaParaContinuar();
-            limpiarPantalla();
-            free(enemy);
             maze[player->y][player->x] = EMPTY;
-            // *currentSubMode = MODE_COMBAT;
+            *currentEnemy = enemy;       // <-- nuevo
+            *currentSubMode = MODE_COMBAT;
         }
     }
 }
