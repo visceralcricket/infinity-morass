@@ -58,6 +58,16 @@ void combatMode(Player *player, Enemy *enemy) {
     } else {
         printf("\n\t¡Has derrotado al %s! ¡Felicidades!\n", enemy->enemyName);
 
+        if (rand() % 100 < 30) 
+        { 
+            GameObject *potionDrop = chooseRandomPotion();
+            if (potionDrop)
+            {
+                listPushBack(player->inventory, potionDrop);
+                printf("\n\tHas obtenido: %s\n", potionDrop->name);
+            }
+        }
+       
         // TODO: cuando el inventario esté implementado, recorrer enemy->drops
         // (List *) y agregar cada GameObject al player->inventory.
         // Ej:

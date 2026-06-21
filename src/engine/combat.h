@@ -1,5 +1,6 @@
 #ifndef COMBAT_H
 #define COMBAT_H
+#include "objmap.h"
 
 typedef struct Player Player;
 typedef struct Enemy Enemy;
@@ -12,4 +13,8 @@ Esta función de aquí tiene que ver más con render que con lógica procedural 
 La moví a render.c; recordar NO usar números mágicos como startRow = 5 y 
 startCol = 75, revisar render.h, ahí creé macros para los submenús superpuestos (como ajustes)
 --- */
+
+
+
+
 #endif

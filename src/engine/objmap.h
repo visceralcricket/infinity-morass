@@ -15,6 +15,8 @@ GameObject* generateObject(const char *name);
 
 GameObject *chooseRandomObject(void);
 
+GameObject *chooseRandomPotion(void);
+
 void generateStatsConsumable(GameObject* object);
 
 void generateStatsEquipabble(GameObject* object);

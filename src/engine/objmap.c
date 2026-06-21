@@ -64,11 +64,11 @@ GameObject *chooseRandomObject(void) {
     }
     else if(tpl->isEquippable) {
         object->equip = ITEM_EQUIPPABLE;
-        generateStatsEquippable(object);
+        generateStatsEquipabble(object);
     }
     else {
         object->equip = ITEM_KEY;
-        generateStatsEquipabble(object);
+        generateStatsKey(object); // <-- antes llamaba a generateStatsEquipabble por error
     }
 
     return object;
@@ -76,21 +76,21 @@ GameObject *chooseRandomObject(void) {
 
 void generateStatsConsumable(GameObject* object)
 {
-    if(strcmp(object->name, "Pocion pequeña") == 0) {
+    if(strcmp(object->name, "Poción pequeña") == 0) {
         object->stats.attack = 0;
         object->stats.defense = 0;
         object->stats.maxHp = 20;
         object->stats.currentHp = object->stats.maxHp;
         object->stats.speed = 0;
     }
-    else if(strcmp(object->name, "Pocion mediana") == 0) {
+    else if(strcmp(object->name, "Poción mediana") == 0) {
         object->stats.attack = 0;
         object->stats.defense = 0;
         object->stats.maxHp = 50;
         object->stats.currentHp = object->stats.maxHp;
         object->stats.speed = 0;
     }
-    else if(strcmp(object->name, "Pocion grande") == 0) {
+    else if(strcmp(object->name, "Poción grande") == 0) {
         object->stats.attack = 0;
         object->stats.defense = 0;
         object->stats.maxHp = 80;
@@ -115,7 +115,7 @@ void generateStatsEquipabble(GameObject* object)
         object->stats.currentHp = 0;
         object->stats.speed = 0;
     }
-    if(strcmp(object->name, "Ultra espadón") == 0) {
+    else if(strcmp(object->name, "Ultra espadón") == 0) { // <-- antes era "if", rompía la cadena else-if
         object->stats.attack = 7;
         object->stats.defense = 0;
         object->stats.maxHp = 0;
@@ -177,8 +177,21 @@ Map *createObjectsMap(void) {
         if(tpl->isConsumable) generateStatsConsumable(object);
         else if(tpl->isEquippable) generateStatsEquipabble(object);
         else generateStatsKey(object);
-        
+
         mapInsert(map, object->name, object);
     }
     return map;
+}
+
+GameObject *chooseRandomPotion(void) {
+    int potionIndex = rand() % 3; // Las 3 primeras posiciones del arreglo son las pociones
+    const ObjectTemplate *tpl = &objectTemplates[potionIndex];
+
+    GameObject *object = generateObject((char *)tpl->name);
+    if(!object) return NULL;
+
+    object->equip = ITEM_CONSUMABLE;
+    generateStatsConsumable(object);
+
+    return object;
 }
