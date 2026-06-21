@@ -113,6 +113,7 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 
 * Parche 1.8.2
   + Implementado sistema inicial de generación de objetos en el mapa del videojuego (únicamente visualización, no interacción)
+  + Implementacion inicial del dropeo de items para los enemigos
 
 ### **Versión 1.7.0** (20-06-2026)
 > Se implemento sistema de combate y menú de combate.
