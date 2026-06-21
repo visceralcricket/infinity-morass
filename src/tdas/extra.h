@@ -36,6 +36,8 @@ void *_mystrdup(const char *token);
 // Función para limpiar la pantalla
 void limpiarPantalla();
 
+void limpiarInputPendiente();
+
 void presioneTeclaParaContinuar();
 
 // Leer input de tal forma que los posibles errores en el mismo sean tratados correctamente.

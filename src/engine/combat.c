@@ -68,5 +68,6 @@ void combatMode(Player *player, Enemy *enemy) {
         //     drop = list_next(enemy->drops);
         // }
     }
+    printf("\t");
     presioneTeclaParaContinuar();
 }

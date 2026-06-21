@@ -102,6 +102,8 @@ void renderInventoryOverlay(Player *player) {
 
 void renderCombatOverlay(Player *player, Enemy *enemy, void *currentTurn, int turnCounter, bool *fleeCondition) {
 
+    limpiarInputPendiente();
+
     int startRow = OVERLAY_ROW;
     int startCol = OVERLAY_COL;
     int option;
@@ -133,18 +135,27 @@ void renderCombatOverlay(Player *player, Enemy *enemy, void *currentTurn, int tu
         SET_CURSOR_POS(startRow+9, startCol);
         printf(CLEAR_LINE_TO_END "3) Huir");
 
+        fflush(stdin);
+        
         SET_CURSOR_POS(startRow+11, startCol);
         printf(CLEAR_LINE_TO_END "Opción: ");
         fflush(stdout);
-        scanf("%d", &option);
-        while (getchar() != '\n');
 
-        while (option < 1 || option > 3) {
-            SET_CURSOR_POS(startRow+11, startCol);
-            printf(CLEAR_LINE_TO_END "Opción inválida, intenta de nuevo: ");
-            fflush(stdout);
-            scanf("%d", &option);
-            while (getchar() != '\n');
+        int validInput = 0;
+        while(!validInput) {
+            int key = _getch();
+            
+            if(key >= '1' && key <= '3') {
+                option = key - '0';
+                printf("%c", key);
+                fflush(stdout);
+                validInput = 1;
+            }
+            /* +++
+            Si presiona Enter, letras o símbolos, el código NO hace nada.
+            El cursor se mantiene congelado y protegido tras "Opción: ".
+            Leer cambios realizados en extra.c para más detalles
+            --- */
         }
 
         SET_CURSOR_POS(startRow+13, startCol);

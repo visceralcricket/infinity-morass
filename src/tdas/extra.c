@@ -27,10 +27,17 @@ void *_mystrdup(const char *token) {
 // Función para limpiar la pantalla
 void limpiarPantalla() { system(CLEAR_COMMAND); }
 
+void limpiarInputPendiente() {
+  while(_kbhit()) _getch();
+}
+
 void presioneTeclaParaContinuar() {
-  puts("Presione cualquier tecla para continuar.");
-  int c;
-  while((c=getchar())!='\n' && c != EOF);
+  printf("Presione cualquier tecla para continuar.");
+  fflush(stdout);
+
+  limpiarInputPendiente();
+  
+  _getch();
 }
 
 // Se lee únicamente 1 carácter y en caso de no ser válido se retorna carácter nulo
