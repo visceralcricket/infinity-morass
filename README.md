@@ -100,6 +100,15 @@ mingw32-make
 
   + Refinado de los archivos encargados del renderizado del videojuego para garantizar la integridad y la fidelidad visual del programa tras haber incorporado el nuevo modo de juego de combate y sus respectivas mecánicas.
 
+  **Problemas conocidos**
+  + Al perder un combate y, por ende, ver su salud reducida a 0, el jugador **NO** es capaz de volver a comenzar la partida o reiniciar su personaje y/o estadísticas tras ser derrotado.
+
+  + El sistema de guardado aún no está implementado de tal forma que sea capaz de guardar la mazmorra en la que se encontraba el jugador para ofrecer una experiencia de juego más persistente.
+
+  + Los enemigos únicamente se generan de forma aleatoria en el primer nivel de la mazmorra, no en el resto de las mismas.
+
+  + Actualmente no existe una limitación para enemigos extremadamente poderosos, por ende la experiencia podriá sentirse abrumadora y desequilibrada.
+
 ### **Versión 1.7.0** (20-06-2026)
 > Se implemento sistema de combate y menú de combate.
 
