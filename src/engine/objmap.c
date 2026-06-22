@@ -5,15 +5,32 @@ static const ObjectTemplate objectTemplates[] = {
     {"Poción pequeña", true, false},
     {"Poción mediana", true, false},
     {"Poción grande", true, false},
-    {"Espada ligera", false, false},
-    {"Espada pesada", false, false},
-    {"Ultra espadón", false, false},
-    {"Armadura ligera", false, false},
-    {"Armadura pesada", false, false},
-    {"Armadura berserker", false, false},
-    {"Llave de calabozo", false, true},
-    {"Rollo de historia", false, true}
+    {"Espada ligera", false, true},
+    {"Espada pesada", false, true},
+    {"Ultra espadón", false, true},
+    {"Armadura ligera", false, true},
+    {"Armadura pesada", false, true},
+    {"Armadura berserker", false, true},
+    {"Llave de calabozo", false, false},
+    {"Rollo de historia", false, false}
 };
+void handleGameObject(GameObject *currentObject) {
+    if(!currentObject) return;
+    switch(currentObject->equip) {
+
+        case ITEM_CONSUMABLE:
+            generateStatsConsumable(currentObject);
+            break;
+        case ITEM_EQUIPPABLE:
+            generateStatsEquipabble(currentObject);
+            break;
+        case ITEM_KEY:
+            generateStatsKey(currentObject);
+            break;
+        default:
+            break;
+    }
+}
 
 GameObject* generateObject(const char *name)
 {
@@ -33,7 +50,7 @@ GameObject* generateObject(const char *name)
     return object;
 }
 
-GameObject *spawnRandomObject(void) {
+GameObject *chooseRandomObject(void) {
     int count = sizeof(objectTemplates) / sizeof(objectTemplates[0]);
     int randomIndex = rand() % count;
     const ObjectTemplate *tpl = &objectTemplates[randomIndex];
@@ -41,33 +58,39 @@ GameObject *spawnRandomObject(void) {
     GameObject *object = generateObject((char *)tpl->name);
     if(!object) return NULL;
 
-    object->x = -1;
-    object->y = -1;
-
-    if(tpl->isConsumable) generateStatsConsumable(object);
-    else if(tpl->isKey) generateStatsKey(object);
-    else generateStatsEquipabble(object);
+    if(tpl->isConsumable) {
+        object->equip = ITEM_CONSUMABLE;
+        generateStatsConsumable(object);
+    }
+    else if(tpl->isEquippable) {
+        object->equip = ITEM_EQUIPPABLE;
+        generateStatsEquipabble(object);
+    }
+    else {
+        object->equip = ITEM_KEY;
+        generateStatsKey(object); // <-- antes llamaba a generateStatsEquipabble por error
+    }
 
     return object;
 }
 
 void generateStatsConsumable(GameObject* object)
 {
-    if(strcmp(object->name, "Pocion pequeña") == 0) {
+    if(strcmp(object->name, "Poción pequeña") == 0) {
         object->stats.attack = 0;
         object->stats.defense = 0;
         object->stats.maxHp = 20;
         object->stats.currentHp = object->stats.maxHp;
         object->stats.speed = 0;
     }
-    else if(strcmp(object->name, "Pocion mediana") == 0) {
+    else if(strcmp(object->name, "Poción mediana") == 0) {
         object->stats.attack = 0;
         object->stats.defense = 0;
         object->stats.maxHp = 50;
         object->stats.currentHp = object->stats.maxHp;
         object->stats.speed = 0;
     }
-    else if(strcmp(object->name, "Pocion grande") == 0) {
+    else if(strcmp(object->name, "Poción grande") == 0) {
         object->stats.attack = 0;
         object->stats.defense = 0;
         object->stats.maxHp = 80;
@@ -92,7 +115,7 @@ void generateStatsEquipabble(GameObject* object)
         object->stats.currentHp = 0;
         object->stats.speed = 0;
     }
-    if(strcmp(object->name, "Ultra espadón") == 0) {
+    else if(strcmp(object->name, "Ultra espadón") == 0) { // <-- antes era "if", rompía la cadena else-if
         object->stats.attack = 7;
         object->stats.defense = 0;
         object->stats.maxHp = 0;
@@ -152,10 +175,23 @@ Map *createObjectsMap(void) {
         if(!object) continue;
 
         if(tpl->isConsumable) generateStatsConsumable(object);
-        else if(tpl->isKey) generateStatsKey(object);
-        else generateStatsEquipabble(object);
+        else if(tpl->isEquippable) generateStatsEquipabble(object);
+        else generateStatsKey(object);
 
         mapInsert(map, object->name, object);
     }
     return map;
+}
+
+GameObject *chooseRandomPotion(void) {
+    int potionIndex = rand() % 3; // Las 3 primeras posiciones del arreglo son las pociones
+    const ObjectTemplate *tpl = &objectTemplates[potionIndex];
+
+    GameObject *object = generateObject((char *)tpl->name);
+    if(!object) return NULL;
+
+    object->equip = ITEM_CONSUMABLE;
+    generateStatsConsumable(object);
+
+    return object;
 }

@@ -8,7 +8,7 @@ void combatMode(Player *player, Enemy *enemy) {
     printf("\n\t¡Te has topado con un %s! ¡Comienza el combate!\n", enemy->enemyName);
     presioneTeclaParaContinuar();
 
-    Heap *colaTurnos = heap_create();
+    Heap *colaTurnos = heapCreate();
 
     int playerPriority = 1000 / player->combatStats.speed;
     int enemyPriority = 1000 / enemy->combatStats.speed;
@@ -21,14 +21,14 @@ void combatMode(Player *player, Enemy *enemy) {
 
     void *currentTurn = NULL;
 
-    heap_push(colaTurnos, player, INT_MAX - playerNextTurn);
-    heap_push(colaTurnos, enemy, INT_MAX - enemyNextTurn);
+    heapPush(colaTurnos, player, playerNextTurn);
+    heapPush(colaTurnos, enemy, enemyNextTurn);
 
     while(player->combatStats.currentHp > 0 && enemy->combatStats.currentHp > 0) {
         turnCounter++;
 
-        currentTurn = heap_top(colaTurnos);
-        heap_pop(colaTurnos);
+        currentTurn = heapTop(colaTurnos);
+        heapPop(colaTurnos);
 
         renderCombatOverlay(player, enemy, currentTurn, turnCounter, &fleeCondition);
 
@@ -36,19 +36,16 @@ void combatMode(Player *player, Enemy *enemy) {
 
         if (currentTurn == player) {
             playerNextTurn += playerPriority;
-            heap_push(colaTurnos, player, INT_MAX - playerNextTurn);
+            heapPush(colaTurnos, player, playerNextTurn);
         } else {
             enemyNextTurn += enemyPriority;
-            heap_push(colaTurnos, enemy, INT_MAX - enemyNextTurn);
+            heapPush(colaTurnos, enemy, enemyNextTurn);
         }
 
         fflush(stdout);
     }
 
-    while(heap_top(colaTurnos) != NULL) {
-        heap_pop(colaTurnos);
-    }
-    free(colaTurnos);
+    heapDestroy(colaTurnos);
 
     limpiarPantalla();
     if (player->combatStats.currentHp <= 0) {
@@ -58,16 +55,31 @@ void combatMode(Player *player, Enemy *enemy) {
     } else {
         printf("\n\t¡Has derrotado al %s! ¡Felicidades!\n", enemy->enemyName);
 
+        if (rand() % 100 < 30) 
+        { 
+            GameObject *potionDrop = chooseRandomPotion();
+            if (potionDrop)
+            {
+                listPushBack(player->inventory, potionDrop);
+                printf("\n\tHas obtenido: %s\n", potionDrop->name);
+            }
+        }
+       
         // TODO: cuando el inventario esté implementado, recorrer enemy->drops
         // (List *) y agregar cada GameObject al player->inventory.
         // Ej:
         // void *drop;
-        // list_first(enemy->drops);
-        // while ((drop = list_current(enemy->drops)) != NULL) {
-        //     list_pushBack(player->inventory, drop);
-        //     drop = list_next(enemy->drops);
+        // listFirst(enemy->drops);
+        // while ((drop = listCurrent(enemy->drops)) != NULL) {
+        //     listPushBack(player->inventory, drop);
+        //     drop = listNext(enemy->drops);
         // }
     }
     printf("\t");
     presioneTeclaParaContinuar();
+}
+
+void freeGameObject(void *p){
+    GameObject *object = p;
+    free(object);
 }

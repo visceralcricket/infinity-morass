@@ -68,7 +68,6 @@ int main() {
         switch(option) {
 
             case '1':
-                // Función redundante de lectura de nombre eliminada
                 
                 if(!mazeGenerated) {
                     generateMaze(maze, 20);
@@ -76,6 +75,8 @@ int main() {
                     placeExits(maze, MAX_NUM_EXITS);
                     // Map *enemyMap = createEnemiesMap();
                     placeEnemies(maze);
+                    // List spawnedEnemies = listCreate();
+                    placeObjects(maze);
                     mazeGenerated = 1;
                 }
 

@@ -10,6 +10,7 @@ SRCS = src/main.c \
 		src/engine/game.c \
 		src/engine/enmap.c \
 		src/engine/combat.c \
+		src/engine/objmap.c \
 		src/io/storage.c \
 		src/ui/render.c \
 		src/tdas/extra.c \

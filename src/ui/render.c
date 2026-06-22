@@ -41,7 +41,8 @@ void renderExploration(int maze[N][N], Player player) {
                 char tile;
                 if(maze[i][j] == 1) tile = WALL;
                 else if(maze[i][j] == EXIT_TILE) tile = GOAL;
-                else if(maze[i][j] == ENEMY_TILE) tile = 'E';
+                else if(maze[i][j] == ENEMY_TILE) tile = ENEMY_TILE;
+                else if(maze[i][j] == OBJECT_TILE) tile = OBJECT_TILE;
                 else tile = EMPTY;
                 printf("%c ", tile);
             }
@@ -93,10 +94,33 @@ void renderInventoryOverlay(Player *player) {
         SET_CURSOR_POS(currentRow, startCol);
         printf(FORMAT_DIM "El inventario está vacío.." FORMAT_RESET);
     }
-
     else {
+        GameObject *item = (GameObject *) listFirst(player->inventory);
+        while (item != NULL) {
+            SET_CURSOR_POS(currentRow, startCol);
+            printf(CLEAR_LINE_TO_END);
 
-    }    
+            const char *tipo;
+            switch (item->equip) {
+                case ITEM_CONSUMABLE: tipo = "Consumible"; break;
+                case ITEM_EQUIPPABLE: tipo = "Equipable";  break;
+                case ITEM_KEY:        tipo = "Llave/Clave"; break;
+                default:              tipo = "Desconocido"; break;
+            }
+
+            printf("%s [%s] - ATK:%d DEF:%d HP:%d/%d SPD:%d",
+                   item->name,
+                   tipo,
+                   item->stats.attack,
+                   item->stats.defense,
+                   item->stats.currentHp,
+                   item->stats.maxHp,
+                   item->stats.speed);
+
+            currentRow++;
+            item = (GameObject *) listNext(player->inventory);
+        }
+    }
     SET_CURSOR_POS(N+4, 0);
 }
 

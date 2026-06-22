@@ -1,7 +1,7 @@
 # **infinity-morass**
 > *Roguelike de calabozos basado en terminal de texto.*
 
-<img src="https://img.shields.io/badge/version-1.8.1-blue" alt="version">
+<img src="https://img.shields.io/badge/version-1.8.3-blue" alt="version">
 
 [![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/main)](https://github.com/visceralcricket/infinity-morass/commits/main)
 
@@ -19,23 +19,25 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 2. **Navegar a la raíz:** Abra su terminal de preferencia (PowerShell, CMD o Git Bash) y posiciónese dentro de la carpeta principal del proyecto:
    ```bash
    cd ruta/hacia/infinity-morass
+   ```
 
-#### **Observaciones**
-+ Forzar codificación (Obligatorio en Windows): Para evitar que el motor de texto renderice símbolos extraños y dibuje correctamente el arte ASCII, las tildes y los bordes del mapa, ejecute el siguiente comando:
+* Configurar codificación (Obligatorio en Windows): Para que la terminal dibuje correctamente el arte ASCII, las tildes y los bordes del mapa, ejecute:
 
-+ PowerShell
-[Console]::OutputEncoding = [System.text.Encoding]::UTF8
-Compilar el código fuente: Ordénele al sistema construir el binario utilizando el Makefile incluido en la raíz:
+  > [Console]::OutputEncoding = [System.text.Encoding]::UTF8
 
-+ Bash
-mingw32-make
-(Una vez finalizado el proceso, verá que se ha generado un nuevo archivo llamado infinity-morass.exe).
+3. **Compilar el proyecto**: Genere el binario ejecutando:
 
-+ Iniciar la partida: Ejecute el binario compilado:
+  > mingw32-make
 
-+ En PowerShell / Git Bash: .\infinity-morass.exe
+<small>**(Una vez finalizado, verá que se ha creado el archivo infinity-morass.exe).**</small>
 
-+ En Símbolo del sistema (CMD): infinity-morass.exe
+4. **Iniciar la partida**: Ejecute el binario según su *terminal*
+
++ En PowerShell / Git Bash:
+  > .\infinity-morass.exe
+
++ En Símbolo del sistema (CMD):
+  > infinity-morass.exe
 
 **NOTA DE MANTENIMIENTO**
   + Si usted es un desarrollador y desea realizar un rebuild limpio del juego tras modificar las estructuras internas, ejecute mingw32-make clean para fulminar los archivos objeto (.o) de la memoria caché.
@@ -109,6 +111,16 @@ mingw32-make
 
   + Actualmente no existe una limitación para enemigos extremadamente poderosos, por ende la experiencia podriá sentirse abrumadora y desequilibrada.
 
+* Parche 1.8.2
+  + Implementado sistema inicial de generación de objetos en el mapa del videojuego (únicamente visualización, no interacción)
+  
+  + Implementacion inicial del dropeo de items para los enemigos
+
+* Parche 1.8.3
+  + heap.c reimplementado como un montículo Min-Heap para eliminar la necesidad de calcular la diferencia de la prioridad encontrada por el montículo e INT_MAX; esto le da más sentido al código y encaja con la lógica de usar la estructura adecuada para el problema adecuado.
+
+  + Creación de función freeGameObject encargada de liberar la memoria de cualquier objeto que se le asigne dentro de los archivos tipo **"combat"**.
+
 ### **Versión 1.7.0** (20-06-2026)
 > Se implemento sistema de combate y menú de combate.
 
@@ -129,7 +141,7 @@ mingw32-make
   + Removida verificación temporal del mapeo de enemigos en el TDA Mapa.
 
 * Parche 1.7.2
-  + Se realizaron preparaciones generales para asegurar la correcta integración de las 
+  + Se realizaron preparaciones generales para asegurar la correcta integración de las funcionalidades de modo de juego de combate y sus respectivas mecánicas.
 
 ### **Versión 1.6.0** (18-06-2026)
 > Se continuó implementando la funcionalidad de generación, mapeo y tracking de entidades enemigos.
@@ -137,7 +149,7 @@ mingw32-make
 * Parche 1.6.1
   + Se refactorizó la estructura principal de la funcionalidad de generación y mapeo de enemigos, comprimiendo la lógica inicial de comparar nombre a nombre y asignar las estadísticas a una plantilla EnemyTemplate genérica.
 
-  + Se cambiaron los nombres de los archivos **"enemy-gen.c"** a **"engen.c"** para mejor legibilidad y armonía con los nombres del resto de archivos.
+  + Se cambiaron los nombres de los archivos **"enemy-gen.c"** a **"enmap.c"** para mejor legibilidad y armonía con los nombres del resto de archivos.
 
 * Parche 1.6.2
   + Se modificó la cantidad de salidas por mazmorra para una experiencia de juego más fluida.
