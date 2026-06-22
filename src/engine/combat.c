@@ -45,10 +45,7 @@ void combatMode(Player *player, Enemy *enemy) {
         fflush(stdout);
     }
 
-    while(heapTop(colaTurnos) != NULL) {
-        heapPop(colaTurnos);
-    }
-    free(colaTurnos);
+    heapDestroy(colaTurnos);
 
     limpiarPantalla();
     if (player->combatStats.currentHp <= 0) {
@@ -80,4 +77,9 @@ void combatMode(Player *player, Enemy *enemy) {
     }
     printf("\t");
     presioneTeclaParaContinuar();
+}
+
+void freeGameObject(void *p){
+    GameObject *object = p;
+    free(object);
 }
