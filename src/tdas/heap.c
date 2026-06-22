@@ -73,6 +73,18 @@ Heap* heapCreate(){
    return pq;
 }
 
-void heapDestroy(Heap *pq) {
+void heapDestroyWithFree(Heap *pq, void (*freeData)(void*)) {
+    if (!pq) return;
+    if (freeData) {
+        for (int i = 0; i < pq->size; ++i) {
+            if (pq->heapArray[i].data)
+                freeData(pq->heapArray[i].data);
+        }
+    }
     free(pq->heapArray);
+    free(pq);
+}
+
+void heapDestroy(Heap *pq) {
+    heapDestroyWithFree(pq, NULL);
 }

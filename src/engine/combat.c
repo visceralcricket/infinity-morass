@@ -46,7 +46,8 @@ void combatMode(Player *player, Enemy *enemy) {
     }
 
     while(heapTop(colaTurnos) != NULL) {
-        free(heapPop(colaTurnos));
+        void *elem = heapPop(colaTurnos);
+        free(elem);
     }
     heapDestroy(colaTurnos);
 
@@ -80,4 +81,9 @@ void combatMode(Player *player, Enemy *enemy) {
     }
     printf("\t");
     presioneTeclaParaContinuar();
+}
+
+void freeGameObject(void *p){
+    GameObject *object = p;
+    free(object);
 }

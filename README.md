@@ -143,7 +143,7 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 * Parche 1.6.1
   + Se refactorizó la estructura principal de la funcionalidad de generación y mapeo de enemigos, comprimiendo la lógica inicial de comparar nombre a nombre y asignar las estadísticas a una plantilla EnemyTemplate genérica.
 
-  + Se cambiaron los nombres de los archivos **"enemy-gen.c"** a **"engen.c"** para mejor legibilidad y armonía con los nombres del resto de archivos.
+  + Se cambiaron los nombres de los archivos **"enemy-gen.c"** a **"enmap.c"** para mejor legibilidad y armonía con los nombres del resto de archivos.
 
 * Parche 1.6.2
   + Se modificó la cantidad de salidas por mazmorra para una experiencia de juego más fluida.
