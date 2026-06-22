@@ -46,9 +46,9 @@ void combatMode(Player *player, Enemy *enemy) {
     }
 
     while(heapTop(colaTurnos) != NULL) {
-        heapPop(colaTurnos);
+        free(heapPop(colaTurnos));
     }
-    free(colaTurnos);
+    heapDestroy(colaTurnos);
 
     limpiarPantalla();
     if (player->combatStats.currentHp <= 0) {
