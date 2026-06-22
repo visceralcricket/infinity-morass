@@ -1,7 +1,7 @@
 # **infinity-morass**
 > *Roguelike de calabozos basado en terminal de texto.*
 
-<img src="https://img.shields.io/badge/version-1.8.1-blue" alt="version">
+<img src="https://img.shields.io/badge/version-1.8.3-blue" alt="version">
 
 [![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/main)](https://github.com/visceralcricket/infinity-morass/commits/main)
 
@@ -113,7 +113,13 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 
 * Parche 1.8.2
   + Implementado sistema inicial de generación de objetos en el mapa del videojuego (únicamente visualización, no interacción)
+  
   + Implementacion inicial del dropeo de items para los enemigos
+
+* Parche 1.8.3
+  + heap.c reimplementado como un montículo Min-Heap para eliminar la necesidad de calcular la diferencia de la prioridad encontrada por el montículo e INT_MAX; esto le da más sentido al código y encaja con la lógica de usar la estructura adecuada para el problema adecuado.
+
+  + Creación de función freeGameObject encargada de liberar la memoria de cualquier objeto que se le asigne dentro de los archivos tipo **"combat"**.
 
 ### **Versión 1.7.0** (20-06-2026)
 > Se implemento sistema de combate y menú de combate.

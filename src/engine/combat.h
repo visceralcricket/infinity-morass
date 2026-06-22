@@ -14,7 +14,7 @@ La moví a render.c; recordar NO usar números mágicos como startRow = 5 y
 startCol = 75, revisar render.h, ahí creé macros para los submenús superpuestos (como ajustes)
 --- */
 
-
+void freeGameObject(void *p);
 
 
 #endif

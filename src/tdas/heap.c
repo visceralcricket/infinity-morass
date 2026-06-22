@@ -31,9 +31,9 @@ void heapPush(Heap* pq, void* data, int priority){
         pq->heapArray=realloc(pq->heapArray, (pq->capac)*sizeof(heapElem));
     }
 
-    /*FlotaciÃ³n*/
+    /*Flotación*/
     int now = pq->size;
-    while(now>0 && pq->heapArray[(now-1)/2].priority < priority)
+    while(now>0 && pq->heapArray[(now-1)/2].priority > priority)
         {
                 pq->heapArray[now] = pq->heapArray[(now-1)/2];
                 now = (now -1)/2;
@@ -45,22 +45,31 @@ void heapPush(Heap* pq, void* data, int priority){
 
 
 void heapPop(Heap* pq){
+        if (pq->size == 0) return;
 
         pq->size--;
+        if (pq->size == 0) return;
+
         pq->heapArray[0] = pq->heapArray[pq->size];
-        int priority=pq->heapArray[0].priority;
 
+        int now = 0;
+        while (1) {
+            int left = 2 * now + 1;
+            int right = 2 * now + 2;
+            int smallest = now;
 
-        int now = 1;
+            if (left < pq->size && pq->heapArray[left].priority < pq->heapArray[smallest].priority) {
+                smallest = left;
+            }
+            if (right < pq->size && pq->heapArray[right].priority < pq->heapArray[smallest].priority) {
+                smallest = right;
+            }
+            if (smallest == now) break;
 
-        while((now<=pq->size && pq->heapArray[now].priority > priority) || (now+1<=pq->size && pq->heapArray[now+1].priority > priority)){
-          heapElem tmp=pq->heapArray[(now-1)/2];
-          if(now+1<=pq->size && pq->heapArray[now].priority < pq->heapArray[now+1].priority) now++;
-
-          pq->heapArray[(now-1)/2]=pq->heapArray[now];
-          pq->heapArray[now]=tmp;
-
-          now = now * 2 + 1;
+            heapElem tmp = pq->heapArray[now];
+            pq->heapArray[now] = pq->heapArray[smallest];
+            pq->heapArray[smallest] = tmp;
+            now = smallest;
         }
         //printf("size = %i, top = %i\n", pq->size, pq->heapArray[0].data );
 }
