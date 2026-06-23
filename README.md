@@ -1,7 +1,7 @@
 # **infinity-morass**
 > *Roguelike de calabozos basado en terminal de texto.*
 
-<img src="https://img.shields.io/badge/version-1.8.3-blue" alt="version">
+<img src="https://img.shields.io/badge/version-1.8.4-blue" alt="version">
 
 [![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/main)](https://github.com/visceralcricket/infinity-morass/commits/main)
 
@@ -120,6 +120,21 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
   + heap.c reimplementado como un montículo Min-Heap para eliminar la necesidad de calcular la diferencia de la prioridad encontrada por el montículo e INT_MAX; esto le da más sentido al código y encaja con la lógica de usar la estructura adecuada para el problema adecuado.
 
   + Creación de función freeGameObject encargada de liberar la memoria de cualquier objeto que se le asigne dentro de los archivos tipo **"combat"**.
+
+* Parche 1.8.4
+  + Funcionalidad de guardado y carga de partidas ahora se encuentra finalizada: incluye el nivel/mazmorra donde se encontraba el jugador, los enemigos y objetos que existían en el mismo y la propia posición del jugador antes de cerrar el juego.
+
+  + Depuración de inclusiones incorrectas de archivos de cabecera en **"combat.c"** y **"combat.h"**
+
+  + Arreglado bug de renderizado que provocaba que todo el mapa apareciese completamente vacío a excepción de sus delimitaciones espaciales.
+
+  + Eliminada fuga de memoria en **"main.c"** al sobreescribir la lista del inventario del jugador tras cargar exitosamente una partida.
+
+  + Creación de la nueva entidad **"sessionFloor"** la cual es la encargada de permitir al programa rastrear (tracking) tanto el mapa actual que está navegando el jugador como las entidades que pueblan el mismo además de verificar si el propio mapa fue realmente visitado o si únicamente se generó y el jugador nunca llegó a explorar.
+
+  + Entidades restantes en **"game.h"** como los modos de juego del programa y macros esenciales fueron desplazadas a **"entities.h"** para mantener un mejor orden de los archivos y reducir la naturaleza céntrica del encabezado **"game.h"**
+
+  + Eliminación de entidades innecesarias tipo State y Action heredadas del TDA Grafo Implícito puesto que estas funcionalidades ya se manejan en la función clave **"handleWindowsInput"** la cual modifica inmediatamente la posición del jugador en vez de utilizar un intermediario.
 
 ### **Versión 1.7.0** (20-06-2026)
 > Se implemento sistema de combate y menú de combate.

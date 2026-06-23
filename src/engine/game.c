@@ -93,7 +93,7 @@ y para comprobar que la generación de enemigos funciona correctamente, se va a 
 --- */
 void placeEnemies(int maze[N][N]) {
     int placed = 0;
-    while(placed < MAX_ENEMIES_PER_DUNGEON) {
+    while(placed < MAX_ENEMIES_PER_LEVEL) {
         int randomX = rand() % N;
         int randomY = rand() % N;
 
@@ -161,7 +161,7 @@ void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode
     }
 }
 
-void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode) {
+void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode, sessionFloor *currentSession) {
     int key = _getch();
 
     switch(key) {
@@ -180,7 +180,7 @@ void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode
 
         case '3':
             // Guardamos la partida sin cambiar de GameMode y sin limpiar pantalla
-            saveGame(player);
+            saveGame(player, currentSession);
 
             SET_CURSOR_POS(12, 75);
             printf(FORMAT_BOLD COLOR_GREEN "Guardado completado." FORMAT_RESET);
