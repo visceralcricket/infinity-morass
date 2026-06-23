@@ -1,7 +1,11 @@
 #ifndef COMBAT_H
 #define COMBAT_H
 
-#include "entities.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include "game.h"
+#include "../ui/render.h"
+#include "objmap.h"
 
 void combatMode(Player *player, Enemy *enemy);
 

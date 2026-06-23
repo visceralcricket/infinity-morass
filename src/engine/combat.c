@@ -1,8 +1,5 @@
 #include "combat.h"
-#include "game.h"
-#include "objmap.h"
 #include "../tdas/heap.h"
-#include "../ui/render.h"
 
 void combatMode(Player *player, Enemy *enemy) {
 
@@ -65,16 +62,19 @@ void combatMode(Player *player, Enemy *enemy) {
                 printf("\n\tHas obtenido: %s\n", potionDrop->name);
             }
         }
+       /* +++
+       No se incluye objmap.h actualmente desde combat.h, considerar esto.
        
-        // TODO: cuando el inventario esté implementado, recorrer enemy->drops
-        // (List *) y agregar cada GameObject al player->inventory.
-        // Ej:
-        // void *drop;
-        // listFirst(enemy->drops);
-        // while ((drop = listCurrent(enemy->drops)) != NULL) {
-        //     listPushBack(player->inventory, drop);
-        //     drop = listNext(enemy->drops);
-        // }
+       TODO: cuando el inventario esté implementado, recorrer enemy->drops
+       (List *) y agregar cada GameObject al player->inventory.
+       Ej:
+        void *drop;
+        listFirst(enemy->drops);
+        while ((drop = listCurrent(enemy->drops)) != NULL) {
+            listPushBack(player->inventory, drop);
+            drop = listNext(enemy->drops);
+        }
+        --- */
     }
     printf("\t");
     presioneTeclaParaContinuar();

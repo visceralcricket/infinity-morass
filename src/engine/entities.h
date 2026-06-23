@@ -13,6 +13,15 @@
 #define MAX_ENEMIES_PER_LEVEL 5
 #define MAX_OBJECTS_PER_LEVEL 3
 
+// ======== Maze symbols ========
+#define WALL '#' // Obstacle
+#define EMPTY ' ' // Empty/free tile
+#define START 'I' // Starting position of the agent
+#define GOAL 'M' // Goal tile
+#define ENEMY_TILE 'E'
+#define EXIT_TILE 2
+#define OBJECT_TILE 'o'
+
 // ======== Enumeraciones ========
 typedef enum {
     ITEM_CONSUMABLE = 0,

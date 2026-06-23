@@ -1,7 +1,8 @@
 #ifndef RENDER_H
 #define RENDER_H
 
-#include "../engine/game.h"
+#include "../engine/entities.h"
+#include "../tdas/extra.h"
 /*
 #define MAX_SHIFT_ROW N+5
 #define MAX_SHIFT_COL N+50
