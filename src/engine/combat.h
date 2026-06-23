@@ -1,9 +1,11 @@
 #ifndef COMBAT_H
 #define COMBAT_H
-#include "objmap.h"
 
-typedef struct Player Player;
-typedef struct Enemy Enemy;
+#include <stdio.h>
+#include <stdlib.h>
+#include "game.h"
+#include "../ui/render.h"
+#include "objmap.h"
 
 void combatMode(Player *player, Enemy *enemy);
 
@@ -14,7 +16,7 @@ La moví a render.c; recordar NO usar números mágicos como startRow = 5 y
 startCol = 75, revisar render.h, ahí creé macros para los submenús superpuestos (como ajustes)
 --- */
 
-
+void freeGameObject(void *p);
 
 
 #endif

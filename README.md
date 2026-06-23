@@ -1,7 +1,7 @@
 # **infinity-morass**
 > *Roguelike de calabozos basado en terminal de texto.*
 
-<img src="https://img.shields.io/badge/version-1.8.1-blue" alt="version">
+<img src="https://img.shields.io/badge/version-1.8.5-blue" alt="version">
 
 [![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/main)](https://github.com/visceralcricket/infinity-morass/commits/main)
 
@@ -91,37 +91,78 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 
 * **`Makefile`**: Archivo utilizado para automatizar la compilación del programa en local con el comando: `mingw32-make` y que crea el ejecutable final: `infinity-morass.exe`
 
+## **Funcionalidades pendientes** 
+
+* A nivel de renderizado / visual
+  + Actualmente **NO** hay forma de distinguir las casillas de enemigos comúnes con jefes: sería ideal crear nuevas macros que representen mejor a cada enemigo de forma único o que sean capaces de diferenciar enemigos comúnes de jefes.
+
+  + No se le indica al jugador en qué nivel de la mazmorra se encuentra, es decir, no existe forma de trackear el número que representa la mazmorar actual: en caso de implementarse, considerar que, como la muestra topológica del mapa se guarda junto con el progreso del jugador, el número de la mazmorra que se almacenó en el archivo .sav **también** debe ser considerado de tal forma que el número de mazmorra actual no se reinicie al cargar una partida.
+
+* A nivel de lógica de procedimientos / sistemas
+    + Implementar funcionalidad de reiniciar personaje (o al menos los puntos de vida del mismo)
+
+    + Interacciones con objetos generados en el mapa y su posterior guardado en el inventario: actualmente estos no son interactuables ni existe una forma de guardarlos en el inventario.
+
+    + La generación de enemigos no limita jefes por mazmorra, sino que es de forma totalmente aleatoria: integrar métrica que lleve la cuenta de mazmorras recorridas y genere un enemigo jefe cada 4 niveles.
+
+## **Problemas conocidos**
+
+* A nivel de renderizado / visual
+  + ...
+
+* A nivel de lógica de procedimientos / sistemas
+  + Actualmente, al huir de un enemigo, se muestra que el jugador "derrotó" al enemigo, cuando esto no es correcto, puesto que escapar de un enemigo **≠** derrotar al mismo.
+
 ## **Changelog (historial de cambios)**
 <small>*Nota: Este changelog está en orden cronológico inverso.*</small>
 
 ### **Versión 1.8.0** (20-06-2026) 
-> Integración inicial de funcionalidades: modo de juego de combate, sistema de combate y mejoras de calidad de vida.
+> Integración inicial de funcionalidades: modo de juego de combate, sistema de combate, finalización del sistema de guardado/carga de partidas y mejoras de calidad de vida.
+
+* Parche 1.8.5
+  + Implementadas secciones de **"Funcionalidades pendientes"** y **"Problemas conocidos"**
+
+  + Arreglos menores en inclusión de dependencias en **"combat.c, combat.h, enmap.h, game.h, render.h"**
+
+  + Se trasladaron los macros que definen los símbolos de la mazmorra al archivo **"entities.h"** para mantener la separación de responsabilidades adecuada para cada archivo.
+
+* Parche 1.8.4
+  + Funcionalidad de guardado y carga de partidas ahora se encuentra finalizada: incluye el nivel/mazmorra donde se encontraba el jugador, los enemigos y objetos que existían en el mismo y la propia posición del jugador antes de cerrar el juego.
+
+  + Depuración de inclusiones incorrectas de archivos de cabecera en **"combat.c"** y **"combat.h"**
+
+  + Arreglado bug de renderizado que provocaba que todo el mapa apareciese completamente vacío a excepción de sus delimitaciones espaciales.
+
+  + Eliminada fuga de memoria en **"main.c"** al sobreescribir la lista del inventario del jugador tras cargar exitosamente una partida.
+
+  + Creación de la nueva entidad **"sessionFloor"** la cual es la encargada de permitir al programa rastrear (tracking) tanto el mapa actual que está navegando el jugador como las entidades que pueblan el mismo además de verificar si el propio mapa fue realmente visitado o si únicamente se generó y el jugador nunca llegó a explorar.
+
+  + Entidades restantes en **"game.h"** como los modos de juego del programa y macros esenciales fueron desplazadas a **"entities.h"** para mantener un mejor orden de los archivos y reducir la naturaleza céntrica del encabezado **"game.h"**
+
+  + Eliminación de entidades innecesarias tipo State y Action heredadas del TDA Grafo Implícito puesto que estas funcionalidades ya se manejan en la función clave **"handleWindowsInput"** la cual modifica inmediatamente la posición del jugador en vez de utilizar un intermediario.
+
+  + Arreglo menor a la documentación: versiones y notas de parches distribuidas en el orden incorrecto.
+
+* Parche 1.8.3
+  + heap.c reimplementado como un montículo Min-Heap para eliminar la necesidad de calcular la diferencia de la prioridad encontrada por el montículo e INT_MAX; esto le da más sentido al código y encaja con la lógica de usar la estructura adecuada para el problema adecuado.
+
+  + Creación de función freeGameObject encargada de liberar la memoria de cualquier objeto que se le asigne dentro de los archivos tipo **"combat"**.
+
+* Parche 1.8.2
+  + Implementado sistema inicial de generación de objetos en el mapa del videojuego (únicamente visualización, no interacción)
+  
+  + Implementacion inicial del dropeo de items para los enemigos
 
 * Parche 1.8.1
   + Removido bug presente a partir de la versión 1.7.0, haciendo uso de métodos más robustos para hacer la limpieza del buffer y la lectura de input, todos cambios principalmente concentrados en el archivo **"extra.c"**
 
   + Refinado de los archivos encargados del renderizado del videojuego para garantizar la integridad y la fidelidad visual del programa tras haber incorporado el nuevo modo de juego de combate y sus respectivas mecánicas.
 
-  **Problemas conocidos**
-  + Al perder un combate y, por ende, ver su salud reducida a 0, el jugador **NO** es capaz de volver a comenzar la partida o reiniciar su personaje y/o estadísticas tras ser derrotado.
-
-  + El sistema de guardado aún no está implementado de tal forma que sea capaz de guardar la mazmorra en la que se encontraba el jugador para ofrecer una experiencia de juego más persistente.
-
-  + Los enemigos únicamente se generan de forma aleatoria en el primer nivel de la mazmorra, no en el resto de las mismas.
-
-  + Actualmente no existe una limitación para enemigos extremadamente poderosos, por ende la experiencia podriá sentirse abrumadora y desequilibrada.
-
-* Parche 1.8.2
-  + Implementado sistema inicial de generación de objetos en el mapa del videojuego (únicamente visualización, no interacción)
-  + Implementacion inicial del dropeo de items para los enemigos
-
 ### **Versión 1.7.0** (20-06-2026)
 > Se implemento sistema de combate y menú de combate.
 
-* Parche 1.7.0
-  + Implementada versión incial de sistema de combate y menú interactivo de combate.
-
-  + En el menú de combate existe un bug donde, al darle a Enter en un momento donde no es necesario, el jugador puede escribir en el lado izquierdo de la pantalla pero sin tener impacto alguno en la experiencia de juego. No afecta a la visualizacion del mapa
+* Parche 1.7.2
+  + Se realizaron preparaciones generales para asegurar la correcta integración de las funcionalidades de modo de juego de combate y sus respectivas mecánicas.
 
 * Parche 1.7.1
   + Funciones que no tenían relación con los archivos donde estaban definidas se trasladaron a los archivos correctos
@@ -134,26 +175,17 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 
   + Removida verificación temporal del mapeo de enemigos en el TDA Mapa.
 
-* Parche 1.7.2
-  + Se realizaron preparaciones generales para asegurar la correcta integración de las funcionalidades de modo de juego de combate y sus respectivas mecánicas.
+* Parche 1.7.0
+  + Implementada versión incial de sistema de combate y menú interactivo de combate.
+
+  + En el menú de combate existe un bug donde, al darle a Enter en un momento donde no es necesario, el jugador puede escribir en el lado izquierdo de la pantalla pero sin tener impacto alguno en la experiencia de juego. No afecta a la visualizacion del mapa
+
 
 ### **Versión 1.6.0** (18-06-2026)
 > Se continuó implementando la funcionalidad de generación, mapeo y tracking de entidades enemigos.
 
-* Parche 1.6.1
-  + Se refactorizó la estructura principal de la funcionalidad de generación y mapeo de enemigos, comprimiendo la lógica inicial de comparar nombre a nombre y asignar las estadísticas a una plantilla EnemyTemplate genérica.
-
-  + Se cambiaron los nombres de los archivos **"enemy-gen.c"** a **"enmap.c"** para mejor legibilidad y armonía con los nombres del resto de archivos.
-
-* Parche 1.6.2
-  + Se modificó la cantidad de salidas por mazmorra para una experiencia de juego más fluida.
-
-* Parche 1.6.3
-  + Arreglado bug donde al probar la generación de un enemigo en el mapa el nombre del mismo se quedaba estancado/flotando en el terminal de texto hasta que el jugador entra a ajustes y le da a continuar partida.
-
-  + Se refinó la implementación de la generación de enemigos y además se incluyó un sistema básico para poder visualizar y verificar el correcto procesamiento de la generación y mapeo de los enemigos mediante el TDA Mapa.
-
-  + Actualmente no se pueden generar enemigos múltiples veces por cada mazmorra, sino que una única vez en la primera mazmorra a modo de prueba del sistema.
+* Parche 1.6.5
+  + Removidas funciones de grafos implícitos de las que no se hacían uso puesto que sus funciones estaban cubiertas por otros archivos a lo largo del motor del juego *(src/engine)*
 
 * Parche 1.6.4
   + Ligeras optimizaciones en la lógica de lectura de input para dispositivos Windows.
@@ -162,8 +194,21 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 
   + Cambios menores en ciertos flujos de lógica que requerían ajustes para funcionar mejor.
 
-* Parche 1.6.5
-  + Removidas funciones de grafos implícitos de las que no se hacían uso puesto que sus funciones estaban cubiertas por otros archivos a lo largo del motor del juego *(src/engine)*
+* Parche 1.6.3
+  + Arreglado bug donde al probar la generación de un enemigo en el mapa el nombre del mismo se quedaba estancado/flotando en el terminal de texto hasta que el jugador entra a ajustes y le da a continuar partida.
+
+  + Se refinó la implementación de la generación de enemigos y además se incluyó un sistema básico para poder visualizar y verificar el correcto procesamiento de la generación y mapeo de los enemigos mediante el TDA Mapa.
+
+  + Actualmente no se pueden generar enemigos múltiples veces por cada mazmorra, sino que una única vez en la primera mazmorra a modo de prueba del sistema.
+
+* Parche 1.6.2
+  + Se modificó la cantidad de salidas por mazmorra para una experiencia de juego más fluida.
+
+* Parche 1.6.1
+  + Se refactorizó la estructura principal de la funcionalidad de generación y mapeo de enemigos, comprimiendo la lógica inicial de comparar nombre a nombre y asignar las estadísticas a una plantilla EnemyTemplate genérica.
+
+  + Se cambiaron los nombres de los archivos **"enemy-gen.c"** a **"enmap.c"** para mejor legibilidad y armonía con los nombres del resto de archivos.
+
 
 ### **Versión 1.5.0** (15-06-2026)
 

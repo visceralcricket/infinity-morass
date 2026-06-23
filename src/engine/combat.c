@@ -1,7 +1,5 @@
 #include "combat.h"
-#include "game.h"
 #include "../tdas/heap.h"
-#include "../ui/render.h"
 
 void combatMode(Player *player, Enemy *enemy) {
 
@@ -21,8 +19,8 @@ void combatMode(Player *player, Enemy *enemy) {
 
     void *currentTurn = NULL;
 
-    heapPush(colaTurnos, player, INT_MAX - playerNextTurn);
-    heapPush(colaTurnos, enemy, INT_MAX - enemyNextTurn);
+    heapPush(colaTurnos, player, playerNextTurn);
+    heapPush(colaTurnos, enemy, enemyNextTurn);
 
     while(player->combatStats.currentHp > 0 && enemy->combatStats.currentHp > 0) {
         turnCounter++;
@@ -36,10 +34,10 @@ void combatMode(Player *player, Enemy *enemy) {
 
         if (currentTurn == player) {
             playerNextTurn += playerPriority;
-            heapPush(colaTurnos, player, INT_MAX - playerNextTurn);
+            heapPush(colaTurnos, player, playerNextTurn);
         } else {
             enemyNextTurn += enemyPriority;
-            heapPush(colaTurnos, enemy, INT_MAX - enemyNextTurn);
+            heapPush(colaTurnos, enemy, enemyNextTurn);
         }
 
         fflush(stdout);
@@ -64,16 +62,19 @@ void combatMode(Player *player, Enemy *enemy) {
                 printf("\n\tHas obtenido: %s\n", potionDrop->name);
             }
         }
+       /* +++
+       No se incluye objmap.h actualmente desde combat.h, considerar esto.
        
-        // TODO: cuando el inventario esté implementado, recorrer enemy->drops
-        // (List *) y agregar cada GameObject al player->inventory.
-        // Ej:
-        // void *drop;
-        // listFirst(enemy->drops);
-        // while ((drop = listCurrent(enemy->drops)) != NULL) {
-        //     listPushBack(player->inventory, drop);
-        //     drop = listNext(enemy->drops);
-        // }
+       TODO: cuando el inventario esté implementado, recorrer enemy->drops
+       (List *) y agregar cada GameObject al player->inventory.
+       Ej:
+        void *drop;
+        listFirst(enemy->drops);
+        while ((drop = listCurrent(enemy->drops)) != NULL) {
+            listPushBack(player->inventory, drop);
+            drop = listNext(enemy->drops);
+        }
+        --- */
     }
     printf("\t");
     presioneTeclaParaContinuar();

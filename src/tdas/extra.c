@@ -10,19 +10,7 @@ es "cls" y el "clear" actual parece no funcionar correctamente.
     #define CLEAR_COMMAND "clear"
 #endif
 
-#define MAX_LINE_LENGTH 4096
-#define MAX_FIELDS      128
 #define MAX_LINEA 16
-
-// strdup propio para asegurar portabilidad
-void *_mystrdup(const char *token) {
-  size_t length = strlen(token)+1;
-  char *newToken = (char *) malloc(length);
-  if(!newToken) return NULL;
-
-  memcpy(newToken, token, length);
-  return newToken;
-}
 
 // Función para limpiar la pantalla
 void limpiarPantalla() { system(CLEAR_COMMAND); }
