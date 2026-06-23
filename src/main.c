@@ -144,7 +144,6 @@ void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSes
             case MODE_INVENTORY_VIEW:
                 handleInventoryInput(player, &currentSubMode);
                 break;
-
             case MODE_EXPLORATION:
                 prevX = player->x;
                 prevY = player->y;
@@ -175,6 +174,29 @@ void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSes
                         player->y = prevY;
                         limpiarPantalla();
                     }
+                }
+                else if (maze[player->y][player->x] == OBJECT_TILE) {
+                    renderExploration(maze, *player);
+                    
+                    GameObject *foundObject = chooseRandomObject();
+                    if (foundObject) {
+                        printf("\n\t¡Has encontrado un objeto!");
+                        printf("\n\t¿Deseas recogerlo? (S/N)\n\t< ");
+
+                        char choice = readCharOption();
+                        if (choice=='S' || choice == 's') {
+                            listPushBack(player->inventory, foundObject);
+                            printf("\n\t¡Has recogido el objeto!");
+                        } 
+                        else {
+                            printf("\n\tHas decidido dejar el objeto.");
+                            free(foundObject);
+                        }
+                    }
+                    maze[player->y][player->x] = EMPTY;
+                    printf("\n\t");
+                    presioneTeclaParaContinuar();
+                    limpiarPantalla();
                 }
                 break;
 
