@@ -1,9 +1,7 @@
 #ifndef COMBAT_H
 #define COMBAT_H
-#include "objmap.h"
 
-typedef struct Player Player;
-typedef struct Enemy Enemy;
+#include "entities.h"
 
 void combatMode(Player *player, Enemy *enemy);
 

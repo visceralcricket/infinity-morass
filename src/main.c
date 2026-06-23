@@ -10,7 +10,7 @@
 // ======== Prototypes ========
 void showMainMenu(char *username);
 void renderExploration(int maze[N][N], Player player);
-void runExplorationMode(int maze[N][N], Player *player);
+void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSession);
 // void showGlossary();
 
 // ==================== Main ====================
@@ -22,11 +22,12 @@ int main() {
         .x = 0,
         .y=  0,
         .combatStats = {100, 100, 5, 5, 5},
-        .inventory = NULL  // IMPORTANTE: aquí debería llamarse a listCreate() para inicializar inventario
+        .inventory = NULL,  // IMPORTANTE: aquí debería llamarse a listCreate() para inicializar inventario
     };
+    // Inicializar estructura que almacene propiedades clave del mapa actual
+    struct sessionFloor currentSession = {0};
 
-    int maze[N][N] = {0};
-    int mazeGenerated = 0;
+    int mazeGenerated = false;
     // Inicializar semilla aleatoria para generar laberintos únicos
     srand(time(NULL));
 
@@ -43,14 +44,16 @@ int main() {
     else strcpy(sessionPlayer.username, "Guest");
 
     
-    if(loadGame(&sessionPlayer)) {
+    if(loadGame(&sessionPlayer, &currentSession)) {
         printf("\n\t\t" COLOR_GREEN "Perfil encontrado. Partida cargada exitosamente." FORMAT_RESET "\n");
+        mazeGenerated = true;
     }
     
     else {
         printf("\n\t\t" COLOR_CYAN "Perfil nuevo. Inicializando matriz de datos.." FORMAT_RESET "\n");
-        // Solo incializamos una lista nueva si el jugador es nuevo
-        sessionPlayer.inventory = listCreate();
+        // Solo incializamos una lista nueva si el jugador es nuevo / no tiene inventario
+        if(!sessionPlayer.inventory) sessionPlayer.inventory = listCreate();
+        currentSession.isMapDirty = true;
     }
     
     printf("\t\t");
@@ -70,19 +73,19 @@ int main() {
             case '1':
                 
                 if(!mazeGenerated) {
-                    generateMaze(maze, 20);
+                    generateMaze(currentSession.maze, 20);
                     // Generar salidas, con MAX_NUM_EXITS = 3 (game.h)
-                    placeExits(maze, MAX_NUM_EXITS);
+                    placeExits(currentSession.maze, MAX_NUM_EXITS);
                     // Map *enemyMap = createEnemiesMap();
-                    placeEnemies(maze);
+                    placeEnemies(currentSession.maze);
                     // List spawnedEnemies = listCreate();
-                    placeObjects(maze);
-                    mazeGenerated = 1;
+                    placeObjects(currentSession.maze);
+                    mazeGenerated = true;
                 }
 
-                runExplorationMode(maze, &sessionPlayer);
+                runExplorationMode(currentSession.maze, &sessionPlayer, &currentSession);
 
-                if(saveGame(&sessionPlayer)) {
+                if(saveGame(&sessionPlayer, &currentSession)) {
                     printf("\n\t" FORMAT_BOLD COLOR_GREEN "Autoguardado completado." FORMAT_RESET "\n");
                 }
                 else {
@@ -104,14 +107,13 @@ int main() {
     return 0;
 }
 
-void runExplorationMode(int maze[N][N], Player *player) {
+void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSession) {
     
     bool playing = true;
     int prevX = 0, prevY = 0;
     GameMode currentSubMode = MODE_EXPLORATION;
     Enemy *currentEnemy = NULL;   // <-- nuevo
 
-    player->x = player->y = 0;
     limpiarPantalla();
 
     while(playing) {
@@ -137,7 +139,7 @@ void runExplorationMode(int maze[N][N], Player *player) {
 
         switch(currentSubMode) {
             case MODE_SETTINGS:
-                handleSettingsInput(player, &playing, &currentSubMode);
+                handleSettingsInput(player, &playing, &currentSubMode, currentSession);
                 break;
             case MODE_INVENTORY_VIEW:
                 handleInventoryInput(player, &currentSubMode);
@@ -161,8 +163,11 @@ void runExplorationMode(int maze[N][N], Player *player) {
 
                         generateMaze(maze, 20);
                         placeExits(maze, MAX_NUM_EXITS);
+                        placeEnemies(maze);
+                        placeObjects(maze);
 
                         player->x = player->y = 0;
+                        currentSession->isMapDirty = true;
                         limpiarPantalla();
                     }
                     else {
@@ -182,7 +187,7 @@ void runExplorationMode(int maze[N][N], Player *player) {
                 break;
             
             default:
-            break;
+                break;
         }
     }
     printf(SHOW_CURSOR);

@@ -1,5 +1,6 @@
 #include "combat.h"
 #include "game.h"
+#include "objmap.h"
 #include "../tdas/heap.h"
 #include "../ui/render.h"
 

@@ -16,10 +16,7 @@
 #define INF INT_MAX
 #define INT_ERROR -1
 #define MAX_FILENAME (MAX_USERNAME+15)
-#define N 25 // <- Maze's fixed size
 #define MAX_NUM_EXITS 2 // Máximo 2 salidas por mazmorra
-#define MAX_ENEMIES_PER_DUNGEON 5
-#define MAX_OBJECTS_PER_LEVEL 3
 
 // ======== Maze symbols ========
 #define WALL '#' // Obstacle
@@ -29,16 +26,6 @@
 #define ENEMY_TILE 'E'
 #define EXIT_TILE 2
 #define OBJECT_TILE 'o'
-
-// ======== Menu modes enum structure ========
-
-typedef enum {
-    MODE_MAIN_MENU = 0,
-    MODE_EXPLORATION,
-    MODE_SETTINGS,
-    MODE_INVENTORY_VIEW,
-    MODE_COMBAT
-} GameMode;
 
 // ======== Gameplay inputs ========
 #define ESC_KEY 27
@@ -59,24 +46,7 @@ typedef enum {
 #define D_KEY_UPPER 68
 #define D_KEY_LOWER 100
 
-// Estructura simple para enumerar movimientos/acciones
-typedef enum {
-    UP = 1,
-    DOWN = 2,
-    LEFT = 3,
-    RIGHT = 4
-} Action;
-
-// Structures' definitions
-typedef struct State State;
-
-// El laberinto comienza desde la esquina SUPERIOR-IZQUIERDA (UPPER-LEFT), considerar
-// cambiar esto a un inicio generado aleatoriamente
- struct State {
-    int currentRow; // modifies "y" axis
-    int currentColumn; // modifies "x" axis
-    State *parent; // Pointer to predecessor state
-};
+// Estructura para poder almacenar el mapa actual con el sistema de guardado de partidas
 
 // ==================== Prototypes ====================
 // Función recursiva BSF para construir un camino seguro
@@ -95,7 +65,7 @@ void placeObjects(int maze[N][N]);
 
 // ==================== Input handlers ====================
 void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode, Enemy **currentEnemy);
-void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode);
+void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode, sessionFloor *currentSession);
 void handleInventoryInput(Player *player, GameMode *currentSubMode);
 
 #include "enmap.h"

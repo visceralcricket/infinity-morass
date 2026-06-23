@@ -11,8 +11,8 @@
     #define MKDIR(path) mkdir(path, 0777)
 #endif
 
-bool saveGame(Player *player) {
-
+bool saveGame(Player *player, sessionFloor *currentSession) {
+    if(!currentSession->isMapDirty) return true;
     MKDIR("saves");
 
     // Modificar ruta para guardar progreso dentro de carpeta saves
@@ -40,12 +40,13 @@ bool saveGame(Player *player) {
             currentItem = (GameObject *) listNext(player->inventory);
         }
     }
+    fwrite(currentSession, sizeof(sessionFloor), 1, file);
+    currentSession->isMapDirty = false;
     fclose(file);
     return true;
 }
 
-bool loadGame(Player *player) {
-
+bool loadGame(Player *player, sessionFloor *currentSession) {
     char filename[MAX_FILENAME];
     snprintf(filename, sizeof(filename), "saves/%s.sav", player->username);
 
@@ -70,7 +71,10 @@ bool loadGame(Player *player) {
         fread(item, sizeof(GameObject), 1, file);
         listPushBack(player->inventory, item);
     }
-
+    if(fread(currentSession, sizeof(sessionFloor), 1, file) != 1) {
+        fclose(file);
+        return false;
+    }
     fclose(file);
     return true;
 }
