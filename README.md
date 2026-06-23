@@ -1,7 +1,7 @@
 # **infinity-morass**
 > *Roguelike de calabozos basado en terminal de texto.*
 
-<img src="https://img.shields.io/badge/version-1.8.4-blue" alt="version">
+<img src="https://img.shields.io/badge/version-1.8.5-blue" alt="version">
 
 [![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/main)](https://github.com/visceralcricket/infinity-morass/commits/main)
 
@@ -91,11 +91,40 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 
 * **`Makefile`**: Archivo utilizado para automatizar la compilación del programa en local con el comando: `mingw32-make` y que crea el ejecutable final: `infinity-morass.exe`
 
+## **Funcionalidades pendientes** 
+
+* A nivel de renderizado / visual
+  + Actualmente **NO** hay forma de distinguir las casillas de enemigos comúnes con jefes: sería ideal crear nuevas macros que representen mejor a cada enemigo de forma único o que sean capaces de diferenciar enemigos comúnes de jefes.
+
+  + No se le indica al jugador en qué nivel de la mazmorra se encuentra, es decir, no existe forma de trackear el número que representa la mazmorar actual: en caso de implementarse, considerar que, como la muestra topológica del mapa se guarda junto con el progreso del jugador, el número de la mazmorra que se almacenó en el archivo .sav **también** debe ser considerado de tal forma que el número de mazmorra actual no se reinicie al cargar una partida.
+
+* A nivel de lógica de procedimientos / sistemas
+    + Implementar funcionalidad de reiniciar personaje (o al menos los puntos de vida del mismo)
+
+    + Interacciones con objetos generados en el mapa y su posterior guardado en el inventario: actualmente estos no son interactuables ni existe una forma de guardarlos en el inventario.
+
+    + La generación de enemigos no limita jefes por mazmorra, sino que es de forma totalmente aleatoria: integrar métrica que lleve la cuenta de mazmorras recorridas y genere un enemigo jefe cada 4 niveles.
+
+## **Problemas conocidos**
+
+* A nivel de renderizado / visual
+  + ...
+
+* A nivel de lógica de procedimientos / sistemas
+  + Actualmente, al huir de un enemigo, se muestra que el jugador "derrotó" al enemigo, cuando esto no es correcto, puesto que escapar de un enemigo **≠** derrotar al mismo.
+
 ## **Changelog (historial de cambios)**
 <small>*Nota: Este changelog está en orden cronológico inverso.*</small>
 
 ### **Versión 1.8.0** (20-06-2026) 
 > Integración inicial de funcionalidades: modo de juego de combate, sistema de combate, finalización del sistema de guardado/carga de partidas y mejoras de calidad de vida.
+
+* Parche 1.8.5
+  + Implementadas secciones de **"Funcionalidades pendientes"** y **"Problemas conocidos"**
+
+  + Arreglos menores en inclusión de dependencias en **"combat.c, combat.h, enmap.h, game.h, render.h"**
+
+  + Se trasladaron los macros que definen los símbolos de la mazmorra al archivo **"entities.h"** para mantener la separación de responsabilidades adecuada para cada archivo.
 
 * Parche 1.8.4
   + Funcionalidad de guardado y carga de partidas ahora se encuentra finalizada: incluye el nivel/mazmorra donde se encontraba el jugador, los enemigos y objetos que existían en el mismo y la propia posición del jugador antes de cerrar el juego.
@@ -128,15 +157,6 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
   + Removido bug presente a partir de la versión 1.7.0, haciendo uso de métodos más robustos para hacer la limpieza del buffer y la lectura de input, todos cambios principalmente concentrados en el archivo **"extra.c"**
 
   + Refinado de los archivos encargados del renderizado del videojuego para garantizar la integridad y la fidelidad visual del programa tras haber incorporado el nuevo modo de juego de combate y sus respectivas mecánicas.
-
-  **Problemas conocidos**
-  + Al perder un combate y, por ende, ver su salud reducida a 0, el jugador **NO** es capaz de volver a comenzar la partida o reiniciar su personaje y/o estadísticas tras ser derrotado.
-
-  + El sistema de guardado aún no está implementado de tal forma que sea capaz de guardar la mazmorra en la que se encontraba el jugador para ofrecer una experiencia de juego más persistente.
-
-  + Los enemigos únicamente se generan de forma aleatoria en el primer nivel de la mazmorra, no en el resto de las mismas.
-
-  + Actualmente no existe una limitación para enemigos extremadamente poderosos, por ende la experiencia podriá sentirse abrumadora y desequilibrada.
 
 ### **Versión 1.7.0** (20-06-2026)
 > Se implemento sistema de combate y menú de combate.

@@ -18,15 +18,6 @@
 #define MAX_FILENAME (MAX_USERNAME+15)
 #define MAX_NUM_EXITS 2 // Máximo 2 salidas por mazmorra
 
-// ======== Maze symbols ========
-#define WALL '#' // Obstacle
-#define EMPTY ' ' // Empty/free tile
-#define START 'I' // Starting position of the agent
-#define GOAL 'M' // Goal tile
-#define ENEMY_TILE 'E'
-#define EXIT_TILE 2
-#define OBJECT_TILE 'o'
-
 // ======== Gameplay inputs ========
 #define ESC_KEY 27
 

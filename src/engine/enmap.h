@@ -1,13 +1,12 @@
 #ifndef ENEMYGEN_H
 #define ENEMYGEN_H
-/*
-Sólo incluir encabezado del motor principal del juego. Sólo es necesario
-hacer #include "game.h" y no "../engine/game.h" porque los archivos game y
-combat-system se encuentran en la misma carpeta
-*/
+/* +++
+Tras crear el archivo entities.h, ya no es necesario incluir toda la dependencia
+de game.h, sino únicamente entities.h y stdlib.h para utilizar NULL
+--- */
 
-#include "../engine/game.h"
-
+#include <stdlib.h>
+#include <string.h>
 #include "entities.h"
 #include "../tdas/hashmap.h"
 
