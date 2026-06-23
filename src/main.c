@@ -187,15 +187,16 @@ void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSes
                         if (choice=='S' || choice == 's') {
                             listPushBack(player->inventory, foundObject);
                             printf("\n\t¡Has recogido el objeto!");
+                            maze[player->y][player->x] = EMPTY;
+                            printf("\n\t");
+                            presioneTeclaParaContinuar();
                         } 
                         else {
-                            printf("\n\tHas decidido dejar el objeto.");
+                            player->x = prevX;
+                            player->y = prevY;
                             free(foundObject);
                         }
                     }
-                    maze[player->y][player->x] = EMPTY;
-                    printf("\n\t");
-                    presioneTeclaParaContinuar();
                     limpiarPantalla();
                 }
                 break;
