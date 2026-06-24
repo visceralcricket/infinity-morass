@@ -95,10 +95,18 @@ void renderInventoryOverlay(Player *player) {
         printf(FORMAT_DIM "El inventario está vacío.." FORMAT_RESET);
     }
     else {
+        GameObject *selectedItem = (GameObject *) listCurrent(player->inventory);
         GameObject *item = (GameObject *) listFirst(player->inventory);
         while (item != NULL) {
             SET_CURSOR_POS(currentRow, startCol);
             printf(CLEAR_LINE_TO_END);
+            
+            if (item == selectedItem) {
+                printf("-> ");
+            }
+            else {
+                printf(" ");
+            }
 
             const char *tipo;
             switch (item->equip) {
@@ -119,6 +127,13 @@ void renderInventoryOverlay(Player *player) {
 
             currentRow++;
             item = (GameObject *) listNext(player->inventory);
+        }
+        
+        if (selectedItem != NULL) {
+            listFirst(player->inventory);
+            while (listCurrent(player->inventory) != selectedItem && listCurrent(player->inventory) != NULL) {
+                listNext(player->inventory);
+            }
         }
     }
     SET_CURSOR_POS(N+4, 0);

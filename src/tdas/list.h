@@ -6,6 +6,9 @@ typedef struct List List;
 // Creates a list and returns its pointer
 List *listCreate();
 
+// Returns the pointer to the current node of the list
+void *listCurrent(List *L);
+
 // Returns the pointer to the first node of the list
 void *listFirst(List *L);
 

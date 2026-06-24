@@ -4,6 +4,7 @@
 void combatMode(Player *player, Enemy *enemy) {
 
     printf("\n\t¡Te has topado con un %s! ¡Comienza el combate!\n", enemy->enemyName);
+    printf("\n");
     presioneTeclaParaContinuar();
 
     Heap *colaTurnos = heapCreate();
@@ -48,8 +49,9 @@ void combatMode(Player *player, Enemy *enemy) {
     limpiarPantalla();
     if (player->combatStats.currentHp <= 0) {
         printf("\n\t¡Has sido derrotado! Tal parece que no lograrás ser el más fuerte de la mazmorra...\n");
-        printf("\n\t\tGAME OVER\n");
-        printf("\n\t¡Inténtalo de nuevo! ¡No te rindas!\n");
+        printf("\n\t\t\t\t\t GAME OVER\n");
+        printf("\n\t\t\t   ¡Inténtalo de nuevo! ¡No te rindas!\n");
+        printf("\n");
     } else {
         printf("\n\t¡Has derrotado al %s! ¡Felicidades!\n", enemy->enemyName);
 

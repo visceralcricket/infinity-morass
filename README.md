@@ -119,6 +119,9 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 ### **Versión 1.8.0** (20-06-2026) 
 > Integración inicial de funcionalidades: modo de juego de combate, sistema de combate, finalización del sistema de guardado/carga de partidas y mejoras de calidad de vida.
 
+* Parche 1.8.6
+  + Añadida la posibilidad de agarrar objetos en el mapa de juego.
+
 * Parche 1.8.5
   + Implementadas secciones de **"Funcionalidades pendientes"** y **"Problemas conocidos"**
 

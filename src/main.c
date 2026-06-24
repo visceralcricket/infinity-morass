@@ -23,6 +23,8 @@ int main() {
         .y=  0,
         .combatStats = {100, 100, 5, 5, 5},
         .inventory = NULL,  // IMPORTANTE: aquí debería llamarse a listCreate() para inicializar inventario
+        .equippedWeapon = NULL,
+        .equippedArmor = NULL
     };
     // Inicializar estructura que almacene propiedades clave del mapa actual
     struct sessionFloor currentSession = {0};
@@ -74,7 +76,7 @@ int main() {
                 
                 if(!mazeGenerated) {
                     generateMaze(currentSession.maze, 20);
-                    // Generar salidas, con MAX_NUM_EXITS = 3 (game.h)
+                    // Generar salidas, con MAX_NUM_EXITS = 2 (game.h)
                     placeExits(currentSession.maze, MAX_NUM_EXITS);
                     // Map *enemyMap = createEnemiesMap();
                     placeEnemies(currentSession.maze);
