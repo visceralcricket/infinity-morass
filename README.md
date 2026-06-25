@@ -1,7 +1,7 @@
 # **infinity-morass**
 > *Roguelike de calabozos basado en terminal de texto.*
 
-<img src="https://img.shields.io/badge/version-1.8.5-blue" alt="version">
+<img src="https://img.shields.io/badge/version-1.8.6-blue" alt="version">
 
 [![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/main)](https://github.com/visceralcricket/infinity-morass/commits/main)
 
