@@ -113,6 +113,14 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 * A nivel de lógica de procedimientos / sistemas
   + Actualmente, al huir de un enemigo, se muestra que el jugador "derrotó" al enemigo, cuando esto no es correcto, puesto que escapar de un enemigo **≠** derrotar al mismo.
 
+  + Al recoger un objeto en el inventario, las estadísticas afectadas que muestra este mismo (el resúmen de estadísticas afectadas) es poco claro y enrevesado: muestra **todas** las estadísticas que **podría** afectar en vez de simplificarlo al incremento (o decremento) de las estadísticas realmente afectadas.
+  Por ejemplo:
+  Poción pequeña [CONSUMIBLE]:
+    +40HP
+  Bomba molotov [CONSUMIBLE]:
+    +10 ATK
+    -5 SPD
+
 ## **Changelog (historial de cambios)**
 <small>*Nota: Este changelog está en orden cronológico inverso.*</small>
 
