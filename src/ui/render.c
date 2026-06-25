@@ -7,7 +7,7 @@ void showMainMenu(char *username) {
     printf("\t\t Bienvenido, " FORMAT_BOLD "%s" FORMAT_RESET "\n", username);
     separador2();
     puts("\n\t\t" FORMAT_BOLD "Opciones de juego" FORMAT_RESET "\n");
-    puts("\t\t1) Iniciar nueva partida");
+    puts("\t\t1) Iniciar partida");
     puts("\t\t2) Ver glosario");
     puts("\t\t3) Salir del juego");
 
