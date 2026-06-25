@@ -128,7 +128,11 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 > Integración inicial de funcionalidades: modo de juego de combate, sistema de combate, finalización del sistema de guardado/carga de partidas y mejoras de calidad de vida.
 
 * Parche 1.8.6
+<<<<<<< HEAD
   + Añadida la posibilidad de agarrar objetos en el mapa de juego.
+=======
+  + Rolled-back cambios realizados **"heap.c"** y **"combat.c"**: se dejó como Min-Heap y se preservó la resta con **INT_MAX**.
+>>>>>>> 7ac8a5274a085332c1ddc5d9eadddb7597efb56e
 
 * Parche 1.8.5
   + Implementadas secciones de **"Funcionalidades pendientes"** y **"Problemas conocidos"**
