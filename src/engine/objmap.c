@@ -2,16 +2,16 @@
 #include "game.h"
 
 static const ObjectTemplate objectTemplates[] = {
-    {"Poción pequeña", true, false},
-    {"Poción mediana", true, false},
-    {"Poción grande", true, false},
-    {"Espada ligera", false, true},
-    {"Espada pesada", false, true},
-    {"Ultra espadón", false, true},
-    {"Armadura ligera", false, true},
-    {"Armadura pesada", false, true},
-    {"Armadura berserker", false, true},
-    {"Rollo de historia", false, false}
+    {"Poción pequeña",     true,  false, SLOT_NONE},
+    {"Poción mediana",     true,  false, SLOT_NONE},
+    {"Poción grande",      true,  false, SLOT_NONE},
+    {"Espada ligera",      false, true,  SLOT_WEAPON},
+    {"Espada pesada",      false, true,  SLOT_WEAPON},
+    {"Ultra espadón",      false, true,  SLOT_WEAPON},
+    {"Armadura ligera",    false, true,  SLOT_ARMOR},
+    {"Armadura pesada",    false, true,  SLOT_ARMOR},
+    {"Armadura berserker", false, true,  SLOT_ARMOR},  // armadura aunque tenga ataque
+    {"Rollo de historia",  false, false, SLOT_NONE}
 };
 
 /* +++
@@ -70,6 +70,7 @@ GameObject* generateObject(const char *name)
     object->stats.maxHp = -1;
     object->stats.speed = -1;
     object->lore[0] = '\0';
+    object->equipSlot = SLOT_NONE;   // por defecto: no equipable, se sobreescribe si corresponde
     strncpy(object->name, name, MAX_OBJECT_NAME - 1);
     object->name[MAX_OBJECT_NAME - 1] = '\0';
 
@@ -90,6 +91,7 @@ GameObject *chooseRandomObject(void) {
     }
     else if(tpl->isEquippable) {
         object->equip = ITEM_EQUIPPABLE;
+        object->equipSlot = tpl->slot;   // <-- slot explícito desde el template
         generateStatsEquipabble(object);
     }
     else {
@@ -163,7 +165,7 @@ void generateStatsEquipabble(GameObject* object)
         object->stats.speed = -2;
     }
     else if(strcmp(object->name, "Armadura berserker") == 0) {
-        object->stats.attack = 0;
+        object->stats.attack = 12;
         object->stats.defense = 1;
         object->stats.maxHp = 30;
         object->stats.currentHp = object->stats.maxHp;
@@ -192,6 +194,8 @@ Map *createObjectsMap(void) {
 
         GameObject *object = generateObject(tpl->name);
         if(!object) continue;
+
+        if(tpl->isEquippable) object->equipSlot = tpl->slot;
 
         if(tpl->isConsumable) generateStatsConsumable(object);
         else if(tpl->isEquippable) generateStatsEquipabble(object);

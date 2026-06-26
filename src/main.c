@@ -10,7 +10,8 @@
 // ======== Prototypes ========
 void showMainMenu(char *username);
 void renderExploration(int maze[N][N], Player player);
-void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSession, Map *enemyMap);
+// runExplorationMode devuelve true si el jugador murió durante la sesión.
+bool runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSession, Map *enemyMap);
 // void showGlossary();
 
 // ==================== Main ====================
@@ -88,15 +89,37 @@ int main() {
                     mazeGenerated = true;
                 }
 
-                runExplorationMode(currentSession.maze, &sessionPlayer, &currentSession, enemyMap);
+                bool playerDied = runExplorationMode(currentSession.maze, &sessionPlayer, &currentSession, enemyMap);
 
-                if(saveGame(&sessionPlayer, &currentSession)) {
-                    printf("\n\t" FORMAT_BOLD COLOR_GREEN "Autoguardado completado." FORMAT_RESET "\n");
+                if(playerDied) {
+                    /* +++
+                    Permadeath: al morir, no guardamos al jugador muerto. En su lugar
+                    reseteamos su estado a uno fresco y forzamos regenerar la mazmorra
+                    en la próxima partida, dejando un save limpio en vez de uno corrupto.
+                    --- */
+                    sessionPlayer.x = 0;
+                    sessionPlayer.y = 0;
+                    sessionPlayer.combatStats = (Stats){100, 100, 5, 5, 5};
+                    sessionPlayer.equippedWeapon = NULL;
+                    sessionPlayer.equippedArmor = NULL;
+                    // Inventario nuevo y vacío (la partida muerta se descarta)
+                    sessionPlayer.inventory = listCreate();
+                    currentSession.floorCount = 0;
+                    mazeGenerated = false;
+
+                    saveGame(&sessionPlayer, &currentSession);
+                    printf("\n\t" FORMAT_BOLD COLOR_RED "Tu aventura ha terminado. La mazmorra reclama otra alma." FORMAT_RESET "\n");
+                    presioneTeclaParaContinuar();
                 }
                 else {
-                    printf("\n\t" FORMAT_BOLD COLOR_RED "Error al autoguardar la partida." FORMAT_RESET "\n");
+                    if(saveGame(&sessionPlayer, &currentSession)) {
+                        printf("\n\t" FORMAT_BOLD COLOR_GREEN "Autoguardado completado." FORMAT_RESET "\n");
+                    }
+                    else {
+                        printf("\n\t" FORMAT_BOLD COLOR_RED "Error al autoguardar la partida." FORMAT_RESET "\n");
+                    }
+                    presioneTeclaParaContinuar();
                 }
-                presioneTeclaParaContinuar();
                 break;
 
             case '2':
@@ -112,9 +135,10 @@ int main() {
     return 0;
 }
 
-void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSession, Map *enemyMap) {
+bool runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSession, Map *enemyMap) {
     
     bool playing = true;
+    bool playerDied = false;
     int prevX = 0, prevY = 0;
     GameMode currentSubMode = MODE_EXPLORATION;
     Enemy *currentEnemy = NULL;   // <-- nuevo
@@ -219,7 +243,14 @@ void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSes
                 combatMode(player, currentEnemy);   // <-- acá se llama el sistema de combate completo
                 free(currentEnemy);
                 currentEnemy = NULL;
-                currentSubMode = MODE_EXPLORATION;
+
+                // Si el jugador murió en combate, termina la sesión y vuelve al menú.
+                if(player->combatStats.currentHp <= 0) {
+                    playerDied = true;
+                    playing = false;
+                } else {
+                    currentSubMode = MODE_EXPLORATION;
+                }
                 limpiarPantalla();
                 break;
             
@@ -228,6 +259,7 @@ void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSes
         }
     }
     printf(SHOW_CURSOR);
+    return playerDied;
 }
 
 // void showGlossary() {}

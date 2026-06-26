@@ -98,6 +98,7 @@ void renderInventoryOverlay(Player *player) {
     if(!(player->inventory) || listSize(player->inventory) == 0) {
         SET_CURSOR_POS(currentRow, startCol);
         printf(FORMAT_DIM "El inventario está vacío.." FORMAT_RESET);
+        currentRow++;  // dejar la fila libre para que la sección de equipo no se solape
     }
     else {
         GameObject *selectedItem = (GameObject *) listCurrent(player->inventory);
@@ -137,10 +138,11 @@ void renderInventoryOverlay(Player *player) {
             item = (GameObject *) listNext(player->inventory);
         }
 
-        // Pista de control: leer pergaminos
+        // Pista de control
         SET_CURSOR_POS(currentRow+1, startCol);
         printf(FORMAT_DIM "Presiona 'e' para usar." FORMAT_RESET);
-        
+        currentRow += 2;
+
         if (selectedItem != NULL) {
             listFirst(player->inventory);
             while (listCurrent(player->inventory) != selectedItem && listCurrent(player->inventory) != NULL) {
@@ -148,6 +150,27 @@ void renderInventoryOverlay(Player *player) {
             }
         }
     }
+
+    // ==================== Sección de equipo actual ====================
+    // Se muestra siempre, aunque el inventario esté vacío, porque el jugador
+    // puede tener algo equipado sin items sueltos.
+    SET_CURSOR_POS(currentRow+2, startCol);
+    printf(FORMAT_BOLD COLOR_CYAN "==== EQUIPADO ====" FORMAT_RESET);
+
+    SET_CURSOR_POS(currentRow+3, startCol);
+    printf(CLEAR_LINE_TO_END);
+    if(player->equippedWeapon)
+        printf("Arma:     %s", player->equippedWeapon->name);
+    else
+        printf(FORMAT_DIM "Arma:     (ninguna)" FORMAT_RESET);
+
+    SET_CURSOR_POS(currentRow+4, startCol);
+    printf(CLEAR_LINE_TO_END);
+    if(player->equippedArmor)
+        printf("Armadura: %s", player->equippedArmor->name);
+    else
+        printf(FORMAT_DIM "Armadura: (ninguna)" FORMAT_RESET);
+
     SET_CURSOR_POS(N+4, 0);
 }
 
