@@ -93,9 +93,9 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 ## **Funcionalidades pendientes** 
 ```diff
 @@ A nivel de renderizado / visual @@
-- [PENDIENTE] Actualmente **NO** hay forma de distinguir las casillas de enemigos comúnes
-- con jefes: sería ideal crear nuevas macros que representen mejor a cada enemigo de forma
-- única o que sean capaces de diferenciar enemigos comúnes de jefes.
++ [RESUELTO] Actualmente **NO** hay forma de distinguir las casillas de enemigos comúnes
++ con jefes: sería ideal crear nuevas macros que representen mejor a cada enemigo de forma
++ única o que sean capaces de diferenciar enemigos comúnes de jefes.
 
 
 - [PENDIENTE] En la version actual no se ha implementado el glosario
@@ -142,6 +142,8 @@ reporte de bugs. $
 
 ### **Versión 1.8.0** (20-06-2026) 
 > Integración inicial de funcionalidades: modo de juego de combate, sistema de combate, finalización del sistema de guardado/carga de partidas y mejoras de calidad de vida.
+* Parche 1.8.8
+  + Correcion de generacion de enemeigos tipo BOSS en el mapa explorable
 
 * Parche 1.8.7
   + Realizadas mejoras generales de redacción de documentación, limpieza de comentarios innecesarios y refactorizaciones menores de código para mejorar legibilidad y coherencia.
