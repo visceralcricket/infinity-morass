@@ -10,6 +10,7 @@
 
 #include "../tdas/extra.h"
 #include "entities.h"
+#include "../tdas/hashmap.h" 
 
 // ======== Definiciones generales ========
 #define INF INT_MAX
@@ -48,7 +49,7 @@ void placeEnemies(int maze[N][N], int floorCount);
 void placeObjects(int maze[N][N]);
 
 // ==================== Manejo de input ====================
-void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode, Enemy **currentEnemy);
+void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode, Enemy **currentEnemy, Map *enemyMap);
 void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode, sessionFloor *currentSession);
 void handleInventoryInput(Player *player, GameMode *currentSubMode);
 

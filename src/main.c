@@ -10,7 +10,7 @@
 // ======== Prototypes ========
 void showMainMenu(char *username);
 void renderExploration(int maze[N][N], Player player);
-void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSession);
+void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSession, Map *enemyMap);
 // void showGlossary();
 
 // ==================== Main ====================
@@ -28,6 +28,10 @@ int main() {
     };
     // Inicializar estructura que almacene propiedades clave del mapa actual
     struct sessionFloor currentSession = {0};
+
+    // Construir el hashmap maestro de enemigos UNA sola vez. De aquí en adelante
+    // los enemigos se clonan desde el mapa en vez de regenerarse desde cero.
+    Map *enemyMap = createEnemiesMap();
 
     int mazeGenerated = false;
     // Inicializar semilla aleatoria para generar laberintos únicos
@@ -79,14 +83,12 @@ int main() {
                     generateMaze(currentSession.maze, 20);
                     // Generar salidas, con MAX_NUM_EXITS = 2 (game.h)
                     placeExits(currentSession.maze, MAX_NUM_EXITS);
-                    // Map *enemyMap = createEnemiesMap();
                     placeEnemies(currentSession.maze, currentSession.floorCount);
-                    // List spawnedEnemies = listCreate();
                     placeObjects(currentSession.maze);
                     mazeGenerated = true;
                 }
 
-                runExplorationMode(currentSession.maze, &sessionPlayer, &currentSession);
+                runExplorationMode(currentSession.maze, &sessionPlayer, &currentSession, enemyMap);
 
                 if(saveGame(&sessionPlayer, &currentSession)) {
                     printf("\n\t" FORMAT_BOLD COLOR_GREEN "Autoguardado completado." FORMAT_RESET "\n");
@@ -110,7 +112,7 @@ int main() {
     return 0;
 }
 
-void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSession) {
+void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSession, Map *enemyMap) {
     
     bool playing = true;
     int prevX = 0, prevY = 0;
@@ -150,7 +152,7 @@ void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSes
             case MODE_EXPLORATION:
                 prevX = player->x;
                 prevY = player->y;
-                handleWindowsInput(player, maze, &currentSubMode, &currentEnemy);  
+                handleWindowsInput(player, maze, &currentSubMode, &currentEnemy, enemyMap);  // <-- pasa el hashmap
 
                 if(maze[player->y][player->x] == EXIT_TILE) {
                     renderExploration(maze, *player);
@@ -208,7 +210,7 @@ void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSes
                 break;
 
             case MODE_COMBAT:
-                combatMode(player, currentEnemy);   
+                combatMode(player, currentEnemy);   // <-- acá se llama el sistema de combate completo
                 free(currentEnemy);
                 currentEnemy = NULL;
                 currentSubMode = MODE_EXPLORATION;

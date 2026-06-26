@@ -25,59 +25,84 @@ Enemy* generateEnemy(const char *name)
     enemy->combatStats.defense = -1;
     enemy->combatStats.maxHp = -1;
     enemy->combatStats.speed = -1;
+    enemy->drops = NULL;
     strncpy(enemy->enemyName, name, MAX_USERNAME - 1);
     enemy->enemyName[MAX_USERNAME - 1] = '\0';
 
     return enemy;
 }
 
-Enemy *spawnRandomEnemy(void) {
-    int count = sizeof(enemyTemplates) / sizeof(enemyTemplates[0]);
+// ==================== Selección de nombres al azar ====================
 
+// Devuelve el nombre de un enemigo común (no jefe) al azar
+const char *randomCommonName(void) {
+    int count = sizeof(enemyTemplates) / sizeof(enemyTemplates[0]);
     int commonIndices[count];
     int commonCount = 0;
-    for(int i = 0; i < count; i++) {
+    for(int i = 0; i < count; i++)
         if(!enemyTemplates[i].isBoss) commonIndices[commonCount++] = i;
-    }
     if(commonCount == 0) return NULL;
-
-    const EnemyTemplate *tpl = &enemyTemplates[commonIndices[rand() % commonCount]];
-
-    Enemy *enemy = generateEnemy((char *)tpl->name);
-    if(!enemy) return NULL;
-
-    enemy->x = -1;
-    enemy->y = -1;
-    generateStatsCommonEnemy(enemy, tpl->difficulty);
-
-    return enemy;
+    return enemyTemplates[commonIndices[rand() % commonCount]].name;
 }
 
-
-
-Enemy *spawnRandomBoss(void) {
+// Devuelve el nombre de un jefe al azar
+const char *randomBossName(void) {
     int count = sizeof(enemyTemplates) / sizeof(enemyTemplates[0]);
-
-    // Recolectar los índices de templates que son jefes
     int bossIndices[count];
     int bossCount = 0;
-    for(int i = 0; i < count; i++) {
+    for(int i = 0; i < count; i++)
         if(enemyTemplates[i].isBoss) bossIndices[bossCount++] = i;
-    }
     if(bossCount == 0) return NULL;
-
-    const EnemyTemplate *tpl = &enemyTemplates[bossIndices[rand() % bossCount]];
-
-    Enemy *enemy = generateEnemy((char *)tpl->name);
-    if(!enemy) return NULL;
-
-    enemy->x = -1;
-    enemy->y = -1;
-    generateStatsBossEnemy(enemy, tpl->difficulty);
-
-    return enemy;
+    return enemyTemplates[bossIndices[rand() % bossCount]].name;
 }
 
+// ==================== Clonado ====================
+
+/* +++
+Copia un enemigo "maestro" del hashmap a una instancia nueva e independiente
+para usar en combate. El maestro nunca se modifica: peleamos siempre con la copia
+y liberamos sólo la copia al terminar.
+OJO: drops se setea en NULL para evitar que la copia y el maestro compartan
+la misma lista (aliasing). Cuando se implementen los drops del enemigo, aquí
+habrá que clonar la lista, no copiar el puntero.
+--- */
+Enemy *cloneEnemy(const Enemy *src) {
+    if(!src) return NULL;
+    Enemy *copy = (Enemy*) malloc(sizeof(Enemy));
+    if(!copy) return NULL;
+    *copy = *src;                                          // copia stats, nombre, x, y
+    copy->combatStats.currentHp = copy->combatStats.maxHp; // HP lleno al spawnear
+    copy->drops = NULL;                                    // evitar aliasing de la lista
+    return copy;
+}
+
+// ==================== Spawn desde el hashmap ====================
+
+Enemy *spawnEnemyFromMap(Map *enemyMap) {
+    if(!enemyMap) return NULL;
+    const char *name = randomCommonName();
+    if(!name) return NULL;
+
+    MapPair *pair = mapSearch(enemyMap, (char*)name);
+    if(!pair) return NULL;
+
+    Enemy *master = (Enemy*) pair->value;
+    return cloneEnemy(master);
+}
+
+Enemy *spawnBossFromMap(Map *enemyMap) {
+    if(!enemyMap) return NULL;
+    const char *name = randomBossName();
+    if(!name) return NULL;
+
+    MapPair *pair = mapSearch(enemyMap, (char*)name);
+    if(!pair) return NULL;
+
+    Enemy *master = (Enemy*) pair->value;
+    return cloneEnemy(master);
+}
+
+// ==================== Generación de stats ====================
 
 void generateStatsCommonEnemy(Enemy* enemy, int difficulty)
 {
@@ -156,6 +181,8 @@ void generateStatsBossEnemy(Enemy* enemy, int difficulty)
         enemy->combatStats.speed     = 99 * difficulty;
     }
 }
+
+// ==================== Construcción del hashmap maestro ====================
 
 Map *createEnemiesMap(void) {
     Map *map = mapCreate();

@@ -107,8 +107,6 @@ void placeEnemies(int maze[N][N], int floorCount) {
     }
 
     if(floorCount > 0 && floorCount % 4 == 0) {
-        printf("\n\t[DEBUG] Generando jefe en piso %d\n", floorCount);
-        _getch();
         int bossPlaced = 0;
         while(!bossPlaced) {
             int randomX = rand() % N;
@@ -136,8 +134,8 @@ void placeObjects(int maze[N][N]) {
 }
 
 // Faltaría implementar manejo de input para Linux
-// Actualizamos la firma para recibir el puntero del jugador y el flag del bucle
-void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode, Enemy **currentEnemy) {
+// Recibe el hashmap maestro de enemigos para spawnear copias desde él
+void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode, Enemy **currentEnemy, Map *enemyMap) {
     int key = _getch();
 
     // Normalizar key recibida a minúscula si es que va de la A a la Z
@@ -172,18 +170,18 @@ void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode
         }
     }
     if(maze[player->y][player->x] == ENEMY_TILE) {
-        Enemy *enemy = spawnRandomEnemy();
+        Enemy *enemy = spawnEnemyFromMap(enemyMap);
         if(enemy) {
             enemy->x = player->x;
             enemy->y = player->y;
             printf("\n\tHas encontrado a: %s\n\t", enemy->enemyName);
             maze[player->y][player->x] = EMPTY;
-            *currentEnemy = enemy;       // <-- nuevo
+            *currentEnemy = enemy;
             *currentSubMode = MODE_COMBAT;
         }
     }
     else if(maze[player->y][player->x] == BOSS_TILE) {
-        Enemy *boss = spawnRandomBoss();
+        Enemy *boss = spawnBossFromMap(enemyMap);
         if(boss) {
             boss->x = player->x;
             boss->y = player->y;

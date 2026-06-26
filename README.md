@@ -109,7 +109,8 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 @@ A nivel de lógica de procedimientos / sistemas @@
 - [PENDIENTE] Implementar funcionalidad de reiniciar personaje (o al menos los puntos de vida del mismo)
 
-- [PENDIENTE] Actualmente la generacion de enemigos no usa el mapa para mostrarlos, los generas desde 0 siempre
++ [RESUELTO] Actualmente la generacion de enemigos no usa el mapa para mostrarlos, los generas desde 0 siempre. 
++ Resuelto en parche 1.8.8
 
 + [RESUELTO] Interacciones con objetos generados en el mapa y su posterior guardado en el inventario:
 + actualmente estos no son interactuables ni existe una forma de guardarlos en el inventario.
@@ -146,7 +147,10 @@ reporte de bugs. $
 > Integración inicial de funcionalidades: modo de juego de combate, sistema de combate, finalización del sistema de guardado/carga de partidas y mejoras de calidad de vida.
 * Parche 1.8.8
   + Correcion de generacion de enemeigos tipo BOSS en el mapa explorable
+
   + Ahora cuando huyes de un combate se muestro un texto acorde
+
+  + Optimizacion de generacion de enemigos
 
 * Parche 1.8.7
   + Realizadas mejoras generales de redacción de documentación, limpieza de comentarios innecesarios y refactorizaciones menores de código para mejorar legibilidad y coherencia.
