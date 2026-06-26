@@ -121,14 +121,17 @@ void renderInventoryOverlay(Player *player) {
                 default:              tipo = "Desconocido"; break;
             }
 
-            printf("%s [%s] - ATK:%d DEF:%d HP:%d/%d SPD:%d",
-                   item->name,
-                   tipo,
-                   item->stats.attack,
-                   item->stats.defense,
-                   item->stats.currentHp,
-                   item->stats.maxHp,
-                   item->stats.speed);
+            printf("%s [%s]", item->name, tipo);
+            /* +++
+             El especificador de formato %+d mostrará el signo del valor entero que se imprima, por
+             ejemplo:
+             * si item->stats.attack = -5, se imprimirá "-5",
+             * si item->stats.speed = 5, se imprimirá "+5"
+             --- */
+            if(item->stats.maxHp) printf(" %+d HP", item->stats.maxHp);
+            if(item->stats.attack) printf(" %+d ATK", item->stats.attack);
+            if(item->stats.defense) printf(" %+d DEF", item->stats.defense);
+            if(item->stats.speed) printf(" %+d SPD", item->stats.speed);
 
             currentRow++;
             item = (GameObject *) listNext(player->inventory);
@@ -251,4 +254,15 @@ void renderCombatOverlay(Player *player, Enemy *enemy, void *currentTurn, int tu
     presioneTeclaParaContinuar();
 
     SET_CURSOR_POS(N+4, 0);
+}
+
+void renderGameOverScreen(const char *killerName) {
+    limpiarPantalla();
+    separador1();
+    printf("\n\t\t" FORMAT_BOLD COLOR_RED "HAS SIDO DERROTADO!" FORMAT_RESET "\n");
+    printf("\t   Caíste ante las garras de " FORMAT_BOLD "%s" FORMAT_RESET "\n\n", killerName);
+    printf("\t\t\t   " FORMAT_DIM "GAME OVER" FORMAT_RESET "\n\n");
+    printf("\t " FORMAT_DIM "La oscuridad de la mazmorra te arrastra hacia sus entrañas..." FORMAT_RESET "\n\n");
+    separador1();
+    printf("\n\tDeseas reencarnar e intentarlo de nuevo? (S/N)\n\t< ");
 }

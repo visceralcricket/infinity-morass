@@ -25,4 +25,6 @@ void renderInventoryOverlay(Player *player);
 // Sub-menu superpuesto para el combate
 void renderCombatOverlay(Player *player, Enemy *enemy, void *currentTurn, int turnCounter, bool *fleeCondition);
 
+void renderGameOverScreen(const char *killerName);
+
 #endif

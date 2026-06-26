@@ -40,10 +40,10 @@ void presioneTeclaParaContinuar();
 // Leer input de tal forma que los posibles errores en el mismo sean tratados correctamente.
 char readCharOption();
 
-// Separador de 2 tabulados + 40 dashes '-'
+// Separador de 2 tabulados + 40 dashes '-' en formado dim
 void separador1();
 
-// Separador de 2 tabulados + 40 símbolos igual '='
+// Separador de 2 tabulados + 40 símbolos igual '=' en formado bold
 void separador2();
 
 #endif
