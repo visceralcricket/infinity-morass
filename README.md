@@ -93,14 +93,14 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 ## **Funcionalidades pendientes** 
 ```diff
 @@ A nivel de renderizado / visual @@
-+ [RESUELTO] Actualmente **NO** hay forma de distinguir las casillas de enemigos comúnes
++ [RESUELTO] Actualmente **NO** hay forma de distinguir las casillas de enemigos comunes
 + con jefes: sería ideal crear nuevas macros que representen mejor a cada enemigo de forma
-+ única o que sean capaces de diferenciar enemigos comúnes de jefes. Resuelto en parche 1.8.8
++ única o que sean capaces de diferenciar enemigos comunes de jefes. Resuelto en parche 1.8.8
 
-- [PENDIENTE] En la version actual no se ha implementado el glosario
+- [PENDIENTE] En la versión actual no se ha implementado el glosario
 
 + [RESUELTO] No se le indica al jugador en qué nivel de la mazmorra se encuentra, es decir,
-+ no existe forma de trackear el número que representa la mazmora actual: en caso de
++ no existe forma de trackear el número que representa la mazmorra actual: en caso de
 + implementarse, considerar que, como la muestra topológica del mapa se guarda junto con
 + el progreso del jugador, el número de la mazmorra que se almacenó en el archivo .sav
 + **también** debe ser considerado de tal forma que el número de mazmorra actual no se
@@ -114,9 +114,7 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 
 + [RESUELTO] Implementar el uso de objetos (pociones) en combate
 
-- [PENDIENTE] Implementar funcionalidad de reiniciar personaje (o al menos los puntos de vida del mismo)
-
-+ [RESUELTO] Actualmente la generacion de enemigos no usa el mapa para mostrarlos, los generas desde 0 siempre. 
++ [RESUELTO] Actualmente la generación de enemigos no usa el mapa para mostrarlos, los generas desde 0 siempre.
 + Resuelto en parche 1.8.8
 
 + [RESUELTO] Interacciones con objetos generados en el mapa y su posterior guardado en el inventario:
@@ -125,7 +123,7 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 
 + [RESUELTO] La generación de enemigos no limita jefes por mazmorra, sino que es de forma totalmente
 + aleatoria: integrar métrica que lleve la cuenta de mazmorras recorridas y genere un enemigo jefe cada 4 niveles.
-+ Resuelto en pache 1.8.8
++ Resuelto en parche 1.8.8
 ```
 ## **Problemas conocidos**
 ```diff
@@ -134,10 +132,10 @@ $ No se han detectado problemas de renderizado. Por favor informar en caso de ob
 reporte de bugs. $
 
 @@ A nivel de lógica de procedimientos / sistemas @@
-+ [Resuelto] Actualmente, al huir de un enemigo, se muestra que el jugador "derrotó" al enemigo, cuando esto no
++ [RESUELTO] Actualmente, al huir de un enemigo, se muestra que el jugador "derrotó" al enemigo, cuando esto no
 + es correcto, puesto que escapar de un enemigo **≠** derrotar al mismo. Resuelto en el parche 1.8.8
 
-+ [RESUELTO] Al recoger un objeto en el inventario, las estadísticas afectadas que muestra este mismo (el resúmen
++ [RESUELTO] Al recoger un objeto en el inventario, las estadísticas afectadas que muestra este mismo (el resumen
 + de estadísticas afectadas) es poco claro y enrevesado: muestra **todas** las estadísticas que **podría** afectar
 + en vez de simplificarlo al incremento (o decremento) de las estadísticas realmente afectadas.
 + Por ejemplo:
@@ -153,22 +151,20 @@ reporte de bugs. $
 > Integración inicial de funcionalidades: modo de juego de combate, sistema de combate, finalización del sistema de guardado/carga de partidas y mejoras de calidad de vida.
 
 * Parche 1.8.9
-  + Inclusión de sistema de *GameOver* con el cual reiniciar (o no) el personaje del jugador, eliminando el checkeo de HP del jugador <= 0 en **combat.c**. Esta funcionalidad se distribuyó en 2 mitades: el renderizado del la pantalla *GameOver* (**renderGameOverScreen**) localizado en los archivos **ui/render** y la lógica detrás de reiniciar el personaje del usuario para volver a comenzar el juego desde el nivel de mazmorra 1 en los archivos **engine/game** (**resetPlayerProgress**).
-
-  + Refactorizaciones menores a lo largo de archivos **combat.c, combat.h, main.c** para adaptar la nueva funcionalidad de GameOver.
+  + Inclusión de sistema de *GameOver* con el cual reiniciar (o no) el personaje del jugador, eliminando el checkeo de HP del jugador <= 0 en **combat.c**. Esta funcionalidad se distribuyó en 2 mitades: el renderizado de la pantalla *GameOver* (**renderGameOverScreen**) localizado en los archivos **ui/render** y la lógica detrás de reiniciar el personaje del usuario para volver a comenzar el juego desde el nivel de mazmorra 1 en los archivos **engine/game** (**resetPlayerProgress**).
 
   + Implementada mejora en la visualización de estadísticas afectadas por cada objeto en el inventario.
 
-  + Implementacion de la historia y pergaminos interactivos
+  + Implementación de la historia y pergaminos interactivos.
 
-  + Pulido del sistema de equipamiento y objetos
+  + Pulido del sistema de equipamiento y objetos.
 
 * Parche 1.8.8
-  + Correcion de generacion de enemeigos tipo BOSS en el mapa explorable
+  + Corrección de generación de enemigos tipo BOSS en el mapa explorable.
 
-  + Ahora cuando huyes de un combate se muestro un texto acorde
+  + Ahora cuando huyes de un combate se muestra un texto acorde.
 
-  + Optimizacion de generacion de enemigos
+  + Optimización de generación de enemigos.
 
 * Parche 1.8.7
   + Realizadas mejoras generales de redacción de documentación, limpieza de comentarios innecesarios y refactorizaciones menores de código para mejorar legibilidad y coherencia.
@@ -181,22 +177,14 @@ reporte de bugs. $
 
   + Añadidos comentarios menores a lo largo del código para explicar más a profundidad el funcionamiento de procedimientos y funciones que podrían resultar más complejas o de mayor interés formativo.
 
-  + Inclusión de coloreado de texto con <code><b><span style="color: #ebffa4cb;">HTML</span></b></code> para mayor claridad y facilidad de lectura (sólo visible a la hora de descargar este archivo puesto que el motor de Github Flavored Markdown GLM lo sanitiza).
+  + Inclusión de coloreado de texto con <code><b><span style="color: #ebffa4cb;">HTML</span></b></code> para mayor claridad y facilidad de lectura (sólo visible a la hora de descargar este archivo puesto que el motor de Github Flavored Markdown GFM lo sanitiza).
 
   + Implementado formateador **"diff"** para visualización de secciones *"Funcionalidades pendientes"* y *"Problemas conocidos"*
 
 * Parche 1.8.6
-<<<<<<< HEAD
-<<<<<<< HEAD
   + Añadida la posibilidad de agarrar objetos en el mapa de juego.
-=======
+
   + Rolled-back cambios realizados **"heap.c"** y **"combat.c"**: se dejó como Min-Heap y se preservó la resta con **INT_MAX**.
->>>>>>> 7ac8a5274a085332c1ddc5d9eadddb7597efb56e
-=======
-  + Añadida la posibilidad de agarrar objetos en el mapa de juego.
-  
-  + Rolled-back cambios realizados **"heap.c"** y **"combat.c"**: se dejó como Min-Heap y se preservó la resta con **INT_MAX**.
->>>>>>> de855082f2f71e18cf6a772b18f90d64fb71e99e
 
 * Parche 1.8.5
   + Implementadas secciones de **"Funcionalidades pendientes"** y **"Problemas conocidos"**
@@ -230,7 +218,7 @@ reporte de bugs. $
 * Parche 1.8.2
   + Implementado sistema inicial de generación de objetos en el mapa del videojuego (únicamente visualización, no interacción)
   
-  + Implementacion inicial del dropeo de items para los enemigos
+  + Implementación inicial del dropeo de items para los enemigos
 
 * Parche 1.8.1
   + Removido bug presente a partir de la versión 1.7.0, haciendo uso de métodos más robustos para hacer la limpieza del buffer y la lectura de input, todos cambios principalmente concentrados en el archivo **"extra.c"**
@@ -238,7 +226,7 @@ reporte de bugs. $
   + Refinado de los archivos encargados del renderizado del videojuego para garantizar la integridad y la fidelidad visual del programa tras haber incorporado el nuevo modo de juego de combate y sus respectivas mecánicas.
 
 ### **Versión 1.7.0** (20-06-2026)
-> Se implemento sistema de combate y menú de combate.
+> Se implementó sistema de combate y menú de combate.
 
 * Parche 1.7.2
   + Se realizaron preparaciones generales para asegurar la correcta integración de las funcionalidades de modo de juego de combate y sus respectivas mecánicas.
@@ -255,9 +243,9 @@ reporte de bugs. $
   + Removida verificación temporal del mapeo de enemigos en el TDA Mapa.
 
 * Parche 1.7.0
-  + Implementada versión incial de sistema de combate y menú interactivo de combate.
+  + Implementada versión inicial de sistema de combate y menú interactivo de combate.
 
-  + En el menú de combate existe un bug donde, al darle a Enter en un momento donde no es necesario, el jugador puede escribir en el lado izquierdo de la pantalla pero sin tener impacto alguno en la experiencia de juego. No afecta a la visualizacion del mapa
+  + En el menú de combate existe un bug donde, al darle a Enter en un momento donde no es necesario, el jugador puede escribir en el lado izquierdo de la pantalla pero sin tener impacto alguno en la experiencia de juego. No afecta a la visualización del mapa
 
 
 ### **Versión 1.6.0** (18-06-2026)
