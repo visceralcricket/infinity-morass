@@ -25,4 +25,6 @@ void generateStatsEquipabble(GameObject* object);
 
 void generateStatsKey(GameObject* object);
 
+Map *createObjectsMap(void);
+
 #endif

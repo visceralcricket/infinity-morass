@@ -193,9 +193,18 @@ Map *createObjectsMap(void) {
         GameObject *object = generateObject(tpl->name);
         if(!object) continue;
 
-        if(tpl->isConsumable) generateStatsConsumable(object);
-        else if(tpl->isEquippable) generateStatsEquipabble(object);
-        else generateStatsKey(object);
+        if(tpl->isConsumable) { 
+            object->equip = ITEM_CONSUMABLE;
+            generateStatsConsumable(object);
+        }
+        else if(tpl->isEquippable) {
+            object->equip = ITEM_EQUIPPABLE;
+            generateStatsEquipabble(object);
+        }
+        else {
+            object->equip = ITEM_KEY;
+            generateStatsKey(object);
+        }
 
         mapInsert(map, object->name, object);
     }

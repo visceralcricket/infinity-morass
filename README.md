@@ -149,6 +149,9 @@ reporte de bugs. $
 ## **Changelog (historial de cambios)**
 <small>*Nota: Este changelog está en orden cronológico inverso.*</small>
 
+### **Versión 1.9.0** (26-06-2026) 
+> Añadidas las implementaciones de equipar y usar objetos, además de añadirse el glosario de enemigos y objetos.
+
 ### **Versión 1.8.0** (20-06-2026) 
 > Integración inicial de funcionalidades: modo de juego de combate, sistema de combate, finalización del sistema de guardado/carga de partidas y mejoras de calidad de vida.
 
