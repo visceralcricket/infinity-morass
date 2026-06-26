@@ -94,7 +94,7 @@ cantidad de enemigos que se van a generar por mazmorra, pero a fines de convenie
 en cuenta que la prioridad actualmente está en la arquitectura del programa y no tanto en
 este tipo de funcionalidades finas, se va a ignorar.
 --- */
-void placeEnemies(int maze[N][N]) {
+void placeEnemies(int maze[N][N], int floorCount) {
     int placed = 0;
     while(placed < MAX_ENEMIES_PER_LEVEL) {
         int randomX = rand() % N;
@@ -103,6 +103,20 @@ void placeEnemies(int maze[N][N]) {
         if(maze[randomY][randomX] == 0 && (randomX != 0 || randomY != 0)) {
             maze[randomY][randomX] = ENEMY_TILE;
             placed++;
+        }
+    }
+
+    if(floorCount > 0 && floorCount % 4 == 0) {
+        printf("\n\t[DEBUG] Generando jefe en piso %d\n", floorCount);
+        _getch();
+        int bossPlaced = 0;
+        while(!bossPlaced) {
+            int randomX = rand() % N;
+            int randomY = rand() % N;
+            if(maze[randomY][randomX] == 0 && (randomX != 0 || randomY != 0)) {
+                maze[randomY][randomX] = BOSS_TILE;
+                bossPlaced = 1;
+            }
         }
     }
 }
@@ -168,6 +182,18 @@ void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode
             *currentSubMode = MODE_COMBAT;
         }
     }
+    else if(maze[player->y][player->x] == BOSS_TILE) {
+        Enemy *boss = spawnRandomBoss();
+        if(boss) {
+            boss->x = player->x;
+            boss->y = player->y;
+            printf("\n\t" FORMAT_BOLD COLOR_RED "Un jefe bloquea tu camino: %s" FORMAT_RESET "\n\t", boss->enemyName);
+            maze[player->y][player->x] = EMPTY;
+            *currentEnemy = boss;
+            *currentSubMode = MODE_COMBAT;
+        }
+    }
+
 }
 
 void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode, sessionFloor *currentSession) {

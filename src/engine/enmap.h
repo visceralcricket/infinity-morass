@@ -21,6 +21,8 @@ Enemy* generateEnemy(const char *name);
 
 Enemy *spawnRandomEnemy(void);
 
+Enemy *spawnRandomBoss(void);
+
 // Función para comenzar a crear manualmente los enemigos y sus stats
 void generateStatsCommonEnemy(Enemy* enemy, int difficulty);
 

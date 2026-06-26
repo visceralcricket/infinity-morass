@@ -75,11 +75,12 @@ int main() {
             case '1':
                 
                 if(!mazeGenerated) {
+                    currentSession.floorCount = 1;
                     generateMaze(currentSession.maze, 20);
                     // Generar salidas, con MAX_NUM_EXITS = 2 (game.h)
                     placeExits(currentSession.maze, MAX_NUM_EXITS);
                     // Map *enemyMap = createEnemiesMap();
-                    placeEnemies(currentSession.maze);
+                    placeEnemies(currentSession.maze, currentSession.floorCount);
                     // List spawnedEnemies = listCreate();
                     placeObjects(currentSession.maze);
                     mazeGenerated = true;
@@ -149,7 +150,7 @@ void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSes
             case MODE_EXPLORATION:
                 prevX = player->x;
                 prevY = player->y;
-                handleWindowsInput(player, maze, &currentSubMode, &currentEnemy);  // <-- pasa el puntero
+                handleWindowsInput(player, maze, &currentSubMode, &currentEnemy);  
 
                 if(maze[player->y][player->x] == EXIT_TILE) {
                     renderExploration(maze, *player);
@@ -162,9 +163,10 @@ void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSes
                         printf("\n\t");
                         presioneTeclaParaContinuar();
 
+                        currentSession->floorCount++;
                         generateMaze(maze, 20);
                         placeExits(maze, MAX_NUM_EXITS);
-                        placeEnemies(maze);
+                        placeEnemies(maze, currentSession->floorCount);
                         placeObjects(maze);
 
                         player->x = player->y = 0;
@@ -206,7 +208,7 @@ void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSes
                 break;
 
             case MODE_COMBAT:
-                combatMode(player, currentEnemy);   // <-- acá se llama el sistema de combate completo
+                combatMode(player, currentEnemy);   
                 free(currentEnemy);
                 currentEnemy = NULL;
                 currentSubMode = MODE_EXPLORATION;

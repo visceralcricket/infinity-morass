@@ -44,7 +44,7 @@ lo cual permitiría trackear y mantener la persistencia de los enemigos
 tanto durante el gameplay como a la hora de guardar la partida, pero
 por fines prácticos y limitaciones de tiempo se va a dejar así.
 --- */
-void placeEnemies(int maze[N][N]);
+void placeEnemies(int maze[N][N], int floorCount);
 void placeObjects(int maze[N][N]);
 
 // ==================== Manejo de input ====================

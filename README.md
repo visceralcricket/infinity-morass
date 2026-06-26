@@ -97,6 +97,9 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 - con jefes: sería ideal crear nuevas macros que representen mejor a cada enemigo de forma
 - única o que sean capaces de diferenciar enemigos comúnes de jefes.
 
+
+- [PENDIENTE] En la version actual no se ha implementado el glosario
+
 + [RESUELTO] No se le indica al jugador en qué nivel de la mazmorra se encuentra, es decir,
 + no existe forma de trackear el número que representa la mazmora actual: en caso de
 + implementarse, considerar que, como la muestra topológica del mapa se guarda junto con
@@ -111,8 +114,8 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 + actualmente estos no son interactuables ni existe una forma de guardarlos en el inventario.
 + Resuelto el 25-06-2026.
 
-- [PENDIENTE] La generación de enemigos no limita jefes por mazmorra, sino que es de forma totalmente
-- aleatoria: integrar métrica que lleve la cuenta de mazmorras recorridas y genere un enemigo jefe cada 4 niveles.
++ [RESUELTO] La generación de enemigos no limita jefes por mazmorra, sino que es de forma totalmente
++ aleatoria: integrar métrica que lleve la cuenta de mazmorras recorridas y genere un enemigo jefe cada 4 niveles.
 ```
 ## **Problemas conocidos**
 ```diff
@@ -130,6 +133,9 @@ reporte de bugs. $
 - Por ejemplo:
 - Poción pequeña [CONSUMIBLE]: +40HP
 - Bomba molotov [CONSUMIBLE]: +10 ATK -5 SPD
+
+
+- [PENDIENTE] Actualmente la generacion de enemigos no usa el mapa para mostrarlos, los generas desde 0 siempre
 ```
 ## **Changelog (historial de cambios)**
 <small>*Nota: Este changelog está en orden cronológico inverso.*</small>

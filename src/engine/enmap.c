@@ -33,20 +33,51 @@ Enemy* generateEnemy(const char *name)
 
 Enemy *spawnRandomEnemy(void) {
     int count = sizeof(enemyTemplates) / sizeof(enemyTemplates[0]);
-    int randomIndex = rand() % count;
-    const EnemyTemplate *tpl = &enemyTemplates[randomIndex];
+
+    int commonIndices[count];
+    int commonCount = 0;
+    for(int i = 0; i < count; i++) {
+        if(!enemyTemplates[i].isBoss) commonIndices[commonCount++] = i;
+    }
+    if(commonCount == 0) return NULL;
+
+    const EnemyTemplate *tpl = &enemyTemplates[commonIndices[rand() % commonCount]];
 
     Enemy *enemy = generateEnemy((char *)tpl->name);
     if(!enemy) return NULL;
 
     enemy->x = -1;
     enemy->y = -1;
-
-    if(tpl->isBoss) generateStatsBossEnemy(enemy, tpl->difficulty);
-    else generateStatsCommonEnemy(enemy, tpl->difficulty);
+    generateStatsCommonEnemy(enemy, tpl->difficulty);
 
     return enemy;
 }
+
+
+
+Enemy *spawnRandomBoss(void) {
+    int count = sizeof(enemyTemplates) / sizeof(enemyTemplates[0]);
+
+    // Recolectar los índices de templates que son jefes
+    int bossIndices[count];
+    int bossCount = 0;
+    for(int i = 0; i < count; i++) {
+        if(enemyTemplates[i].isBoss) bossIndices[bossCount++] = i;
+    }
+    if(bossCount == 0) return NULL;
+
+    const EnemyTemplate *tpl = &enemyTemplates[bossIndices[rand() % bossCount]];
+
+    Enemy *enemy = generateEnemy((char *)tpl->name);
+    if(!enemy) return NULL;
+
+    enemy->x = -1;
+    enemy->y = -1;
+    generateStatsBossEnemy(enemy, tpl->difficulty);
+
+    return enemy;
+}
+
 
 void generateStatsCommonEnemy(Enemy* enemy, int difficulty)
 {
