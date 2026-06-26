@@ -4,7 +4,7 @@
 void combatMode(Player *player, Enemy *enemy) {
 
     printf("\n\t¡Te has topado con un %s! ¡Comienza el combate!\n", enemy->enemyName);
-    printf("\n");
+    printf("\n\t");
     presioneTeclaParaContinuar();
 
     Heap *colaTurnos = heapCreate();
