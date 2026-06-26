@@ -93,26 +93,40 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 ## **Funcionalidades pendientes** 
 ```diff
 @@ A nivel de renderizado / visual @@
-- [PENDIENTE] Actualmente **NO** hay forma de distinguir las casillas de enemigos comúnes con jefes: sería ideal crear nuevas macros que representen mejor a cada enemigo de forma único o que sean capaces de diferenciar enemigos comúnes de jefes.
+- [PENDIENTE] Actualmente **NO** hay forma de distinguir las casillas de enemigos comúnes
+- con jefes: sería ideal crear nuevas macros que representen mejor a cada enemigo de forma
+- única o que sean capaces de diferenciar enemigos comúnes de jefes.
 
-+ [RESUELTO] No se le indica al jugador en qué nivel de la mazmorra se encuentra, es decir, no existe forma de trackear el número que representa la mazmorar actual: en caso de implementarse, considerar que, como la muestra topológica del mapa se guarda junto con el progreso del jugador, el número de la mazmorra que se almacenó en el archivo .sav **también** debe ser considerado de tal forma que el número de mazmorra actual no se reinicie al cargar una partida. Resolvido en Parche v1.8.4
++ [RESUELTO] No se le indica al jugador en qué nivel de la mazmorra se encuentra, es decir,
++ no existe forma de trackear el número que representa la mazmorar actual: en caso de
++ implementarse, considerar que, como la muestra topológica del mapa se guarda junto con
++ el progreso del jugador, el número de la mazmorra que se almacenó en el archivo .sav
++ **también** debe ser considerado de tal forma que el número de mazmorra actual no se
++ reinicie al cargar una partida. Resolvido en Parche v1.8.4
 
 @@ A nivel de lógica de procedimientos / sistemas @@
 - [PENDIENTE] Implementar funcionalidad de reiniciar personaje (o al menos los puntos de vida del mismo)
 
-+ [RESUELTO] Interacciones con objetos generados en el mapa y su posterior guardado en el inventario: actualmente estos no son interactuables ni existe una forma de guardarlos en el inventario. Resolvido el 25-06-2026.
++ [RESUELTO] Interacciones con objetos generados en el mapa y su posterior guardado en el inventario:
++ actualmente estos no son interactuables ni existe una forma de guardarlos en el inventario.
++ Resolvido el 25-06-2026.
 
-- [PENDIENTE] La generación de enemigos no limita jefes por mazmorra, sino que es de forma totalmente aleatoria: integrar métrica que lleve la cuenta de mazmorras recorridas y genere un enemigo jefe cada 4 niveles.
+- [PENDIENTE] La generación de enemigos no limita jefes por mazmorra, sino que es de forma totalmente
+- aleatoria: integrar métrica que lleve la cuenta de mazmorras recorridas y genere un enemigo jefe cada 4 niveles.
 ```
 ## **Problemas conocidos**
 ```diff
 @@ A nivel de renderizado / visual @@
-$ No se han detectado problemas de renderizado. Por favor informar en caso de observar uno mediante plantilla de reporte de bugs. $
+$ No se han detectado problemas de renderizado. Por favor informar en caso de observar uno mediante plantilla de
+reporte de bugs. $
 
 @@ A nivel de lógica de procedimientos / sistemas @@
-- [PENDIENTE] Actualmente, al huir de un enemigo, se muestra que el jugador "derrotó" al enemigo, cuando esto no es correcto, puesto que escapar de un enemigo **≠** derrotar al mismo.
+- [PENDIENTE] Actualmente, al huir de un enemigo, se muestra que el jugador "derrotó" al enemigo, cuando esto no
+- es correcto, puesto que escapar de un enemigo **≠** derrotar al mismo.
 
-- [PENDIENTE] Al recoger un objeto en el inventario, las estadísticas afectadas que muestra este mismo (el resúmen de estadísticas afectadas) es poco claro y enrevesado: muestra **todas** las estadísticas que **podría** afectar en vez de simplificarlo al incremento (o decremento) de las estadísticas realmente afectadas.
+- [PENDIENTE] Al recoger un objeto en el inventario, las estadísticas afectadas que muestra este mismo (el resúmen
+- de estadísticas afectadas) es poco claro y enrevesado: muestra **todas** las estadísticas que **podría** afectar
+- en vez de simplificarlo al incremento (o decremento) de las estadísticas realmente afectadas.
 - Por ejemplo:
 - Poción pequeña [CONSUMIBLE]: +40HP
 - Bomba molotov [CONSUMIBLE]: +10 ATK -5 SPD
