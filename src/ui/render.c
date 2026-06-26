@@ -136,6 +136,10 @@ void renderInventoryOverlay(Player *player) {
             currentRow++;
             item = (GameObject *) listNext(player->inventory);
         }
+
+        // Pista de control: leer pergaminos
+        SET_CURSOR_POS(currentRow+1, startCol);
+        printf(FORMAT_DIM "Presiona 'e' para usar." FORMAT_RESET);
         
         if (selectedItem != NULL) {
             listFirst(player->inventory);
@@ -145,6 +149,45 @@ void renderInventoryOverlay(Player *player) {
         }
     }
     SET_CURSOR_POS(N+4, 0);
+}
+
+/* +++
+Pantalla de lectura de un pergamino. Imprime el lore con un word-wrap simple
+para que el texto (hasta MAX_LORE_LENGTH caracteres en una sola línea) no se
+desborde a lo ancho de la terminal.
+--- */
+void renderScrollOverlay(GameObject *scroll) {
+    limpiarPantalla();
+    separador1();
+    printf("\t\t" FORMAT_BOLD COLOR_YELLOW "%s" FORMAT_RESET "\n", scroll->name);
+    separador1();
+    printf("\n\t");
+
+    const int MAX_WIDTH = 60;   // columnas antes de cortar
+    int lineLen = 0;
+    const char *p = scroll->lore;
+    char word[64];
+
+    while (*p) {
+        int wi = 0;
+        // leer una palabra (hasta espacio o fin), con tope de seguridad
+        while (*p && *p != ' ' && wi < (int)(sizeof(word) - 1)) {
+            word[wi++] = *p++;
+        }
+        word[wi] = '\0';
+        while (*p == ' ') p++;   // saltar espacios
+
+        if (lineLen + wi > MAX_WIDTH) {   // no cabe: salto de línea
+            printf("\n\t");
+            lineLen = 0;
+        }
+        printf("%s ", word);
+        lineLen += wi + 1;
+    }
+
+    printf("\n\n");
+    separador1();
+    printf("\t" FORMAT_DIM "Presiona ESC para volver al inventario." FORMAT_RESET "\n");
 }
 
 void renderCombatOverlay(Player *player, Enemy *enemy, void *currentTurn, int turnCounter, bool *fleeCondition) {

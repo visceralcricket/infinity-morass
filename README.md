@@ -159,6 +159,8 @@ reporte de bugs. $
 
   + Implementada mejora en la visualización de estadísticas afectadas por cada objeto en el inventario.
 
+  + Implementacion de la historia y pergaminos interactivos
+
 * Parche 1.8.8
   + Correcion de generacion de enemeigos tipo BOSS en el mapa explorable
 

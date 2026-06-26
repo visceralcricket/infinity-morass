@@ -50,29 +50,42 @@ void combatMode(Player *player, Enemy *enemy) {
     if (fleeCondition) {
         printf("\n\t¡Has huido del %s! Vives para luchar otro día...\n", enemy->enemyName);
     }
-    /*
     else if (player->combatStats.currentHp <= 0) {
         printf("\n\t¡Has sido derrotado! Tal parece que no lograrás ser el más fuerte de la mazmorra...\n");
         printf("\n\t\t\t\t\t GAME OVER\n");
         printf("\n\t\t\t    ¡Inténtalo de nuevo! ¡No te rindas!\n");
         printf("\n");
-    */
-   else if (enemy->combatStats.currentHp <= 0) {
-    printf("\n\t¡Has derrotado al %s! ¡Felicidades!\n", enemy->enemyName);
-
-    /* +++
-    Considerar añadir macros también para estas 2 variables utilizadas
-    en el randomizador (100, 30).
-    --- */
-    if (rand() % 100 < 30) 
-    { 
-        GameObject *potionDrop = chooseRandomPotion();
-        if (potionDrop)
-        {
-            listPushBack(player->inventory, potionDrop);
-            printf("\n\tHas obtenido: %s\n", potionDrop->name);
-        }
     }
+    else if (enemy->combatStats.currentHp <= 0) {
+        printf("\n\t¡Has derrotado al %s! ¡Felicidades!\n", enemy->enemyName);
+
+        /* +++
+        Considerar añadir macros también para estas 2 variables utilizadas
+        en el randomizador (100, 30).
+        --- */
+        if (rand() % 100 < 30) 
+        { 
+            GameObject *potionDrop = chooseRandomPotion();
+            if (potionDrop)
+            {
+                listPushBack(player->inventory, potionDrop);
+                printf("\n\tHas obtenido: %s\n", potionDrop->name);
+            }
+        }
+
+        /* +++
+        Drop de jefe: al derrotar un jefe, suelta un pergamino de historia.
+        Por ahora 100% garantizado; para bajarlo a 30% basta con envolverlo en
+        if(rand() % 100 < 30) igual que el drop de poción de arriba.
+        --- */
+        if (enemy->isBoss) {
+            GameObject *scrollDrop = chooseRandomScroll();
+            if (scrollDrop) {
+                listPushBack(player->inventory, scrollDrop);
+                printf("\n\t" FORMAT_BOLD COLOR_YELLOW "El jefe ha dejado caer: %s" FORMAT_RESET "\n", scrollDrop->name);
+            }
+        }
+
        /* +++
        No se incluye objmap.h actualmente desde combat.h, considerar esto.
        
@@ -87,6 +100,7 @@ void combatMode(Player *player, Enemy *enemy) {
         }
         --- */
     }
+
     if(player->combatStats.currentHp > 0) {
         printf("\t");
         presioneTeclaParaContinuar();    
