@@ -23,6 +23,8 @@ int main() {
         .y=  0,
         .combatStats = {100, 100, 5, 5, 5},
         .inventory = NULL,  // IMPORTANTE: aquí debería llamarse a listCreate() para inicializar inventario
+        .equippedWeapon = NULL,
+        .equippedArmor = NULL
     };
     // Inicializar estructura que almacene propiedades clave del mapa actual
     struct sessionFloor currentSession = {0};
@@ -74,7 +76,7 @@ int main() {
                 
                 if(!mazeGenerated) {
                     generateMaze(currentSession.maze, 20);
-                    // Generar salidas, con MAX_NUM_EXITS = 3 (game.h)
+                    // Generar salidas, con MAX_NUM_EXITS = 2 (game.h)
                     placeExits(currentSession.maze, MAX_NUM_EXITS);
                     // Map *enemyMap = createEnemiesMap();
                     placeEnemies(currentSession.maze);
@@ -144,7 +146,6 @@ void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSes
             case MODE_INVENTORY_VIEW:
                 handleInventoryInput(player, &currentSubMode);
                 break;
-
             case MODE_EXPLORATION:
                 prevX = player->x;
                 prevY = player->y;
@@ -175,6 +176,30 @@ void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSes
                         player->y = prevY;
                         limpiarPantalla();
                     }
+                }
+                else if (maze[player->y][player->x] == OBJECT_TILE) {
+                    renderExploration(maze, *player);
+                    
+                    GameObject *foundObject = chooseRandomObject();
+                    if (foundObject) {
+                        printf("\n\t¡Has encontrado un objeto!");
+                        printf("\n\t¿Deseas recogerlo? (S/N)\n\t< ");
+
+                        char choice = readCharOption();
+                        if (choice=='S' || choice == 's') {
+                            listPushBack(player->inventory, foundObject);
+                            printf("\n\t¡Has recogido el objeto!");
+                            maze[player->y][player->x] = EMPTY;
+                            printf("\n\t");
+                            presioneTeclaParaContinuar();
+                        } 
+                        else {
+                            player->x = prevX;
+                            player->y = prevY;
+                            free(foundObject);
+                        }
+                    }
+                    limpiarPantalla();
                 }
                 break;
 

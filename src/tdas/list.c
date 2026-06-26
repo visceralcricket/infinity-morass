@@ -31,6 +31,11 @@ List *listCreate() {
   return newList;
 }
 
+void *listCurrent(List *L) {
+  if (!L || !L->current) return NULL;
+  return L->current->data;
+}
+
 void *listFirst(List *L) {
   if (!L || !L->head) {
     return NULL; // Empty list or without a head

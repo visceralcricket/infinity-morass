@@ -176,6 +176,9 @@ void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode
         case '2':
             limpiarPantalla();
             *currentSubMode = MODE_INVENTORY_VIEW;
+            if (player->inventory != NULL) {
+                listFirst(player->inventory);
+            }
             break;
 
         case '3':
@@ -205,12 +208,16 @@ void handleInventoryInput(Player *player, GameMode *currentSubMode) {
             *currentSubMode = MODE_SETTINGS;
             break;
 
-        case 'a':
+        case 'w':
             if(player->inventory) listPrev(player->inventory);
             break;
 
-        case 'd':
+        case 's':
             if(player->inventory) listNext(player->inventory);
             break;
+        /*
+        case 'e':
+            equipCurrentItem(player);
+            break;*/
     }
 }

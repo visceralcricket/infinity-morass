@@ -7,7 +7,7 @@ void showMainMenu(char *username) {
     printf("\t\t Bienvenido, " FORMAT_BOLD "%s" FORMAT_RESET "\n", username);
     separador2();
     puts("\n\t\t" FORMAT_BOLD "Opciones de juego" FORMAT_RESET "\n");
-    puts("\t\t1) Iniciar nueva partida");
+    puts("\t\t1) Iniciar partida");
     puts("\t\t2) Ver glosario");
     puts("\t\t3) Salir del juego");
 
@@ -95,10 +95,18 @@ void renderInventoryOverlay(Player *player) {
         printf(FORMAT_DIM "El inventario está vacío.." FORMAT_RESET);
     }
     else {
+        GameObject *selectedItem = (GameObject *) listCurrent(player->inventory);
         GameObject *item = (GameObject *) listFirst(player->inventory);
         while (item != NULL) {
             SET_CURSOR_POS(currentRow, startCol);
             printf(CLEAR_LINE_TO_END);
+            
+            if (item == selectedItem) {
+                printf("-> ");
+            }
+            else {
+                printf(" ");
+            }
 
             const char *tipo;
             switch (item->equip) {
@@ -119,6 +127,13 @@ void renderInventoryOverlay(Player *player) {
 
             currentRow++;
             item = (GameObject *) listNext(player->inventory);
+        }
+        
+        if (selectedItem != NULL) {
+            listFirst(player->inventory);
+            while (listCurrent(player->inventory) != selectedItem && listCurrent(player->inventory) != NULL) {
+                listNext(player->inventory);
+            }
         }
     }
     SET_CURSOR_POS(N+4, 0);
