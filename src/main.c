@@ -186,7 +186,9 @@ void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSes
                         printf("\n\t¿Deseas recogerlo? (S/N)\n\t< ");
 
                         char choice = readCharOption();
-                        if (choice=='S' || choice == 's') {
+                        // Normalizar carácter leído
+                        if(choice >= 'A' && choice <= 'Z') choice += 32;
+                        if (choice == 's') {
                             listPushBack(player->inventory, foundObject);
                             printf("\n\t¡Has recogido el objeto!");
                             maze[player->y][player->x] = EMPTY;
