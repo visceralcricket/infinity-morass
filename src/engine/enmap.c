@@ -26,6 +26,7 @@ Enemy* generateEnemy(const char *name)
     enemy->combatStats.maxHp = -1;
     enemy->combatStats.speed = -1;
     enemy->drops = NULL;
+    enemy->isBoss = false;
     strncpy(enemy->enemyName, name, MAX_USERNAME - 1);
     enemy->enemyName[MAX_USERNAME - 1] = '\0';
 
@@ -87,7 +88,9 @@ Enemy *spawnEnemyFromMap(Map *enemyMap) {
     if(!pair) return NULL;
 
     Enemy *master = (Enemy*) pair->value;
-    return cloneEnemy(master);
+    Enemy *copy = cloneEnemy(master);
+    if(copy) copy->isBoss = false;
+    return copy;
 }
 
 Enemy *spawnBossFromMap(Map *enemyMap) {
@@ -99,7 +102,9 @@ Enemy *spawnBossFromMap(Map *enemyMap) {
     if(!pair) return NULL;
 
     Enemy *master = (Enemy*) pair->value;
-    return cloneEnemy(master);
+    Enemy *boss = cloneEnemy(master);
+    if(boss) boss->isBoss = true;
+    return boss;
 }
 
 // ==================== Generación de stats ====================

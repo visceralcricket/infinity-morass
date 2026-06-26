@@ -22,6 +22,9 @@ void renderSettingsOverlay();
 // Sub-menú superpuesto para inventario del jugador
 void renderInventoryOverlay(Player *player);
 
+// Pantalla de lectura de un pergamino (muestra su lore con saltos de línea)
+void renderScrollOverlay(GameObject *scroll);
+
 // Sub-menu superpuesto para el combate
 void renderCombatOverlay(Player *player, Enemy *enemy, void *currentTurn, int turnCounter, bool *fleeCondition);
 

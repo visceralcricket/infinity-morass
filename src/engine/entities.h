@@ -42,6 +42,7 @@ typedef enum {
     MODE_EXPLORATION,
     MODE_SETTINGS,
     MODE_INVENTORY_VIEW,
+    MODE_SCROLL_READ,
     MODE_COMBAT
 } GameMode;
 
@@ -75,6 +76,7 @@ struct Enemy {
     int x, y;
     Stats combatStats;
     List *drops;
+    bool isBoss; 
 };
 
 struct Player {
