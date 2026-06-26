@@ -97,7 +97,7 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 + con jefes: sería ideal crear nuevas macros que representen mejor a cada enemigo de forma
 + única o que sean capaces de diferenciar enemigos comúnes de jefes. Resuelto en parche 1.8.8
 
-- [PENDIENTE] En la version actual no se ha implementado el glosario
++ [RESUELTO] En la version actual no se ha implementado el glosario
 
 + [RESUELTO] No se le indica al jugador en qué nivel de la mazmorra se encuentra, es decir,
 + no existe forma de trackear el número que representa la mazmora actual: en caso de
@@ -110,11 +110,9 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 + [RESUELTO] Implementar funcionalidad de reiniciar personaje (o al menos los puntos de vida del mismo)
 + Resuelto en parche v1.8.9
 
-- [PENDIENTE] Implementar el uso de objetos (todos) en el modo exploración
++ [RESUELTO] Implementar el uso de objetos (todos) en el modo exploración
 
 - [PENDIENTE] Implementar el uso de objetos (pociones) en combate
-
-- [PENDIENTE] Implementar funcionalidad de reiniciar personaje (o al menos los puntos de vida del mismo)
 
 + [RESUELTO] Actualmente la generacion de enemigos no usa el mapa para mostrarlos, los generas desde 0 siempre. 
 + Resuelto en parche 1.8.8

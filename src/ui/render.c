@@ -348,12 +348,18 @@ void showGlossary(Map *objectMap, Map *enemyMap) {
                 case ITEM_KEY:        tipo = "Llave/Clave"; break;
                 default:              tipo = "Desconocido"; break;
             }
-            printf("\t- %s [%s]: %+d HP | %+d ATK | %+d DEF | %+d SPD\n", object->name, tipo,
-                object->stats.maxHp, object->stats.attack,
-                object->stats.defense, object->stats.speed);
+
+            printf("\t- %s [%s]", object->name, tipo);
+            if(object->stats.maxHp) printf(" %+d HP", object->stats.maxHp);
+            if(object->stats.attack) printf(" %+d ATK", object->stats.attack);
+            if(object->stats.defense) printf(" %+d DEF", object->stats.defense);
+            if(object->stats.speed) printf(" %+d SPD", object->stats.speed);
+            printf("\n");
+            
             objectPair = mapNext(objectMap);
         }
     }
+    printf("\n");
     printf("\n");
     presioneTeclaParaContinuar();
 }

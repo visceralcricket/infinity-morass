@@ -195,7 +195,7 @@ void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSes
                     
                     GameObject *foundObject = chooseRandomObject();
                     if (foundObject) {
-                        printf("\n\t¡Has encontrado un objeto!");
+                        printf("\n\t¡Has encontrado un objeto: %s!", foundObject->name);
                         printf("\n\t¿Deseas recogerlo? (S/N)\n\t< ");
 
                         char choice = readCharOption();
@@ -232,5 +232,3 @@ void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSes
     }
     printf(SHOW_CURSOR);
 }
-
-// void showGlossary() {}
