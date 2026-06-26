@@ -28,6 +28,10 @@ void useItemExploration(Player *player, GameObject *item) {
         free(item); 
 
     } else if (item->equip == ITEM_EQUIPPABLE) {
+        if (currentItem == player->equippedWeapon || currentItem == player->equippedArmor) {
+            printf("\n\tEl objeto ya está equipado.\n");
+            return;
+        }
         if (item->stats.attack > 0) {
             if (player->equippedWeapon) {
                 player->combatStats.attack -= player->equippedWeapon->stats.attack;

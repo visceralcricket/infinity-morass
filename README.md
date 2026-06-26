@@ -145,10 +145,6 @@ reporte de bugs. $
 + Bomba molotov [CONSUMIBLE]: +10 ATK -5 SPD
 + Resuelto en parche v1.8.9
 
-- [DUDA] No estoy seguro si lo de mostrar ese + o ese - sea lo mejor porque se podrían confundir con que les puede
-- dar más de lo que ya les da.
-
-
 ```
 ## **Changelog (historial de cambios)**
 <small>*Nota: Este changelog está en orden cronológico inverso.*</small>
