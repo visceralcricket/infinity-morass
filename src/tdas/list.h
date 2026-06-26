@@ -3,43 +3,43 @@
 
 typedef struct List List;
 
-// Creates a list and returns its pointer
+// Crear una lista y retornar puntero a la misma
 List *listCreate();
 
-// Returns the pointer to the current node of the list
+// Retornar puntero al nodo actual
 void *listCurrent(List *L);
 
-// Returns the pointer to the first node of the list
+// Retornar puntero al primer nodo de la lista
 void *listFirst(List *L);
 
-// Moves pointer 'current' to the next node and returns its pointer
+// Mueve el puntero current (actual) al siguiente y lo retorna
 void *listNext(List *L);
 
-// Moves pointer 'current' to the previous node and returns its pointer
+// Mueve el puntero current (actual) al anterior y lo retorna
 void *listPrev(List *L);
 
-// Inserts a new node at the start of the list
+// Inserta un nuevo nodo al inicio de la lista
 void listPushFront(List *L, void *data);
 
-// Inserts a new node at the end of the list
+// Inserta un nuevo nodo al final de la lista
 void listPushBack(List *L, void *data);
 
-// Inserts a new node right after the 'current' one
+// Inserta un nuevo nodo justo después del nodo current (actual)
 void listPushCurrent(List *L, void *data);
 
-// Deletes the first element of the list
+// Elimina el primer elemento de la lista
 void *listPopFront(List *L);
 
-// Deletes the last element of the list
+// Elimina el último elemento de la lista
 void *listPopBack(List *L);
 
-// Deletes the node 'current' of the list
+// Elimina el elemento current (actual) de la lista
 void *listPopCurrent(List *L);
 
-// Deletes all the nodes and leaves the list clean
+// Elimina todos los nodos y libera la lista
 void listClean(List *L);
 
-// Returns the logical size of the list
+// Retorna el tamaño lógico de la lista
 int listSize(List *L);
 
 #endif

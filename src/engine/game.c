@@ -72,6 +72,7 @@ void generateMaze(int maze[N][N], int difficulty) {
         }
     }
 }
+
 // Función para generar salidas / entradas a siguiente nivel aleatoriamente
 void placeExits(int maze[N][N], int numExits) {
     int placed = 0;
@@ -88,10 +89,12 @@ void placeExits(int maze[N][N], int numExits) {
 
 /* +++
 Aquí idealmente debería ir el nivel de dificultar para afectar directamente la
-cantidad de enemigos que se van a generar por mazmorra, pero a fines de conveniencia
-y para comprobar que la generación de enemigos funciona correctamente, se va a ignorar.
+cantidad de enemigos que se van a generar por mazmorra, pero a fines de conveniencia,
+únicamente para comprobar que la generación de enemigos funciona correctamente y teniendo
+en cuenta que la prioridad actualmente está en la arquitectura del programa y no tanto en
+este tipo de funcionalidades finas, se va a ignorar.
 --- */
-void placeEnemies(int maze[N][N]) {
+void placeEnemies(int maze[N][N], int floorCount) {
     int placed = 0;
     while(placed < MAX_ENEMIES_PER_LEVEL) {
         int randomX = rand() % N;
@@ -100,6 +103,18 @@ void placeEnemies(int maze[N][N]) {
         if(maze[randomY][randomX] == 0 && (randomX != 0 || randomY != 0)) {
             maze[randomY][randomX] = ENEMY_TILE;
             placed++;
+        }
+    }
+
+    if(floorCount > 0 && floorCount % 4 == 0) {
+        int bossPlaced = 0;
+        while(!bossPlaced) {
+            int randomX = rand() % N;
+            int randomY = rand() % N;
+            if(maze[randomY][randomX] == 0 && (randomX != 0 || randomY != 0)) {
+                maze[randomY][randomX] = BOSS_TILE;
+                bossPlaced = 1;
+            }
         }
     }
 }
@@ -119,15 +134,21 @@ void placeObjects(int maze[N][N]) {
 }
 
 // Faltaría implementar manejo de input para Linux
-// Actualizamos la firma para recibir el puntero del jugador y el flag del bucle
-void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode, Enemy **currentEnemy) {
+// Recibe el hashmap maestro de enemigos para spawnear copias desde él
+void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode, Enemy **currentEnemy, Map *enemyMap) {
     int key = _getch();
 
+    // Normalizar key recibida a minúscula si es que va de la A a la Z
     if(key >= 'A' && key <= 'Z') key += 32;
 
     if(key == ESC_KEY) {
         *currentSubMode = MODE_SETTINGS;
     } 
+    /* +++
+    Esta funcionalidad de aquí es básicamente trabajar el mapa que guardamos explícitamente
+    como un arreglo estático una única vez en main de fora implícita, puesto que determinamos
+    las traslaciones a otros estados de inmediato, sin guardar ningún tipo de arco del grafo.
+    --- */
     else {
         switch(key) {
             case W_KEY_LOWER:
@@ -149,16 +170,28 @@ void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode
         }
     }
     if(maze[player->y][player->x] == ENEMY_TILE) {
-        Enemy *enemy = spawnRandomEnemy();
+        Enemy *enemy = spawnEnemyFromMap(enemyMap);
         if(enemy) {
             enemy->x = player->x;
             enemy->y = player->y;
             printf("\n\tHas encontrado a: %s\n\t", enemy->enemyName);
             maze[player->y][player->x] = EMPTY;
-            *currentEnemy = enemy;       // <-- nuevo
+            *currentEnemy = enemy;
             *currentSubMode = MODE_COMBAT;
         }
     }
+    else if(maze[player->y][player->x] == BOSS_TILE) {
+        Enemy *boss = spawnBossFromMap(enemyMap);
+        if(boss) {
+            boss->x = player->x;
+            boss->y = player->y;
+            printf("\n\t" FORMAT_BOLD COLOR_RED "Un jefe bloquea tu camino: %s" FORMAT_RESET "\n\t", boss->enemyName);
+            maze[player->y][player->x] = EMPTY;
+            *currentEnemy = boss;
+            *currentSubMode = MODE_COMBAT;
+        }
+    }
+
 }
 
 void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode, sessionFloor *currentSession) {
@@ -182,7 +215,11 @@ void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode
             break;
 
         case '3':
-            // Guardamos la partida sin cambiar de GameMode y sin limpiar pantalla
+            /* +++
+            Guardamos la partida sin cambiar de GameMode, sin limpiar pantalla y pasando
+            el puntero a la estructura que almacena el mapa actual donde está el jugador
+            para poder guardarlo en el disco mediante un archivo binario.
+            --- */
             saveGame(player, currentSession);
 
             SET_CURSOR_POS(12, 75);
@@ -195,7 +232,7 @@ void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode
     }
 }
 
-// Manejar input dentro del sub-submenú inventario en pausa
+// Manejar input dentro del submenú inventario en el menú superpuesto de pausa/ajustes
 void handleInventoryInput(Player *player, GameMode *currentSubMode) {
     int key = _getch();
 

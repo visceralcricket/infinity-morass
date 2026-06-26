@@ -1,9 +1,5 @@
 #include "extra.h"
-/* +++
-Este bloque de código se modificó para hacer que el programa sea portable y funcione
-correctamente en la Powershell de windows, puesto que el comando para limpiar la pantalla
-es "cls" y el "clear" actual parece no funcionar correctamente.
---- */
+
 #ifdef _WIN32
     #define CLEAR_COMMAND "cls"
 #else

@@ -5,9 +5,10 @@
 
 /* +++
                         === Disclaimer ===
-map.c fue reemplazado por una versión ligeramente modificada (in-house) del código
-personal final del laboratorio n°3 de hashmap.c con el fin de hacer el programa
-más eficiente y menos lento a la hora de hacer ciertas operaciones.
+Este archivo, inicialmente llamado map.c, fue reemplazado por una versión
+ligeramente modificada (in-house) del código personal final del laboratorio
+n°3 de hashmap.c con el fin de hacer el programa más eficiente y menos lento
+a la hora de hacer ciertas operaciones.
 --- */
 
 typedef struct Map Map;

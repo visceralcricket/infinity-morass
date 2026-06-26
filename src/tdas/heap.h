@@ -11,11 +11,11 @@ void heapPop(Heap* pq);
 
 Heap* heapCreate();
 
-/*
- * Frees each element's data using the provided callback, then frees
- * the internal array and the Heap struct itself. If `freeData` is NULL
- * only the internal memory and struct are freed (elements are not freed).
- */
+/* +++
+Libera los datos de cada elemento utilizando la función de liberación de memoria proporcionada
+para despues liberar la matriz interna y la propia estructura Heap. Si `freeData` es NULL, solo
+se liberan la memoria interna y la estructura (los elementos no se liberan)
+--- */
 void heapDestroyWithFree(Heap *pq, void (*freeData)(void*));
 
 void heapDestroy(Heap *pq);

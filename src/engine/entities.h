@@ -21,6 +21,7 @@
 #define ENEMY_TILE 'E'
 #define EXIT_TILE 2
 #define OBJECT_TILE 'o'
+#define BOSS_TILE 'B'
 
 // ======== Enumeraciones ========
 typedef enum {
@@ -92,6 +93,7 @@ struct sessionFloor{
     GameObject activeObjects[MAX_OBJECTS_PER_LEVEL];
     int numObjects;
     bool isMapDirty;
+    int floorCount; 
 };
 
 #endif
