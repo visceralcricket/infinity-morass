@@ -98,18 +98,18 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 - única o que sean capaces de diferenciar enemigos comúnes de jefes.
 
 + [RESUELTO] No se le indica al jugador en qué nivel de la mazmorra se encuentra, es decir,
-+ no existe forma de trackear el número que representa la mazmorar actual: en caso de
++ no existe forma de trackear el número que representa la mazmora actual: en caso de
 + implementarse, considerar que, como la muestra topológica del mapa se guarda junto con
 + el progreso del jugador, el número de la mazmorra que se almacenó en el archivo .sav
 + **también** debe ser considerado de tal forma que el número de mazmorra actual no se
-+ reinicie al cargar una partida. Resolvido en Parche v1.8.4
++ reinicie al cargar una partida. Resuelto en Parche v1.8.4
 
 @@ A nivel de lógica de procedimientos / sistemas @@
 - [PENDIENTE] Implementar funcionalidad de reiniciar personaje (o al menos los puntos de vida del mismo)
 
 + [RESUELTO] Interacciones con objetos generados en el mapa y su posterior guardado en el inventario:
 + actualmente estos no son interactuables ni existe una forma de guardarlos en el inventario.
-+ Resolvido el 25-06-2026.
++ Resuelto el 25-06-2026.
 
 - [PENDIENTE] La generación de enemigos no limita jefes por mazmorra, sino que es de forma totalmente
 - aleatoria: integrar métrica que lleve la cuenta de mazmorras recorridas y genere un enemigo jefe cada 4 niveles.
