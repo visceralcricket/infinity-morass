@@ -2,9 +2,9 @@
 
 ## **Especificaciones**
 
-* *El TDA mapa (y su encabezado .h) fueron implementados como una tabla hash para mantener una complejidad temporal óptima a la hora de realizar búsquedas e inserciones.
+* El TDA mapa (y su encabezado .h) fueron implementados como una tabla hash para mantener una complejidad temporal óptima a la hora de realizar búsquedas e inserciones.
 
-* *Los archivos extra.c y su encabezado incluyen funciones varias, entre las cuales están:
+* Los archivos extra.c y su encabezado incluyen funciones varias, entre las cuales están:
 
     1. Comando de limpieza de pantalla definido en base al sistema en el que se ejecute el programa 
     ```powershell

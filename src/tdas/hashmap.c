@@ -4,13 +4,6 @@
 #include <math.h>
 #include "hashmap.h"
 
-/* +++
-                        === Disclaimer ===
-map.c reemplazado por una versión ligeramente modificada (a mano) del código
-personal final del laboratorio n°3 de hashmap.c con el fin de hacer que el programa
-tenga una complejidad temporal de búsqueda óptima.
---- */
-
 struct Map {
     MapPair **buckets;
     long size; 

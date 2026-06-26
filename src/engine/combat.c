@@ -9,8 +9,8 @@ void combatMode(Player *player, Enemy *enemy) {
 
     Heap *colaTurnos = heapCreate();
 
-    int playerPriority = 1000 / player->combatStats.speed;
-    int enemyPriority = 1000 / enemy->combatStats.speed;
+    int playerPriority = BASE_TURN_TICKS / player->combatStats.speed;
+    int enemyPriority = BASE_TURN_TICKS / enemy->combatStats.speed;
 
     int playerNextTurn = playerPriority;
     int enemyNextTurn = enemyPriority;
@@ -55,6 +55,10 @@ void combatMode(Player *player, Enemy *enemy) {
     } else {
         printf("\n\t¡Has derrotado al %s! ¡Felicidades!\n", enemy->enemyName);
 
+        /* +++
+        Considerar añadir macros también para estas 2 variables utilizadas
+        en el randomizador (100, 30).
+        --- */
         if (rand() % 100 < 30) 
         { 
             GameObject *potionDrop = chooseRandomPotion();
