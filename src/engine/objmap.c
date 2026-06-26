@@ -114,7 +114,7 @@ void generateStatsEquipabble(GameObject* object)
         object->stats.currentHp = 0;
         object->stats.speed = 0;
     }
-    else if(strcmp(object->name, "Ultra espadón") == 0) { // <-- antes era "if", rompía la cadena else-if
+    else if(strcmp(object->name, "Ultra espadón") == 0) {
         object->stats.attack = 7;
         object->stats.defense = 0;
         object->stats.maxHp = 0;
@@ -126,7 +126,7 @@ void generateStatsEquipabble(GameObject* object)
         object->stats.defense = 5;
         object->stats.maxHp = 10;
         object->stats.currentHp = object->stats.maxHp;
-        object->stats.speed = 2;
+        object->stats.speed = 1;
     }
     else if(strcmp(object->name, "Armadura pesada") == 0) {
         object->stats.attack = 0;
@@ -136,11 +136,11 @@ void generateStatsEquipabble(GameObject* object)
         object->stats.speed = -2;
     }
     else if(strcmp(object->name, "Armadura berserker") == 0) {
-        object->stats.attack = 7;
-        object->stats.defense = 0;
-        object->stats.maxHp = 20;
+        object->stats.attack = 0;
+        object->stats.defense = 1;
+        object->stats.maxHp = 30;
         object->stats.currentHp = object->stats.maxHp;
-        object->stats.speed = 0;
+        object->stats.speed = 2;
     }
 }
 

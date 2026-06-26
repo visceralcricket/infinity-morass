@@ -11,6 +11,7 @@ SRCS = src/main.c \
 		src/engine/enmap.c \
 		src/engine/combat.c \
 		src/engine/objmap.c \
+		src/engine/player.c \
 		src/io/storage.c \
 		src/ui/render.c \
 		src/tdas/extra.c \

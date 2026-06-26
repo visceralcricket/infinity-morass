@@ -120,15 +120,32 @@ void renderInventoryOverlay(Player *player) {
                 case ITEM_KEY:        tipo = "Llave/Clave"; break;
                 default:              tipo = "Desconocido"; break;
             }
-
-            printf("%s [%s] - ATK:%d DEF:%d HP:%d/%d SPD:%d",
+            
+            if  (strcmp(tipo, "Consumible") == 0) {
+                printf("%s [%s] - HP:%d/%d",
                    item->name,
                    tipo,
-                   item->stats.attack,
-                   item->stats.defense,
                    item->stats.currentHp,
-                   item->stats.maxHp,
-                   item->stats.speed);
+                   item->stats.maxHp);
+            }
+            else if (strcmp(tipo, "Equipable") == 0) {
+                printf("%s [%s] - ", item->name, tipo);
+                if (item->stats.attack != 0) {
+                    printf(" ATK: %d", item->stats.attack);
+                }
+                if (item->stats.defense != 0) {
+                    printf(" DEF: %d", item->stats.defense);
+                }
+                if (item->stats.maxHp != 0) {
+                    printf(" HP: %d/%d", item->stats.currentHp, item->stats.maxHp);
+                }
+                if (item->stats.speed != 0) {
+                    printf(" SPD: %d", item->stats.speed);
+                }
+            }
+            else if (strcmp(tipo, "Clave") == 0) {
+                printf("%s [%s]", item->name, tipo);
+            }
 
             currentRow++;
             item = (GameObject *) listNext(player->inventory);

@@ -107,6 +107,10 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 + reinicie al cargar una partida. Resuelto en Parche v1.8.4
 
 @@ A nivel de lógica de procedimientos / sistemas @@
+- [PENDIENTE] Implementar el uso de objetos (todos) en el modo exploración
+
+- [PENDIENTE] Implementar el uso de objetos (pociones) en combate
+
 - [PENDIENTE] Implementar funcionalidad de reiniciar personaje (o al menos los puntos de vida del mismo)
 
 + [RESUELTO] Actualmente la generacion de enemigos no usa el mapa para mostrarlos, los generas desde 0 siempre. 
@@ -130,13 +134,15 @@ reporte de bugs. $
 + [Resuelto] Actualmente, al huir de un enemigo, se muestra que el jugador "derrotó" al enemigo, cuando esto no
 + es correcto, puesto que escapar de un enemigo **≠** derrotar al mismo. Resuelto en el parche 1.8.8
 
-- [PENDIENTE] Al recoger un objeto en el inventario, las estadísticas afectadas que muestra este mismo (el resúmen
-- de estadísticas afectadas) es poco claro y enrevesado: muestra **todas** las estadísticas que **podría** afectar
-- en vez de simplificarlo al incremento (o decremento) de las estadísticas realmente afectadas.
-- Por ejemplo:
-- Poción pequeña [CONSUMIBLE]: +40HP
-- Bomba molotov [CONSUMIBLE]: +10 ATK -5 SPD
++ [Resuelto] Al recoger un objeto en el inventario, las estadísticas afectadas que muestra este mismo (el resúmen
++ de estadísticas afectadas) es poco claro y enrevesado: muestra **todas** las estadísticas que **podría** afectar
++ en vez de simplificarlo al incremento (o decremento) de las estadísticas realmente afectadas.
++ Por ejemplo:
++ Poción pequeña [CONSUMIBLE]: +40HP
++ Bomba molotov [CONSUMIBLE]: +10 ATK -5 SPD
 
+- [DUDA] No estoy seguro si lo de mostrar ese + o ese - sea lo mejor porque se podrían confundir con que les puede
+- dar más de lo que ya les da.
 
 
 ```

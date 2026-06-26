@@ -1,5 +1,6 @@
 #include "game.h"
 #include "objmap.h"
+#include "player.h"
 #include "../io/storage.h"
 
 // Función recursiva (DFS) para encontrar un camino aleatorio garantizado
@@ -252,9 +253,8 @@ void handleInventoryInput(Player *player, GameMode *currentSubMode) {
         case 's':
             if(player->inventory) listNext(player->inventory);
             break;
-        /*
         case 'e':
-            equipCurrentItem(player);
-            break;*/
+            useItemExploration(player, listCurrent(player->inventory));
+            break;
     }
 }
