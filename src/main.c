@@ -135,7 +135,7 @@ void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSes
             case MODE_EXPLORATION:
                 break;
             case MODE_COMBAT:
-                break;   // combatMode maneja su propio render, acá no hace falta nada
+                break;   // combatMode maneja su propio render, aquí no hace falta hacer nada
             default:
                 break;
         }
@@ -211,10 +211,23 @@ void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSes
 
             case MODE_COMBAT:
                 combatMode(player, currentEnemy);   // <-- acá se llama el sistema de combate completo
+                if(player->combatStats.currentHp <= 0) {
+                    renderGameOverScreen(currentEnemy->enemyName);
+                    char choice = readCharOption();
+                    if(choice >= 'A' && choice <= 'Z') choice += 32;
+                    if(choice == 's') {
+                        resetPlayerProgress(player, maze, currentSession);
+                        currentSubMode = MODE_EXPLORATION;
+                        limpiarPantalla();
+                    }
+                    else playing = false;
+                }
+                else {
+                    currentSubMode = MODE_EXPLORATION;
+                    limpiarPantalla();
+                }
                 free(currentEnemy);
                 currentEnemy = NULL;
-                currentSubMode = MODE_EXPLORATION;
-                limpiarPantalla();
                 break;
             
             default:

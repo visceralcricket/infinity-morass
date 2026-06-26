@@ -258,3 +258,28 @@ void handleInventoryInput(Player *player, GameMode *currentSubMode) {
             break;
     }
 }
+
+void resetPlayerProgress(Player *player, int maze[N][N], sessionFloor *currentSession) {
+    if(player->inventory) {
+        GameObject *item = (GameObject *) listPopFront(player->inventory);
+        while(item) {
+            free(item);
+            item = (GameObject *) listPopFront(player->inventory);
+        }
+        listClean(player->inventory);
+    }
+    player->combatStats.maxHp = 100;
+    player->combatStats.currentHp = 100;
+    player->combatStats.attack = 5;
+    player->combatStats.defense = 5;
+    player->combatStats.speed = 5;
+    
+    player->x = player->y = 0;
+
+    generateMaze(maze, 20);
+    placeExits(maze, MAX_NUM_EXITS);
+    placeEnemies(maze, 1);
+    placeObjects(maze);
+    
+    currentSession->isMapDirty = true;   
+}

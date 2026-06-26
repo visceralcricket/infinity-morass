@@ -53,6 +53,9 @@ void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode
 void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode, sessionFloor *currentSession);
 void handleInventoryInput(Player *player, GameMode *currentSubMode);
 
+// ==================== Funciones relacionadas con el jugador ====================
+void resetPlayerProgress(Player *player, int maze[N][N], sessionFloor *currentSession);
+
 #include "enmap.h"
 
 #endif

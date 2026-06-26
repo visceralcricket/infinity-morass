@@ -1,7 +1,7 @@
 # **infinity-morass**
 > *Roguelike de calabozos basado en terminal de texto.*
 
-<img src="https://img.shields.io/badge/version-1.8.7-blue" alt="version">
+<img src="https://img.shields.io/badge/version-1.8.9-blue" alt="version">
 
 [![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/main)](https://github.com/visceralcricket/infinity-morass/commits/main)
 
@@ -107,6 +107,8 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 + reinicie al cargar una partida. Resuelto en Parche v1.8.4
 
 @@ A nivel de lógica de procedimientos / sistemas @@
++ [RESUELTO] Implementar funcionalidad de reiniciar personaje (o al menos los puntos de vida del mismo)
++ Resuelto en parche v1.8.9
 - [PENDIENTE] Implementar el uso de objetos (todos) en el modo exploración
 
 - [PENDIENTE] Implementar el uso de objetos (pociones) en combate
@@ -134,12 +136,13 @@ reporte de bugs. $
 + [Resuelto] Actualmente, al huir de un enemigo, se muestra que el jugador "derrotó" al enemigo, cuando esto no
 + es correcto, puesto que escapar de un enemigo **≠** derrotar al mismo. Resuelto en el parche 1.8.8
 
-+ [Resuelto] Al recoger un objeto en el inventario, las estadísticas afectadas que muestra este mismo (el resúmen
++ [RESUELTO] Al recoger un objeto en el inventario, las estadísticas afectadas que muestra este mismo (el resúmen
 + de estadísticas afectadas) es poco claro y enrevesado: muestra **todas** las estadísticas que **podría** afectar
 + en vez de simplificarlo al incremento (o decremento) de las estadísticas realmente afectadas.
 + Por ejemplo:
 + Poción pequeña [CONSUMIBLE]: +40HP
 + Bomba molotov [CONSUMIBLE]: +10 ATK -5 SPD
++ Resuelto en parche v1.8.9
 
 - [DUDA] No estoy seguro si lo de mostrar ese + o ese - sea lo mejor porque se podrían confundir con que les puede
 - dar más de lo que ya les da.
@@ -151,6 +154,14 @@ reporte de bugs. $
 
 ### **Versión 1.8.0** (20-06-2026) 
 > Integración inicial de funcionalidades: modo de juego de combate, sistema de combate, finalización del sistema de guardado/carga de partidas y mejoras de calidad de vida.
+
+* Parche 1.8.9
+  + Inclusión de sistema de *GameOver* con el cual reiniciar (o no) el personaje del jugador, eliminando el checkeo de HP del jugador <= 0 en **combat.c**. Esta funcionalidad se distribuyó en 2 mitades: el renderizado del la pantalla *GameOver* (**renderGameOverScreen**) localizado en los archivos **ui/render** y la lógica detrás de reiniciar el personaje del usuario para volver a comenzar el juego desde el nivel de mazmorra 1 en los archivos **engine/game** (**resetPlayerProgress**).
+
+  + Refactorizaciones menores a lo largo de archivos **combat.c, combat.h, main.c** para adaptar la nueva funcionalidad de GameOver.
+
+  + Implementada mejora en la visualización de estadísticas afectadas por cada objeto en el inventario.
+
 * Parche 1.8.8
   + Correcion de generacion de enemeigos tipo BOSS en el mapa explorable
 
