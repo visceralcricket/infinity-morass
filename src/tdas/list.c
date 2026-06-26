@@ -19,9 +19,9 @@ struct List {
 };
 
 List *listCreate() {
-  List *newList = (List *)malloc(sizeof(List));
+  List *newList = (List *) malloc(sizeof(List));
   if (!newList) {
-    return NULL; // Memory allocation failed
+    return NULL; // Reserva de memoria fallida
   }
 
   newList->head = NULL;
@@ -31,9 +31,14 @@ List *listCreate() {
   return newList;
 }
 
+void *listCurrent(List *L) {
+  if (!L || !L->current) return NULL;
+  return L->current->data;
+}
+
 void *listFirst(List *L) {
   if (!L || !L->head) {
-    return NULL; // Empty list or without a head
+    return NULL; // Lista vacía o sin head
   }
   L->current = L->head;
   return L->current->data;
@@ -41,7 +46,7 @@ void *listFirst(List *L) {
 
 void *listNext(List *L) {
   if (!L || !L->current || !L->current->next) {
-    return NULL; // Same as previous + no node to next
+    return NULL; // Lo mismo de antes + no existe nodo a siguiente
   }
   L->current = L->current->next;
   return L->current->data;
@@ -65,7 +70,7 @@ void listPushFront(List *L, void *data) {
 
   if(L->head) L->head->prev = newNode;
   L->head = newNode;
-  // If the list was empty => has no tail
+  // Si la lista está vacía => no tiene tail (cola)
   if(!L->tail) L->tail = newNode;
 
   L->size++;
@@ -81,7 +86,7 @@ void listPushBack(List *L, void *data) {
   newNode->next = NULL;
   newNode->prev = L->tail;
 
-  if (!L->tail) { // Same empty list with no tail as before
+  if (!L->tail) { // Caso donde no existe cola, igual al anterior
     L->head = newNode;
     L->tail = newNode;
   }
@@ -107,7 +112,7 @@ void listPushCurrent(List *L, void *data) {
 
   L->current->next = newNode;
 
-  // Update tail if it's added at the end of the list
+  // Actualizar tail si estamos añadiendo al final de la lista
   if (!newNode->next) L->tail = newNode;
 
   L->size++;

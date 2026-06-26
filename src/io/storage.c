@@ -59,8 +59,8 @@ bool loadGame(Player *player, sessionFloor *currentSession) {
     fread(&player->y, sizeof(player->y), 1, file);
     fread(&player->combatStats, sizeof(player->combatStats), 1, file);
 
-    // IMPORTANTE: Guardamos el inventario objeto por objeto, por ende el puntero al inventario del jugador
-    // podría ser puntero colgante, por ende debemos crear un puntero nuevo
+    // IMPORTANTE: Guardamos el inventario objeto por objeto, es decir, el puntero al inventario del jugador
+    // podría ser puntero colgante, por ende debemos crear un puntero nuevo y volver a almacenarlo en el heap
     player->inventory = listCreate();
 
     int inventorySize = 0;

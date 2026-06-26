@@ -81,6 +81,8 @@ struct Player {
     int x, y;
     Stats combatStats;
     List *inventory;
+    GameObject *equippedWeapon;
+    GameObject *equippedArmor;
 };
 
 struct sessionFloor{

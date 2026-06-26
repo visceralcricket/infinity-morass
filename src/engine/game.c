@@ -72,6 +72,7 @@ void generateMaze(int maze[N][N], int difficulty) {
         }
     }
 }
+
 // Función para generar salidas / entradas a siguiente nivel aleatoriamente
 void placeExits(int maze[N][N], int numExits) {
     int placed = 0;
@@ -88,8 +89,10 @@ void placeExits(int maze[N][N], int numExits) {
 
 /* +++
 Aquí idealmente debería ir el nivel de dificultar para afectar directamente la
-cantidad de enemigos que se van a generar por mazmorra, pero a fines de conveniencia
-y para comprobar que la generación de enemigos funciona correctamente, se va a ignorar.
+cantidad de enemigos que se van a generar por mazmorra, pero a fines de conveniencia,
+únicamente para comprobar que la generación de enemigos funciona correctamente y teniendo
+en cuenta que la prioridad actualmente está en la arquitectura del programa y no tanto en
+este tipo de funcionalidades finas, se va a ignorar.
 --- */
 void placeEnemies(int maze[N][N]) {
     int placed = 0;
@@ -123,11 +126,17 @@ void placeObjects(int maze[N][N]) {
 void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode, Enemy **currentEnemy) {
     int key = _getch();
 
+    // Normalizar key recibida a minúscula si es que va de la A a la Z
     if(key >= 'A' && key <= 'Z') key += 32;
 
     if(key == ESC_KEY) {
         *currentSubMode = MODE_SETTINGS;
     } 
+    /* +++
+    Esta funcionalidad de aquí es básicamente trabajar el mapa que guardamos explícitamente
+    como un arreglo estático una única vez en main de fora implícita, puesto que determinamos
+    las traslaciones a otros estados de inmediato, sin guardar ningún tipo de arco del grafo.
+    --- */
     else {
         switch(key) {
             case W_KEY_LOWER:
@@ -176,10 +185,17 @@ void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode
         case '2':
             limpiarPantalla();
             *currentSubMode = MODE_INVENTORY_VIEW;
+            if (player->inventory != NULL) {
+                listFirst(player->inventory);
+            }
             break;
 
         case '3':
-            // Guardamos la partida sin cambiar de GameMode y sin limpiar pantalla
+            /* +++
+            Guardamos la partida sin cambiar de GameMode, sin limpiar pantalla y pasando
+            el puntero a la estructura que almacena el mapa actual donde está el jugador
+            para poder guardarlo en el disco mediante un archivo binario.
+            --- */
             saveGame(player, currentSession);
 
             SET_CURSOR_POS(12, 75);
@@ -192,7 +208,7 @@ void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode
     }
 }
 
-// Manejar input dentro del sub-submenú inventario en pausa
+// Manejar input dentro del submenú inventario en el menú superpuesto de pausa/ajustes
 void handleInventoryInput(Player *player, GameMode *currentSubMode) {
     int key = _getch();
 
@@ -205,12 +221,16 @@ void handleInventoryInput(Player *player, GameMode *currentSubMode) {
             *currentSubMode = MODE_SETTINGS;
             break;
 
-        case 'a':
+        case 'w':
             if(player->inventory) listPrev(player->inventory);
             break;
 
-        case 'd':
+        case 's':
             if(player->inventory) listNext(player->inventory);
             break;
+        /*
+        case 'e':
+            equipCurrentItem(player);
+            break;*/
     }
 }

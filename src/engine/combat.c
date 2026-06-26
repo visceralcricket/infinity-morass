@@ -4,12 +4,13 @@
 void combatMode(Player *player, Enemy *enemy) {
 
     printf("\n\t¡Te has topado con un %s! ¡Comienza el combate!\n", enemy->enemyName);
+    printf("\n\t");
     presioneTeclaParaContinuar();
 
     Heap *colaTurnos = heapCreate();
 
-    int playerPriority = 1000 / player->combatStats.speed;
-    int enemyPriority = 1000 / enemy->combatStats.speed;
+    int playerPriority = BASE_TURN_TICKS / player->combatStats.speed;
+    int enemyPriority = BASE_TURN_TICKS / enemy->combatStats.speed;
 
     int playerNextTurn = playerPriority;
     int enemyNextTurn = enemyPriority;
@@ -19,8 +20,8 @@ void combatMode(Player *player, Enemy *enemy) {
 
     void *currentTurn = NULL;
 
-    heapPush(colaTurnos, player, playerNextTurn);
-    heapPush(colaTurnos, enemy, enemyNextTurn);
+    heapPush(colaTurnos, player, INT_MAX - playerNextTurn);
+    heapPush(colaTurnos, enemy, INT_MAX - enemyNextTurn);
 
     while(player->combatStats.currentHp > 0 && enemy->combatStats.currentHp > 0) {
         turnCounter++;
@@ -34,25 +35,30 @@ void combatMode(Player *player, Enemy *enemy) {
 
         if (currentTurn == player) {
             playerNextTurn += playerPriority;
-            heapPush(colaTurnos, player, playerNextTurn);
+            heapPush(colaTurnos, player, INT_MAX - playerNextTurn);
         } else {
             enemyNextTurn += enemyPriority;
-            heapPush(colaTurnos, enemy, enemyNextTurn);
+            heapPush(colaTurnos, enemy, INT_MAX - enemyNextTurn);
         }
 
         fflush(stdout);
     }
-
+    
     heapDestroy(colaTurnos);
 
     limpiarPantalla();
     if (player->combatStats.currentHp <= 0) {
         printf("\n\t¡Has sido derrotado! Tal parece que no lograrás ser el más fuerte de la mazmorra...\n");
-        printf("\n\t\tGAME OVER\n");
-        printf("\n\t¡Inténtalo de nuevo! ¡No te rindas!\n");
+        printf("\n\t\t\t\t\t GAME OVER\n");
+        printf("\n\t\t\t    ¡Inténtalo de nuevo! ¡No te rindas!\n");
+        printf("\n");
     } else {
         printf("\n\t¡Has derrotado al %s! ¡Felicidades!\n", enemy->enemyName);
 
+        /* +++
+        Considerar añadir macros también para estas 2 variables utilizadas
+        en el randomizador (100, 30).
+        --- */
         if (rand() % 100 < 30) 
         { 
             GameObject *potionDrop = chooseRandomPotion();
@@ -78,9 +84,4 @@ void combatMode(Player *player, Enemy *enemy) {
     }
     printf("\t");
     presioneTeclaParaContinuar();
-}
-
-void freeGameObject(void *p){
-    GameObject *object = p;
-    free(object);
 }

@@ -11,7 +11,6 @@ static const ObjectTemplate objectTemplates[] = {
     {"Armadura ligera", false, true},
     {"Armadura pesada", false, true},
     {"Armadura berserker", false, true},
-    {"Llave de calabozo", false, false},
     {"Rollo de historia", false, false}
 };
 void handleGameObject(GameObject *currentObject) {
@@ -147,13 +146,6 @@ void generateStatsEquipabble(GameObject* object)
 
 void generateStatsKey(GameObject* object)
 {
-    if(strcmp(object->name, "Llave de calabozo") == 0) {
-        object->stats.attack = 0;
-        object->stats.defense = 0;
-        object->stats.maxHp = 0;
-        object->stats.currentHp = 0;
-        object->stats.speed = 0;
-    }
     if(strcmp(object->name, "Rollo de historia") == 0) {
         object->stats.attack = 0;
         object->stats.defense = 0;

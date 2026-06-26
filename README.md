@@ -1,7 +1,7 @@
 # **infinity-morass**
 > *Roguelike de calabozos basado en terminal de texto.*
 
-<img src="https://img.shields.io/badge/version-1.8.5-blue" alt="version">
+<img src="https://img.shields.io/badge/version-1.8.7-blue" alt="version">
 
 [![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/main)](https://github.com/visceralcricket/infinity-morass/commits/main)
 
@@ -17,18 +17,16 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 1. **Descargar el repositorio:** Descargue el proyecto comprimido como `.zip` desde GitHub y extraiga la carpeta en el directorio de su elección.
 
 2. **Navegar a la raíz:** Abra su terminal de preferencia (PowerShell, CMD o Git Bash) y posiciónese dentro de la carpeta principal del proyecto:
-   ```bash
-   cd ruta/hacia/infinity-morass
-   ```
+  ```bash
+  cd ruta/hacia/infinity-morass
+  ```
 
-* Configurar codificación (Obligatorio en Windows): Para que la terminal dibuje correctamente el arte ASCII, las tildes y los bordes del mapa, ejecute:
-
+  * Configurar codificación (Obligatorio en Windows): Para que la terminal dibuje correctamente el arte ASCII, las tildes y los bordes del mapa, ejecute:
   > [Console]::OutputEncoding = [System.text.Encoding]::UTF8
 
 3. **Compilar el proyecto**: Genere el binario ejecutando:
-
-  > mingw32-make
-
+  <pre><code><span style="color: #DCDCAA;">mingw32-make</span></code></pre>
+  
 <small>**(Una vez finalizado, verá que se ha creado el archivo infinity-morass.exe).**</small>
 
 4. **Iniciar la partida**: Ejecute el binario según su *terminal*
@@ -39,85 +37,111 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 + En Símbolo del sistema (CMD):
   > infinity-morass.exe
 
-**NOTA DE MANTENIMIENTO**
-  + Si usted es un desarrollador y desea realizar un rebuild limpio del juego tras modificar las estructuras internas, ejecute mingw32-make clean para fulminar los archivos objeto (.o) de la memoria caché.
+#### **Nota de mantenimiento**
+  + Si usted es un desarrollador y desea realizar un rebuild limpio del juego tras modificar las estructuras internas, ejecute:
+  <pre><code><span style="color: #DCDCAA;">mingw32-make</span> clean</code></pre>
+  para fulminar los archivos tipo objeto (.o) de la memoria caché.
 
-## **IMPORTANTE**
+### **IMPORTANTE**
 * Se utiliza convención **"camelCase"** para programar la totalidad del programa a lo largo de todos los archivos, por favor tener presente esto al momento de contribuir al proyecto.
-
-* Comando para compilar: `mingw32-make`
-* Ejecutable resultante: `infinity-morass.exe`  
-* Comando para establecer UTF-8: `[Console]::OutputEncoding = [System.text.Encoding]::UTF8`
 
 * TDA's utilizados: *"Lista, Mapa, Grafo (implícito), Cola de Prioridad."*
 
 ## **Distribución de directorios**
-> _Cómo se organiza el programa?_
+<pre><code><i><span style="color: #00fed4ed;">Cómo se organiza el código?</span></i></code></pre>
 
-* **`src/`**: Directorio principal del código fuente. Contiene las funcionalidades del programa y la lógica central del mismo.
+* <code><b><span style="color: #23c523d4;">src/</span></b></code>: Directorio principal del código fuente. Contiene las funcionalidades clave del programa y la lógica central del mismo.
 
-  * **`main.c`**: Archivo principal del programa. Contiene el bucle de estados en los que se encuentra el jugador y gestiona la transición entre la interfaz del menú principal y los distintos modos de juego interactivos (como `runExplorationMode`). Relega la lógica pesada a los archivos **`game`** para mantener una arquitectura limpia y modular.
+  * <code><b><span style="color: #009dff;">main.c</span></b></code>: Archivo principal del programa. Contiene el bucle de estados en los que se encuentra el jugador y gestiona la transición entre la interfaz del menú principal y los distintos modos de juego interactivos (como `runExplorationMode`). Relega la lógica pesada a los archivos **`game`** para mantener una arquitectura limpia y modular.
 
-  * **`engine/`**
+  * <code><b><span style="color: #009dff;">engine/</span></b></code>
 
-    * **`entities.h`**: Archivo dedicado completamente a almacenar la memoria para las entidades clave del programa, entre estas se encuentran: Player, Enemy, GameObject, definiciones relacionadas, etc.
+    * <code><b><span style="color: #f43009da;">entities.h</span></b></code>: Archivo dedicado completamente a almacenar la memoria para las entidades clave del programa, entre estas se encuentran: Player, Enemy, GameObject, definiciones relacionadas, etc.
 
-    * **`game.c`**: Lógica interna del juego. Contiene los algoritmos de generación procedimental de laberintos (`generateMaze`, `buildSafePath`), las funciones algorítmicas para el recorrido espacial en grafos y el motor de procesamiento de inputs dependiente de la plataforma (`handleWindowsInput`).
-    * **`game.h`**: Cabecera/encabezado de la arquitectura del programa. Concentra la declaración de estructuras de memoria (`Player`, `Enemy`, `State`), enumeraciones de estado (`GameMode`), macros estructurales (como las dimensiones topológicas de la matriz `N`) y expone los prototipos públicos del motor del juego.
+    * <code><b><span style="color: #f43009da;">game.c</span></b></code>: Lógica interna del juego. Contiene los algoritmos de generación procedimental de laberintos **(generateMaze, buildSafePath)**, las funciones algorítmicas para el recorrido espacial en grafos y el motor de procesamiento de inputs dependiente de la plataforma **handleWindowsInput**.
+    * <code><b><span style="color: #f43009da;">game.h</span></b></code>: Cabecera/encabezado de la arquitectura del programa. Concentra la declaración de macros estructurales (como las dimensiones topológicas de la matriz `N`) y expone los prototipos públicos del motor del juego.
 
-    * **`enmap.c`**: Archivo destinado a la generación y tracking de los enemigos para su correcta integración en el programa.
-    * **`enmap.h`**: Encabezado del archivo destinado a la generación y mapeo de los enemigos: contiene las definiciones de las entidades **"Enemigo"** y una plantilla genérica para estandarizar la asignación de stats.
+    * <code><b><span style="color: #f43009da;">enmap.c</span></b></code>: Archivo destinado a la generación y tracking de los enemigos para su correcta integración en el programa.
+    * <code><b><span style="color: #f43009da;">enmap.h</span></b></code>: Encabezado del archivo destinado a la generación y mapeo de los enemigos: contiene las definiciones de las entidades **"Enemigo"** y una plantilla genérica para estandarizar la asignación de stats.
 
-    * **`combat.c`**: Archivo en donde se encuentra implementada la función en donde se gestionan los turnos durante el combate y las acciones del jugador en la misma.
-    * **`combat.h`**: Encabezado del archivo de la función para el combate del jugador contra los enemigos.
+    * <code><b><span style="color: #f43009da;">combat.c</span></b></code>: Archivo en donde se encuentra implementada la función en donde se gestionan los turnos durante el combate y las acciones del jugador en la misma.
+    * <code><b><span style="color: #f43009da;">combat.h</span></b></code>: Encabezado del archivo de la función para el combate del jugador contra los enemigos.
 
-    * **`objmap.c`**: Archivo encargado de manejar y gestionar las entidades de tipo objeto y distribuirlos a lo largo de un Mapa de forma ordenada.
-    * **`objmap.h`**: Encabezado de dicho archivo, encargado de enlazar e incluir las dependencias necesarias para que el sistema funcione correctamente.
+    * <code><b><span style="color: #f43009da;">objmap.c</span></b></code>: Archivo encargado de manejar y gestionar las entidades de tipo objeto y distribuirlos a lo largo de un Mapa de forma ordenada.
+    * <code><b><span style="color: #f43009da;">objmap.h</span></b></code>: Encabezado de dicho archivo, encargado de enlazar e incluir las dependencias necesarias para que el sistema funcione correctamente.
 
 
-  * **`io/`**
+  * <code><b><span style="color: #009dff;">io/</span></b></code>
 
-    * **`storage.c`**: Gestor de partidas guardadas del jugador en base a su nombre de usuario: utiliza archivos **.sav** para almacenar el perfil del jugador.
+    * <code><b><span style="color: #f43009da;">storage.c</span></b></code>: Gestor de partidas guardadas del jugador en base a su nombre de usuario: utiliza archivos **.sav** para almacenar el perfil del jugador.
 
-    * **`storage.h`**: Encabezado de dicho gestor; contiene prototipos e inclusión de las librerías necesarias para funcionar correctamente.
+    * <code><b><span style="color: #f43009da;">storage.h</span></b></code>: Encabezado de dicho gestor; contiene prototipos e inclusión de las librerías necesarias para funcionar correctamente.
 
-  * **`ui/`**
+  * <code><b><span style="color: #009dff;">tdas/</span></b></code>
+    + Aquí se encuentran las estructuras de los TDAs (Tipos de Datos Abstractos) utilizados en el proyecto, como el montículo *Min-Heap* para el sistema de combate por turnos, la *lista doblemente enlazada* para los inventarios y visualización de objetos, el *mapa hash* para trackear las entidades como enemigos y sus propiedades, etc; más información en la documentación **"TDAS.md"**
 
-    * **`render.c`**: Archivo dedicado a la visualización y renderización del programa en el terminal correspondiente.
+  * <code><b><span style="color: #009dff;">ui/</span></b></code>
 
-    * **`render.h`**: Encabezado de dicho archivo; contiene prototipos e inclusión de las librerías necesarias para funcionar correctamente.
+    * <code><b><span style="color: #f43009da;">render.c</span></b></code>: Archivo dedicado a la visualización y renderización del programa en el terminal correspondiente.
 
-* **`.gitignore`**: Archivo utilizado para excluir ficheros de tipo innecesario a la hora de actualizar el repositorio.
+    * <code><b><span style="color: #f43009da;">render.h</span></b></code>: Encabezado de dicho archivo; contiene prototipos e inclusión de las librerías necesarias para funcionar correctamente.
 
-* **`Makefile`**: Archivo utilizado para automatizar la compilación del programa en local con el comando: `mingw32-make` y que crea el ejecutable final: `infinity-morass.exe`
+* <code><b><span style="color: #23c523d4;">.gitignore</span></b></code>: Archivo utilizado para excluir ficheros de tipo innecesario a la hora de actualizar el repositorio.
+
+* <code><b><span style="color: #23c523d4;">Makefile</span></b></code>: Archivo utilizado para automatizar la compilación del programa en local con el comando: <code><span style="color: #DCDCAA;">mingw32-make</span></code> y que crea el ejecutable final mencionado en el instructivo del proyecto.
 
 ## **Funcionalidades pendientes** 
+```diff
+@@ A nivel de renderizado / visual @@
+- [PENDIENTE] Actualmente **NO** hay forma de distinguir las casillas de enemigos comúnes con jefes: sería ideal crear nuevas macros que representen mejor a cada enemigo de forma único o que sean capaces de diferenciar enemigos comúnes de jefes.
 
-* A nivel de renderizado / visual
-  + Actualmente **NO** hay forma de distinguir las casillas de enemigos comúnes con jefes: sería ideal crear nuevas macros que representen mejor a cada enemigo de forma único o que sean capaces de diferenciar enemigos comúnes de jefes.
++ [RESUELTO] No se le indica al jugador en qué nivel de la mazmorra se encuentra, es decir, no existe forma de trackear el número que representa la mazmorar actual: en caso de implementarse, considerar que, como la muestra topológica del mapa se guarda junto con el progreso del jugador, el número de la mazmorra que se almacenó en el archivo .sav **también** debe ser considerado de tal forma que el número de mazmorra actual no se reinicie al cargar una partida. Resolvido en Parche v1.8.4
 
-  + No se le indica al jugador en qué nivel de la mazmorra se encuentra, es decir, no existe forma de trackear el número que representa la mazmorar actual: en caso de implementarse, considerar que, como la muestra topológica del mapa se guarda junto con el progreso del jugador, el número de la mazmorra que se almacenó en el archivo .sav **también** debe ser considerado de tal forma que el número de mazmorra actual no se reinicie al cargar una partida.
+@@ A nivel de lógica de procedimientos / sistemas @@
+- [PENDIENTE] Implementar funcionalidad de reiniciar personaje (o al menos los puntos de vida del mismo)
 
-* A nivel de lógica de procedimientos / sistemas
-    + Implementar funcionalidad de reiniciar personaje (o al menos los puntos de vida del mismo)
++ [RESUELTO] Interacciones con objetos generados en el mapa y su posterior guardado en el inventario: actualmente estos no son interactuables ni existe una forma de guardarlos en el inventario. Resolvido el 25-06-2026.
 
-    + Interacciones con objetos generados en el mapa y su posterior guardado en el inventario: actualmente estos no son interactuables ni existe una forma de guardarlos en el inventario.
-
-    + La generación de enemigos no limita jefes por mazmorra, sino que es de forma totalmente aleatoria: integrar métrica que lleve la cuenta de mazmorras recorridas y genere un enemigo jefe cada 4 niveles.
-
+- [PENDIENTE] La generación de enemigos no limita jefes por mazmorra, sino que es de forma totalmente aleatoria: integrar métrica que lleve la cuenta de mazmorras recorridas y genere un enemigo jefe cada 4 niveles.
+```
 ## **Problemas conocidos**
+```diff
+@@ A nivel de renderizado / visual @@
+$ No se han detectado problemas de renderizado. Por favor informar en caso de observar uno mediante plantilla de reporte de bugs. $
 
-* A nivel de renderizado / visual
-  + ...
+@@ A nivel de lógica de procedimientos / sistemas @@
+- [PENDIENTE] Actualmente, al huir de un enemigo, se muestra que el jugador "derrotó" al enemigo, cuando esto no es correcto, puesto que escapar de un enemigo **≠** derrotar al mismo.
 
-* A nivel de lógica de procedimientos / sistemas
-  + Actualmente, al huir de un enemigo, se muestra que el jugador "derrotó" al enemigo, cuando esto no es correcto, puesto que escapar de un enemigo **≠** derrotar al mismo.
-
+- [PENDIENTE] Al recoger un objeto en el inventario, las estadísticas afectadas que muestra este mismo (el resúmen de estadísticas afectadas) es poco claro y enrevesado: muestra **todas** las estadísticas que **podría** afectar en vez de simplificarlo al incremento (o decremento) de las estadísticas realmente afectadas.
+- Por ejemplo:
+- Poción pequeña [CONSUMIBLE]: +40HP
+- Bomba molotov [CONSUMIBLE]: +10 ATK -5 SPD
+```
 ## **Changelog (historial de cambios)**
 <small>*Nota: Este changelog está en orden cronológico inverso.*</small>
 
 ### **Versión 1.8.0** (20-06-2026) 
 > Integración inicial de funcionalidades: modo de juego de combate, sistema de combate, finalización del sistema de guardado/carga de partidas y mejoras de calidad de vida.
+
+* Parche 1.8.7
+  + Realizadas mejoras generales de redacción de documentación, limpieza de comentarios innecesarios y refactorizaciones menores de código para mejorar legibilidad y coherencia.
+
+  + Mejorada documentación específica **"TDAS.md"** en la carpeta de **"src/tdas"**
+
+  + Añadidos nuevos macros para eliminar la mayoría (sino toda) existencia de números mágicos tanto en procesos fundamentales del programa como en funcionalidades más finas / de menor impacto.
+
+  + Traducidos comentarios obsoletos que se escribieron en inglés al español para mantener consistencia con el resto del proyecto el cual está escrito en dicho lenguaje.
+
+  + Añadidos comentarios menores a lo largo del código para explicar más a profundidad el funcionamiento de procedimientos y funciones que podrían resultar más complejas o de mayor interés formativo.
+
+  + Inclusión de coloreado de texto con <code><b><span style="color: #ebffa4cb;">HTML</span></b></code> para mayor claridad y facilidad de lectura (sólo visible a la hora de descargar este archivo puesto que el motor de Github Flavored Markdown GLM lo sanitiza).
+
+  + Implementado formateador **"diff"** para visualización de secciones *"Funcionalidades pendientes"* y *"Problemas conocidos"*
+
+* Parche 1.8.6
+  + Añadida la posibilidad de agarrar objetos en el mapa de juego.
+  
+  + Rolled-back cambios realizados **"heap.c"** y **"combat.c"**: se dejó como Min-Heap y se preservó la resta con **INT_MAX**.
 
 * Parche 1.8.5
   + Implementadas secciones de **"Funcionalidades pendientes"** y **"Problemas conocidos"**
