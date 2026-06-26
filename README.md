@@ -95,8 +95,7 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 @@ A nivel de renderizado / visual @@
 + [RESUELTO] Actualmente **NO** hay forma de distinguir las casillas de enemigos comúnes
 + con jefes: sería ideal crear nuevas macros que representen mejor a cada enemigo de forma
-+ única o que sean capaces de diferenciar enemigos comúnes de jefes.
-
++ única o que sean capaces de diferenciar enemigos comúnes de jefes. Resuelto en parche 1.8.8
 
 - [PENDIENTE] En la version actual no se ha implementado el glosario
 
@@ -110,12 +109,15 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 @@ A nivel de lógica de procedimientos / sistemas @@
 - [PENDIENTE] Implementar funcionalidad de reiniciar personaje (o al menos los puntos de vida del mismo)
 
+- [PENDIENTE] Actualmente la generacion de enemigos no usa el mapa para mostrarlos, los generas desde 0 siempre
+
 + [RESUELTO] Interacciones con objetos generados en el mapa y su posterior guardado en el inventario:
 + actualmente estos no son interactuables ni existe una forma de guardarlos en el inventario.
 + Resuelto el 25-06-2026.
 
 + [RESUELTO] La generación de enemigos no limita jefes por mazmorra, sino que es de forma totalmente
 + aleatoria: integrar métrica que lleve la cuenta de mazmorras recorridas y genere un enemigo jefe cada 4 niveles.
++ Resuelto en pache 1.8.8
 ```
 ## **Problemas conocidos**
 ```diff
@@ -124,8 +126,8 @@ $ No se han detectado problemas de renderizado. Por favor informar en caso de ob
 reporte de bugs. $
 
 @@ A nivel de lógica de procedimientos / sistemas @@
-- [PENDIENTE] Actualmente, al huir de un enemigo, se muestra que el jugador "derrotó" al enemigo, cuando esto no
-- es correcto, puesto que escapar de un enemigo **≠** derrotar al mismo.
++ [Resuelto] Actualmente, al huir de un enemigo, se muestra que el jugador "derrotó" al enemigo, cuando esto no
++ es correcto, puesto que escapar de un enemigo **≠** derrotar al mismo. Resuelto en el parche 1.8.8
 
 - [PENDIENTE] Al recoger un objeto en el inventario, las estadísticas afectadas que muestra este mismo (el resúmen
 - de estadísticas afectadas) es poco claro y enrevesado: muestra **todas** las estadísticas que **podría** afectar
@@ -135,7 +137,7 @@ reporte de bugs. $
 - Bomba molotov [CONSUMIBLE]: +10 ATK -5 SPD
 
 
-- [PENDIENTE] Actualmente la generacion de enemigos no usa el mapa para mostrarlos, los generas desde 0 siempre
+
 ```
 ## **Changelog (historial de cambios)**
 <small>*Nota: Este changelog está en orden cronológico inverso.*</small>
@@ -144,6 +146,7 @@ reporte de bugs. $
 > Integración inicial de funcionalidades: modo de juego de combate, sistema de combate, finalización del sistema de guardado/carga de partidas y mejoras de calidad de vida.
 * Parche 1.8.8
   + Correcion de generacion de enemeigos tipo BOSS en el mapa explorable
+  + Ahora cuando huyes de un combate se muestro un texto acorde
 
 * Parche 1.8.7
   + Realizadas mejoras generales de redacción de documentación, limpieza de comentarios innecesarios y refactorizaciones menores de código para mejorar legibilidad y coherencia.

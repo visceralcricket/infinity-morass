@@ -47,7 +47,10 @@ void combatMode(Player *player, Enemy *enemy) {
     heapDestroy(colaTurnos);
 
     limpiarPantalla();
-    if (player->combatStats.currentHp <= 0) {
+    if (fleeCondition) {
+        printf("\n\t¡Has huido del %s! Vives para luchar otro día...\n", enemy->enemyName);
+    }
+    else if (player->combatStats.currentHp <= 0) {
         printf("\n\t¡Has sido derrotado! Tal parece que no lograrás ser el más fuerte de la mazmorra...\n");
         printf("\n\t\t\t\t\t GAME OVER\n");
         printf("\n\t\t\t    ¡Inténtalo de nuevo! ¡No te rindas!\n");
