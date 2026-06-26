@@ -109,6 +109,7 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 @@ A nivel de lógica de procedimientos / sistemas @@
 + [RESUELTO] Implementar funcionalidad de reiniciar personaje (o al menos los puntos de vida del mismo)
 + Resuelto en parche v1.8.9
+
 - [PENDIENTE] Implementar el uso de objetos (todos) en el modo exploración
 
 - [PENDIENTE] Implementar el uso de objetos (pociones) en combate
