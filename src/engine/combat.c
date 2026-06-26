@@ -20,8 +20,8 @@ void combatMode(Player *player, Enemy *enemy) {
 
     void *currentTurn = NULL;
 
-    heapPush(colaTurnos, player, playerNextTurn);
-    heapPush(colaTurnos, enemy, enemyNextTurn);
+    heapPush(colaTurnos, player, INT_MAX - playerNextTurn);
+    heapPush(colaTurnos, enemy, INT_MAX - enemyNextTurn);
 
     while(player->combatStats.currentHp > 0 && enemy->combatStats.currentHp > 0) {
         turnCounter++;
@@ -35,10 +35,10 @@ void combatMode(Player *player, Enemy *enemy) {
 
         if (currentTurn == player) {
             playerNextTurn += playerPriority;
-            heapPush(colaTurnos, player, playerNextTurn);
+            heapPush(colaTurnos, player, INT_MAX - playerNextTurn);
         } else {
             enemyNextTurn += enemyPriority;
-            heapPush(colaTurnos, enemy, enemyNextTurn);
+            heapPush(colaTurnos, enemy, INT_MAX - enemyNextTurn);
         }
 
         fflush(stdout);

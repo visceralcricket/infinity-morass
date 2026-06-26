@@ -1,7 +1,7 @@
 # **infinity-morass**
 > *Roguelike de calabozos basado en terminal de texto.*
 
-<img src="https://img.shields.io/badge/version-1.8.5-blue" alt="version">
+<img src="https://img.shields.io/badge/version-1.8.6-blue" alt="version">
 
 [![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/main)](https://github.com/visceralcricket/infinity-morass/commits/main)
 
@@ -129,6 +129,8 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 
 * Parche 1.8.6
   + Añadida la posibilidad de agarrar objetos en el mapa de juego.
+  
+  + Rolled-back cambios realizados **"heap.c"** y **"combat.c"**: se dejó como Min-Heap y se preservó la resta con **INT_MAX**.
 
 * Parche 1.8.5
   + Implementadas secciones de **"Funcionalidades pendientes"** y **"Problemas conocidos"**
