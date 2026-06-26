@@ -110,9 +110,9 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 + [RESUELTO] Implementar funcionalidad de reiniciar personaje (o al menos los puntos de vida del mismo)
 + Resuelto en parche v1.8.9
 
-- [PENDIENTE] Implementar el uso de objetos (todos) en el modo exploración
++ [RESUELTO] Implementar el uso de objetos (todos) en el modo exploración
 
-- [PENDIENTE] Implementar el uso de objetos (pociones) en combate
++ [RESUELTO] Implementar el uso de objetos (pociones) en combate
 
 - [PENDIENTE] Implementar funcionalidad de reiniciar personaje (o al menos los puntos de vida del mismo)
 
@@ -160,6 +160,8 @@ reporte de bugs. $
   + Implementada mejora en la visualización de estadísticas afectadas por cada objeto en el inventario.
 
   + Implementacion de la historia y pergaminos interactivos
+
+  + Pulido del sistema de equipamiento y objetos
 
 * Parche 1.8.8
   + Correcion de generacion de enemeigos tipo BOSS en el mapa explorable
