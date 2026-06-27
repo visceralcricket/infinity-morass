@@ -94,7 +94,7 @@ cantidad de enemigos que se van a generar por mazmorra, pero a fines de convenie
 en cuenta que la prioridad actualmente está en la arquitectura del programa y no tanto en
 este tipo de funcionalidades finas, se va a ignorar.
 --- */
-void placeEnemies(int maze[N][N]) {
+void placeEnemies(int maze[N][N], int floorCount) {
     int placed = 0;
     while(placed < MAX_ENEMIES_PER_LEVEL) {
         int randomX = rand() % N;
@@ -103,6 +103,18 @@ void placeEnemies(int maze[N][N]) {
         if(maze[randomY][randomX] == 0 && (randomX != 0 || randomY != 0)) {
             maze[randomY][randomX] = ENEMY_TILE;
             placed++;
+        }
+    }
+
+    if(floorCount > 0 && floorCount % 4 == 0) {
+        int bossPlaced = 0;
+        while(!bossPlaced) {
+            int randomX = rand() % N;
+            int randomY = rand() % N;
+            if(maze[randomY][randomX] == 0 && (randomX != 0 || randomY != 0)) {
+                maze[randomY][randomX] = BOSS_TILE;
+                bossPlaced = 1;
+            }
         }
     }
 }
@@ -122,8 +134,8 @@ void placeObjects(int maze[N][N]) {
 }
 
 // Faltaría implementar manejo de input para Linux
-// Actualizamos la firma para recibir el puntero del jugador y el flag del bucle
-void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode, Enemy **currentEnemy) {
+// Recibe el hashmap maestro de enemigos para spawnear copias desde él
+void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode, Enemy **currentEnemy, Map *enemyMap) {
     int key = _getch();
 
     // Normalizar key recibida a minúscula si es que va de la A a la Z
@@ -158,16 +170,28 @@ void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode
         }
     }
     if(maze[player->y][player->x] == ENEMY_TILE) {
-        Enemy *enemy = spawnRandomEnemy();
+        Enemy *enemy = spawnEnemyFromMap(enemyMap);
         if(enemy) {
             enemy->x = player->x;
             enemy->y = player->y;
             printf("\n\tHas encontrado a: %s\n\t", enemy->enemyName);
             maze[player->y][player->x] = EMPTY;
-            *currentEnemy = enemy;       // <-- nuevo
+            *currentEnemy = enemy;
             *currentSubMode = MODE_COMBAT;
         }
     }
+    else if(maze[player->y][player->x] == BOSS_TILE) {
+        Enemy *boss = spawnBossFromMap(enemyMap);
+        if(boss) {
+            boss->x = player->x;
+            boss->y = player->y;
+            printf("\n\t" FORMAT_BOLD COLOR_RED "Un jefe bloquea tu camino: %s" FORMAT_RESET "\n\t", boss->enemyName);
+            maze[player->y][player->x] = EMPTY;
+            *currentEnemy = boss;
+            *currentSubMode = MODE_COMBAT;
+        }
+    }
+
 }
 
 void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode, sessionFloor *currentSession) {
@@ -228,9 +252,60 @@ void handleInventoryInput(Player *player, GameMode *currentSubMode) {
         case 's':
             if(player->inventory) listNext(player->inventory);
             break;
-        /*
-        case 'e':
-            equipCurrentItem(player);
-            break;*/
+
+        case 'e': {
+            if(player->inventory) {
+                GameObject *current = (GameObject *) listCurrent(player->inventory);
+                if(current && current->equip == ITEM_KEY && current->lore[0] != '\0') {
+                    // Pergamino: abrir modo lectura (feature de pergaminos)
+                    limpiarPantalla();
+                    *currentSubMode = MODE_SCROLL_READ;
+                } else {
+                    // Poción / equipo: usar o equipar (feature de interacción de objetos)
+                    useItemExploration(player, current);
+                    limpiarPantalla();
+                }
+            }
+            break;
+        }
     }
+}
+
+// Manejar input dentro de la pantalla de lectura de un pergamino
+void handleScrollInput(GameMode *currentSubMode) {
+    limpiarInputPendiente();
+    int key = _getch();
+
+    if(key == ESC_KEY) {
+        limpiarPantalla();
+        *currentSubMode = MODE_INVENTORY_VIEW;
+    }
+    // Cualquier otra tecla no hace nada: el jugador sigue leyendo
+}
+
+void resetPlayerProgress(Player *player, int maze[N][N], sessionFloor *currentSession) {
+    if(player->inventory) {
+        GameObject *item = (GameObject *) listPopFront(player->inventory);
+        while(item) {
+            free(item);
+            item = (GameObject *) listPopFront(player->inventory);
+        }
+        listClean(player->inventory);
+    }
+    player->combatStats.maxHp = 100;
+    player->combatStats.currentHp = 100;
+    player->combatStats.attack = 5;
+    player->combatStats.defense = 5;
+    player->combatStats.speed = 5;
+    
+    player->x = player->y = 0;
+    saveGame(player, currentSession);
+
+
+    generateMaze(maze, 20);
+    placeExits(maze, MAX_NUM_EXITS);
+    placeEnemies(maze, 1);
+    placeObjects(maze);
+    
+    currentSession->isMapDirty = true;
 }

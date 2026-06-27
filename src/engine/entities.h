@@ -21,6 +21,7 @@
 #define ENEMY_TILE 'E'
 #define EXIT_TILE 2
 #define OBJECT_TILE 'o'
+#define BOSS_TILE 'B'
 
 // ======== Enumeraciones ========
 typedef enum {
@@ -34,6 +35,13 @@ typedef enum {
     OBJECT_INVENTORY
 } ItemState;
 
+
+typedef enum {
+    SLOT_NONE = 0,  
+    SLOT_WEAPON,
+    SLOT_ARMOR
+} EquipSlot;
+
 // ======== Menu modes enum structure ========
 
 typedef enum {
@@ -41,6 +49,7 @@ typedef enum {
     MODE_EXPLORATION,
     MODE_SETTINGS,
     MODE_INVENTORY_VIEW,
+    MODE_SCROLL_READ,
     MODE_COMBAT
 } GameMode;
 
@@ -63,6 +72,7 @@ struct GameObject {
     char lore[MAX_LORE_LENGTH];
     ItemState state;
     ItemType equip;
+    EquipSlot equipSlot;   // Slot de equipo (solo relevante si equip == ITEM_EQUIPPABLE)
     union {
         struct { int x, y; };    // si está en el mapa
         struct { int slot; };    // si está en inventario
@@ -74,6 +84,7 @@ struct Enemy {
     int x, y;
     Stats combatStats;
     List *drops;
+    bool isBoss; 
 };
 
 struct Player {
@@ -92,6 +103,7 @@ struct sessionFloor{
     GameObject activeObjects[MAX_OBJECTS_PER_LEVEL];
     int numObjects;
     bool isMapDirty;
+    int floorCount; 
 };
 
 #endif

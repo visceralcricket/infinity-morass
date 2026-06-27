@@ -25,28 +25,89 @@ Enemy* generateEnemy(const char *name)
     enemy->combatStats.defense = -1;
     enemy->combatStats.maxHp = -1;
     enemy->combatStats.speed = -1;
+    enemy->drops = NULL;
+    enemy->isBoss = false;
     strncpy(enemy->enemyName, name, MAX_USERNAME - 1);
     enemy->enemyName[MAX_USERNAME - 1] = '\0';
 
     return enemy;
 }
 
-Enemy *spawnRandomEnemy(void) {
+// ==================== Selección de nombres al azar ====================
+
+// Devuelve el nombre de un enemigo común (no jefe) al azar
+const char *randomCommonName(void) {
     int count = sizeof(enemyTemplates) / sizeof(enemyTemplates[0]);
-    int randomIndex = rand() % count;
-    const EnemyTemplate *tpl = &enemyTemplates[randomIndex];
-
-    Enemy *enemy = generateEnemy((char *)tpl->name);
-    if(!enemy) return NULL;
-
-    enemy->x = -1;
-    enemy->y = -1;
-
-    if(tpl->isBoss) generateStatsBossEnemy(enemy, tpl->difficulty);
-    else generateStatsCommonEnemy(enemy, tpl->difficulty);
-
-    return enemy;
+    int commonIndices[count];
+    int commonCount = 0;
+    for(int i = 0; i < count; i++)
+        if(!enemyTemplates[i].isBoss) commonIndices[commonCount++] = i;
+    if(commonCount == 0) return NULL;
+    return enemyTemplates[commonIndices[rand() % commonCount]].name;
 }
+
+// Devuelve el nombre de un jefe al azar
+const char *randomBossName(void) {
+    int count = sizeof(enemyTemplates) / sizeof(enemyTemplates[0]);
+    int bossIndices[count];
+    int bossCount = 0;
+    for(int i = 0; i < count; i++)
+        if(enemyTemplates[i].isBoss) bossIndices[bossCount++] = i;
+    if(bossCount == 0) return NULL;
+    return enemyTemplates[bossIndices[rand() % bossCount]].name;
+}
+
+// ==================== Clonado ====================
+
+/* +++
+Copia un enemigo "maestro" del hashmap a una instancia nueva e independiente
+para usar en combate. El maestro nunca se modifica: peleamos siempre con la copia
+y liberamos sólo la copia al terminar.
+OJO: drops se setea en NULL para evitar que la copia y el maestro compartan
+la misma lista (aliasing). Cuando se implementen los drops del enemigo, aquí
+habrá que clonar la lista, no copiar el puntero.
+--- */
+Enemy *cloneEnemy(const Enemy *src) {
+    if(!src) return NULL;
+    Enemy *copy = (Enemy*) malloc(sizeof(Enemy));
+    if(!copy) return NULL;
+    *copy = *src;                                          // copia stats, nombre, x, y
+    copy->combatStats.currentHp = copy->combatStats.maxHp; // HP lleno al spawnear
+    copy->drops = NULL;                                    // evitar aliasing de la lista
+    return copy;
+}
+
+// ==================== Spawn desde el hashmap ====================
+
+Enemy *spawnEnemyFromMap(Map *enemyMap) {
+    if(!enemyMap) return NULL;
+    const char *name = randomCommonName();
+    if(!name) return NULL;
+
+    MapPair *pair = mapSearch(enemyMap, (char*)name);
+    if(!pair) return NULL;
+
+    Enemy *master = (Enemy*) pair->value;
+    Enemy *copy = cloneEnemy(master);
+    if(copy) copy->isBoss = false;
+    return copy;
+}
+
+Enemy *spawnBossFromMap(Map *enemyMap) {
+    if(!enemyMap) return NULL;
+    const char *name = randomBossName();
+    if(!name) return NULL;
+
+    MapPair *pair = mapSearch(enemyMap, (char*)name);
+    if(!pair) return NULL;
+
+    Enemy *master = (Enemy*) pair->value;
+    Enemy *boss = cloneEnemy(master);
+    if(boss) boss->isBoss = true;
+    return boss;
+}
+
+// ==================== Generación de stats ====================
 
 void generateStatsCommonEnemy(Enemy* enemy, int difficulty)
 {
@@ -118,13 +179,15 @@ void generateStatsBossEnemy(Enemy* enemy, int difficulty)
         enemy->combatStats.speed     = 1 * difficulty;
     }
     else if(strcmp(enemy->enemyName, "Jefe de carrera") == 0) { // te manda a repetir el semestre, fallas 2 muerte instantanea, si aciertas 5 pasas
-        enemy->combatStats.attack    = 99 * difficulty;
-        enemy->combatStats.defense   = 99 * difficulty;
-        enemy->combatStats.maxHp     = 99* difficulty;
+        enemy->combatStats.attack    = 1 * difficulty;
+        enemy->combatStats.defense   = 55 * difficulty;
+        enemy->combatStats.maxHp     = 60 * difficulty;
         enemy->combatStats.currentHp = enemy->combatStats.maxHp;
-        enemy->combatStats.speed     = 99 * difficulty;
+        enemy->combatStats.speed     = 11 * difficulty;
     }
 }
+
+// ==================== Construcción del hashmap maestro ====================
 
 Map *createEnemiesMap(void) {
     Map *map = mapCreate();

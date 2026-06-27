@@ -10,6 +10,8 @@
 
 #include "../tdas/extra.h"
 #include "entities.h"
+#include "player.h"
+#include "../tdas/hashmap.h"
 
 // ======== Definiciones generales ========
 #define INF INT_MAX
@@ -44,13 +46,16 @@ lo cual permitiría trackear y mantener la persistencia de los enemigos
 tanto durante el gameplay como a la hora de guardar la partida, pero
 por fines prácticos y limitaciones de tiempo se va a dejar así.
 --- */
-void placeEnemies(int maze[N][N]);
+void placeEnemies(int maze[N][N], int floorCount);
 void placeObjects(int maze[N][N]);
 
 // ==================== Manejo de input ====================
-void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode, Enemy **currentEnemy);
+void handleWindowsInput(Player *player, int maze[N][N], GameMode *currentSubMode, Enemy **currentEnemy, Map *enemyMap);
 void handleSettingsInput(Player *player, bool *playing, GameMode *currentSubMode, sessionFloor *currentSession);
 void handleInventoryInput(Player *player, GameMode *currentSubMode);
+void handleScrollInput(GameMode *currentSubMode);
+// ==================== Funciones relacionadas con el jugador ====================
+void resetPlayerProgress(Player *player, int maze[N][N], sessionFloor *currentSession);
 
 #include "enmap.h"
 
