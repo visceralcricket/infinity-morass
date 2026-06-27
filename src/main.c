@@ -2,6 +2,7 @@
 #include "io/storage.h"
 #include "engine/combat.h"
 #include "ui/render.h"
+// #include "engine/objmap.h"
 
 // --------------- Utilities ---------------
 // separador1, separador2 y readCharOption se movieron al archivo extra.c para 
@@ -11,7 +12,7 @@
 void showMainMenu(char *username);
 void renderExploration(int maze[N][N], Player player);
 void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSession, Map *enemyMap);
-// void showGlossary();
+void showGlossary(Map *objectMap, Map *enemyMap);
 
 // ==================== Main ====================
 
@@ -32,6 +33,8 @@ int main() {
     // Construir el hashmap maestro de enemigos UNA sola vez. De aquí en adelante
     // los enemigos se clonan desde el mapa en vez de regenerarse desde cero.
     Map *enemyMap = createEnemiesMap();
+
+    Map *objectMap = createObjectsMap();
 
     int mazeGenerated = false;
     // Inicializar semilla aleatoria para generar laberintos únicos
@@ -100,7 +103,7 @@ int main() {
                 break;
 
             case '2':
-                // void showGlossary(maze);
+                showGlossary(objectMap, enemyMap);
                 break;
         }
 
@@ -192,7 +195,7 @@ void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSes
                     
                     GameObject *foundObject = chooseRandomObject();
                     if (foundObject) {
-                        printf("\n\t¡Has encontrado un objeto!");
+                        printf("\n\t¡Has encontrado un objeto: %s!", foundObject->name);
                         printf("\n\t¿Deseas recogerlo? (S/N)\n\t< ");
 
                         char choice = readCharOption();
@@ -229,5 +232,3 @@ void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSes
     }
     printf(SHOW_CURSOR);
 }
-
-// void showGlossary() {}

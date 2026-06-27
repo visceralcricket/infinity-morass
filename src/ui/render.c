@@ -1,4 +1,5 @@
 #include "render.h"
+#include "../tdas/hashmap.h"
 
 void showMainMenu(char *username) {
     limpiarPantalla();
@@ -308,4 +309,57 @@ void renderGameOverScreen(const char *killerName) {
     printf("\t " FORMAT_DIM "La oscuridad de la mazmorra te arrastra hacia sus entrañas..." FORMAT_RESET "\n\n");
     separador1();
     printf("\n\tDeseas reencarnar e intentarlo de nuevo? (S/N)\n\t< ");
+}
+
+void showGlossary(Map *objectMap, Map *enemyMap) {
+    limpiarPantalla();
+    separador1();
+    printf("\t\t === Archivos de las profundidades ===\n");
+    separador1();
+
+    printf("\n\t\t -- Enemigos de la mazmorra --\n\n");
+    if (!enemyMap) {
+        printf("\t El bestiario no está disponible.\n");
+    } else {
+        MapPair *enemyPair = mapFirst(enemyMap);
+        while (enemyPair) {
+            Enemy *enemy = (Enemy *) enemyPair->value;
+            if (enemy->isBoss) printf("[JEFE] ");
+            printf("\t- %s: HP %d | ATK %d | DEF %d | SPD %d\n", enemy->enemyName,
+                enemy->combatStats.maxHp, enemy->combatStats.attack,
+                enemy->combatStats.defense, enemy->combatStats.speed);
+            enemyPair = mapNext(enemyMap);
+        }
+    }
+    printf("\n");
+    separador2();
+
+    printf("\n\t\t -- Objetos de la mazmorra --\n\n");
+    if (!objectMap) {
+        printf("\t El inventario de objetos no está disponible.\n");
+    } else {
+        MapPair *objectPair = mapFirst(objectMap);
+        while (objectPair) {
+            GameObject *object = (GameObject *) objectPair->value;
+            const char *tipo;
+            switch (object->equip) {
+                case ITEM_CONSUMABLE: tipo = "Consumible"; break;
+                case ITEM_EQUIPPABLE: tipo = "Equipable";  break;
+                case ITEM_KEY:        tipo = "Llave/Clave"; break;
+                default:              tipo = "Desconocido"; break;
+            }
+
+            printf("\t- %s [%s]", object->name, tipo);
+            if(object->stats.maxHp) printf(" %+d HP", object->stats.maxHp);
+            if(object->stats.attack) printf(" %+d ATK", object->stats.attack);
+            if(object->stats.defense) printf(" %+d DEF", object->stats.defense);
+            if(object->stats.speed) printf(" %+d SPD", object->stats.speed);
+            printf("\n");
+            
+            objectPair = mapNext(objectMap);
+        }
+    }
+    printf("\n");
+    printf("\n");
+    presioneTeclaParaContinuar();
 }
