@@ -17,6 +17,8 @@ GameObject *chooseRandomObject(void);
 
 GameObject *chooseRandomPotion(void);
 
+GameObject *chooseRandomScroll(void);
+
 void generateStatsConsumable(GameObject* object);
 
 void generateStatsEquipabble(GameObject* object);

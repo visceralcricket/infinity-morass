@@ -13,6 +13,32 @@ static const ObjectTemplate objectTemplates[] = {
     {"Armadura berserker", false, true},
     {"Rollo de historia", false, false}
 };
+
+/* +++
+Pergaminos de historia que sueltan los jefes. Cada uno cuenta un fragmento
+del lore del Rey Amarillo. El texto se guarda en el campo lore del GameObject
+(MAX_LORE_LENGTH = 256), así que cada fragmento cabe holgado.
+--- */
+
+static const char *storyScrolls[][2] = {
+    {"Pergamino I",
+     "Antano este lugar no era mazmorra. Magia y tecnologia convivian en sintonia, y las razas colaboraban por un futuro comun. Nadie imaginaba lo que se gestaba en las sombras."},
+    {"Pergamino II",
+     "Un humano sin nombre comenzo a oir una voz. El ente jamas se mostro, solo susurraba. Al preguntarle su nombre, callo un instante y dijo: \"tu especie suele llamarme El Rey Amarillo\"."},
+    {"Pergamino III",
+     "Tras aquella charla, el humano enloquecio lentamente. Sus iguales le parecian un estorbo. El conocimiento ajeno lo corrompia mientras se alzaba por encima de los demas."},
+    {"Pergamino IV",
+     "Se volvio gobernante de la ciudad cuyo nombre se perdio, y tomo uno nuevo, impronunciable: #$%Tur. Reino con un saber que ningun hombre deberia poseer."},
+    {"Pergamino V",
+     "Abrio un portal para hallar recursos en otras dimensiones. No previo que se abria hacia ambos lados. Al activarse, algo cruzo desde el otro lado."},
+    {"Pergamino VI",
+     "Cruzo algo que la mente mortal no puede contener. No tenia forma, sino todas a la vez; sus miembros doblaban angulos que la logica prohibe. Mirarlo era desentender la razon. Solo quedo el amarillo de su capa, y luego, la locura."},
+    {"Pergamino VII",
+     "El heroe crecio lejos, oyendo de sus padres las maravillas de aquel sitio. Un dia volvio a casa: ambos muertos. Con su sangre, en el muro: \"El Rey Amarillo volvio\"."},
+    {"Pergamino VIII",
+     "Movido por la venganza, el heredero de los antiguos desciende a la mazmorra. Busca la verdad de la tragedia y un modo de detener el mal que aun acecha en lo profundo."}
+};
+
 void handleGameObject(GameObject *currentObject) {
     if(!currentObject) return;
     switch(currentObject->equip) {
@@ -43,6 +69,7 @@ GameObject* generateObject(const char *name)
     object->stats.defense = -1;
     object->stats.maxHp = -1;
     object->stats.speed = -1;
+    object->lore[0] = '\0';
     strncpy(object->name, name, MAX_OBJECT_NAME - 1);
     object->name[MAX_OBJECT_NAME - 1] = '\0';
 
@@ -184,6 +211,30 @@ GameObject *chooseRandomPotion(void) {
 
     object->equip = ITEM_CONSUMABLE;
     generateStatsConsumable(object);
+
+    return object;
+}
+
+/* +++
+Devuelve un pergamino de historia al azar (drop de jefe). Es un objeto tipo
+ITEM_KEY: no tiene stats de combate, su valor está en el lore que carga.
+--- */
+GameObject *chooseRandomScroll(void) {
+    int count = sizeof(storyScrolls) / sizeof(storyScrolls[0]);
+    int randomIndex = rand() % count;
+
+    GameObject *object = generateObject(storyScrolls[randomIndex][0]);
+    if(!object) return NULL;
+
+    object->equip = ITEM_KEY;
+    object->stats.attack = 0;
+    object->stats.defense = 0;
+    object->stats.maxHp = 0;
+    object->stats.currentHp = 0;
+    object->stats.speed = 0;
+
+    strncpy(object->lore, storyScrolls[randomIndex][1], MAX_LORE_LENGTH - 1);
+    object->lore[MAX_LORE_LENGTH - 1] = '\0';
 
     return object;
 }
