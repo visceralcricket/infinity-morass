@@ -96,13 +96,13 @@ void combatMode(Player *player, Enemy *enemy) {
         listFirst(enemy->drops);
         while ((drop = listCurrent(enemy->drops)) != NULL) {
             listPushBack(player->inventory, drop);
-            drop = listNext(enemy->drops);
+            drop = listNext(enemy->drops);  
         }
         --- */
     }
 
-    if(player->combatStats.currentHp > 0) {
-        printf("\t");
-        presioneTeclaParaContinuar();    
-    }
+    // Pausa siempre, también al morir, para que el mensaje de GAME OVER
+    // pueda leerse antes de volver al flujo principal.
+    printf("\t");
+    presioneTeclaParaContinuar();
 }
