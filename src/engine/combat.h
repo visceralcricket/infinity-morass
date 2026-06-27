@@ -15,5 +15,6 @@ un macro de tal forma que también disminuya la necesidad de repetir código.
 #include "objmap.h"
 
 void combatMode(Player *player, Enemy *enemy);
+bool usePotionInCombat(Player *player, int startRow, int startCol);
 
 #endif

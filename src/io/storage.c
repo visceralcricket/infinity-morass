@@ -28,6 +28,22 @@ bool saveGame(Player *player, sessionFloor *currentSession) {
     fwrite(&player->x, sizeof(player->x), 1, file);
     fwrite(&player->y, sizeof(player->y), 1, file);
     fwrite(&player->combatStats, sizeof(player->combatStats), 1, file);
+    
+    int weaponIndex = -1;
+    int armorIndex = -1;
+
+    if(player->inventory) {
+        int currentIndex = 0;
+        GameObject *item = (GameObject *) listFirst(player->inventory);
+        while(item) {
+            if(item == player->equippedWeapon) weaponIndex = currentIndex;
+            if(item == player->equippedArmor) armorIndex = currentIndex;
+            item = (GameObject *) listNext(player->inventory);
+            currentIndex++;
+        }
+    }
+    fwrite(&weaponIndex, sizeof(int), 1, file);
+    fwrite(&armorIndex, sizeof(int), 1, file);
 
     int inventorySize = player->inventory ? listSize(player->inventory) : 0;
     fwrite(&inventorySize, sizeof(int), 1, file);
@@ -59,6 +75,14 @@ bool loadGame(Player *player, sessionFloor *currentSession) {
     fread(&player->y, sizeof(player->y), 1, file);
     fread(&player->combatStats, sizeof(player->combatStats), 1, file);
 
+    int weaponIndex = -1;
+    int armorIndex = -1;
+    fread(&weaponIndex, sizeof(int), 1, file);
+    fread(&armorIndex, sizeof(int), 1, file);
+
+    player->equippedWeapon = NULL;
+    player->equippedArmor = NULL;
+
     // IMPORTANTE: Guardamos el inventario objeto por objeto, es decir, el puntero al inventario del jugador
     // podría ser puntero colgante, por ende debemos crear un puntero nuevo y volver a almacenarlo en el heap
     player->inventory = listCreate();
@@ -71,6 +95,18 @@ bool loadGame(Player *player, sessionFloor *currentSession) {
         fread(item, sizeof(GameObject), 1, file);
         listPushBack(player->inventory, item);
     }
+
+    if (player->inventory) {
+        int currentIndex = 0;
+        GameObject *item = (GameObject *)listFirst(player->inventory);
+        while (item != NULL) {
+            if (currentIndex == weaponIndex) player->equippedWeapon = item;
+            if (currentIndex == armorIndex) player->equippedArmor = item;
+            item = (GameObject *)listNext(player->inventory);
+            currentIndex++;
+        }
+    }
+    
     if(fread(currentSession, sizeof(sessionFloor), 1, file) != 1) {
         fclose(file);
         return false;

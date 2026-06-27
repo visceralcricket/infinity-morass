@@ -263,6 +263,7 @@ void handleInventoryInput(Player *player, GameMode *currentSubMode) {
                 } else {
                     // Poción / equipo: usar o equipar (feature de interacción de objetos)
                     useItemExploration(player, current);
+                    limpiarPantalla();
                 }
             }
             break;
@@ -272,6 +273,7 @@ void handleInventoryInput(Player *player, GameMode *currentSubMode) {
 
 // Manejar input dentro de la pantalla de lectura de un pergamino
 void handleScrollInput(GameMode *currentSubMode) {
+    limpiarInputPendiente();
     int key = _getch();
 
     if(key == ESC_KEY) {
@@ -297,6 +299,8 @@ void resetPlayerProgress(Player *player, int maze[N][N], sessionFloor *currentSe
     player->combatStats.speed = 5;
     
     player->x = player->y = 0;
+    saveGame(player, currentSession);
+
 
     generateMaze(maze, 20);
     placeExits(maze, MAX_NUM_EXITS);

@@ -179,11 +179,11 @@ void generateStatsBossEnemy(Enemy* enemy, int difficulty)
         enemy->combatStats.speed     = 1 * difficulty;
     }
     else if(strcmp(enemy->enemyName, "Jefe de carrera") == 0) { // te manda a repetir el semestre, fallas 2 muerte instantanea, si aciertas 5 pasas
-        enemy->combatStats.attack    = 99 * difficulty;
-        enemy->combatStats.defense   = 99 * difficulty;
-        enemy->combatStats.maxHp     = 99* difficulty;
+        enemy->combatStats.attack    = 1 * difficulty;
+        enemy->combatStats.defense   = 55 * difficulty;
+        enemy->combatStats.maxHp     = 60 * difficulty;
         enemy->combatStats.currentHp = enemy->combatStats.maxHp;
-        enemy->combatStats.speed     = 99 * difficulty;
+        enemy->combatStats.speed     = 11 * difficulty;
     }
 }
 

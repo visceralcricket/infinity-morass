@@ -1,7 +1,7 @@
 # **infinity-morass**
 > *Roguelike de calabozos basado en terminal de texto.*
 
-<img src="https://img.shields.io/badge/version-1.8.9-blue" alt="version">
+<img src="https://img.shields.io/badge/version-1.9.1-blue" alt="version">
 
 [![Last Commit](https://img.shields.io/github/last-commit/visceralcricket/infinity-morass/main)](https://github.com/visceralcricket/infinity-morass/commits/main)
 
@@ -97,7 +97,8 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 + con jefes: sería ideal crear nuevas macros que representen mejor a cada enemigo de forma
 + única o que sean capaces de diferenciar enemigos comúnes de jefes. Resuelto en parche 1.8.8
 
-- [PENDIENTE] En la version actual no se ha implementado el glosario
++ [RESUELTO] En la version actual no se ha implementado el glosario
++ Resuelto en parche v1.9.0
 
 + [RESUELTO] No se le indica al jugador en qué nivel de la mazmorra se encuentra, es decir,
 + no existe forma de trackear el número que representa la mazmora actual: en caso de
@@ -145,11 +146,36 @@ reporte de bugs. $
 ## **Changelog (historial de cambios)**
 <small>*Nota: Este changelog está en orden cronológico inverso.*</small>
 
-### **Versión 1.8.0** (20-06-2026) 
+### **Versión 1.9.0** (26-06-2026)
+> Implementación del glosario/bestiario, uso de objetos en el modo de exploración y arreglos mayores de bugs tanto visuales como lógicos
+
+* Parche 1.9.1
+  + Implementado pantalla y funcionalidad de GameOver para resetear personaje y sus estadísticas.
+
+  + Finaliza implementación de glosario en el menú principal.
+
+  + Implementadas funcionalidades para utilizar objetos tanto en el mapa de navegación como en el inventario
+  y en el modo de combate.
+
+  + Creación e integración de la historia del juego por medio de objetos pergamino de tipo clave (key).
+  
+  + Refactorización de funciones de renderizado para adaptarse adecuadamente a las necesidades del programa
+   (mostrar HP actual del jugador, preguntar si desea reiniciar su personaje, etc).
+
+  + Se adaptó el sistema de guardado para ser capaz de almacenar tanto el objeto equipable de armadura que el jugador estaba utilizando como
+  también la armadura que este tenía, resolviendo un problema de punteros colgantes que se generaban tras reiniciar el personaje al finalizar
+  este mismo.
+
+  + **Finalizado la totalidad de objetivos propuestos para el proyecto.**
+
+### **Versión 1.8.0** (20-06-2026)
 > Integración inicial de funcionalidades: modo de juego de combate, sistema de combate, finalización del sistema de guardado/carga de partidas y mejoras de calidad de vida.
 
 * Parche 1.8.9
-  + Inclusión de sistema de *GameOver* con el cual reiniciar (o no) el personaje del jugador, eliminando el checkeo de HP del jugador <= 0 en **combat.c**. Esta funcionalidad se distribuyó en 2 mitades: el renderizado del la pantalla *GameOver* (**renderGameOverScreen**) localizado en los archivos **ui/render** y la lógica detrás de reiniciar el personaje del usuario para volver a comenzar el juego desde el nivel de mazmorra 1 en los archivos **engine/game** (**resetPlayerProgress**).
+  + Inclusión de sistema de *GameOver* con el cual reiniciar (o no) el personaje del jugador, eliminando el checkeo de
+  HP deljugador <= 0 en **combat.c**.Esta funcionalidad se distribuyó en 2 mitades: el renderizado del la pantalla *GameOver*
+  (**renderGameOverScreen**) localizado en los archivos **ui/render** y la lógica detrás de reiniciar el personaje del usuario
+  para volver a comenzar el juego desde el nivel de mazmorra 1 en los archivos **engine/game** (**resetPlayerProgress**).
 
   + Refactorizaciones menores a lo largo de archivos **combat.c, combat.h, main.c** para adaptar la nueva funcionalidad de GameOver.
 
@@ -165,17 +191,22 @@ reporte de bugs. $
   + Optimizacion de generacion de enemigos
 
 * Parche 1.8.7
-  + Realizadas mejoras generales de redacción de documentación, limpieza de comentarios innecesarios y refactorizaciones menores de código para mejorar legibilidad y coherencia.
+  + Realizadas mejoras generales de redacción de documentación, limpieza de comentarios innecesarios y refactorizaciones menores
+  de código para mejorar legibilidad y coherencia.
 
   + Mejorada documentación específica **"TDAS.md"** en la carpeta de **"src/tdas"**
 
-  + Añadidos nuevos macros para eliminar la mayoría (sino toda) existencia de números mágicos tanto en procesos fundamentales del programa como en funcionalidades más finas / de menor impacto.
+  + Añadidos nuevos macros para eliminar la mayoría (sino toda) existencia de números mágicos tanto en procesos fundamentales del
+  programa como en funcionalidades más finas / de menor impacto.
 
-  + Traducidos comentarios obsoletos que se escribieron en inglés al español para mantener consistencia con el resto del proyecto el cual está escrito en dicho lenguaje.
+  + Traducidos comentarios obsoletos que se escribieron en inglés al español para mantener consistencia con el resto del proyecto
+  el cual está escrito en dicho lenguaje.
 
-  + Añadidos comentarios menores a lo largo del código para explicar más a profundidad el funcionamiento de procedimientos y funciones que podrían resultar más complejas o de mayor interés formativo.
+  + Añadidos comentarios menores a lo largo del código para explicar más a profundidad el funcionamiento de procedimientos y funciones
+  que podrían resultar más complejas o de mayor interés formativo.
 
-  + Inclusión de coloreado de texto con <code><b><span style="color: #ebffa4cb;">HTML</span></b></code> para mayor claridad y facilidad de lectura (sólo visible a la hora de descargar este archivo puesto que el motor de Github Flavored Markdown GLM lo sanitiza).
+  + Inclusión de coloreado de texto con <code><b><span style="color: #ebffa4cb;">HTML</span></b></code> para mayor claridad y facilidad
+  de lectura (sólo visible a la hora de descargar este archivo puesto que el motor de Github Flavored Markdown GLM lo sanitiza).
 
   + Implementado formateador **"diff"** para visualización de secciones *"Funcionalidades pendientes"* y *"Problemas conocidos"*
 
@@ -189,10 +220,12 @@ reporte de bugs. $
 
   + Arreglos menores en inclusión de dependencias en **"combat.c, combat.h, enmap.h, game.h, render.h"**
 
-  + Se trasladaron los macros que definen los símbolos de la mazmorra al archivo **"entities.h"** para mantener la separación de responsabilidades adecuada para cada archivo.
+  + Se trasladaron los macros que definen los símbolos de la mazmorra al archivo **"entities.h"** para mantener la separación de
+  responsabilidades adecuada para cada archivo.
 
 * Parche 1.8.4
-  + Funcionalidad de guardado y carga de partidas ahora se encuentra finalizada: incluye el nivel/mazmorra donde se encontraba el jugador, los enemigos y objetos que existían en el mismo y la propia posición del jugador antes de cerrar el juego.
+  + Funcionalidad de guardado y carga de partidas ahora se encuentra finalizada: incluye el nivel/mazmorra donde se encontraba el jugador,
+  los enemigos y objetos que existían en el mismo y la propia posición del jugador antes de cerrar el juego.
 
   + Depuración de inclusiones incorrectas de archivos de cabecera en **"combat.c"** y **"combat.h"**
 
@@ -200,16 +233,21 @@ reporte de bugs. $
 
   + Eliminada fuga de memoria en **"main.c"** al sobreescribir la lista del inventario del jugador tras cargar exitosamente una partida.
 
-  + Creación de la nueva entidad **"sessionFloor"** la cual es la encargada de permitir al programa rastrear (tracking) tanto el mapa actual que está navegando el jugador como las entidades que pueblan el mismo además de verificar si el propio mapa fue realmente visitado o si únicamente se generó y el jugador nunca llegó a explorar.
+  + Creación de la nueva entidad **"sessionFloor"** la cual es la encargada de permitir al programa rastrear (tracking) tanto el mapa actual
+  que está navegando el jugador como las entidades que pueblan el mismo además de verificar si el propio mapa fue realmente visitado o si
+  únicamente se generó y el jugador nunca llegó a explorar.
 
-  + Entidades restantes en **"game.h"** como los modos de juego del programa y macros esenciales fueron desplazadas a **"entities.h"** para mantener un mejor orden de los archivos y reducir la naturaleza céntrica del encabezado **"game.h"**
+  + Entidades restantes en **"game.h"** como los modos de juego del programa y macros esenciales fueron desplazadas a **"entities.h"** para
+  mantener un mejor orden de los archivos y reducir la naturaleza céntrica del encabezado **"game.h"**
 
-  + Eliminación de entidades innecesarias tipo State y Action heredadas del TDA Grafo Implícito puesto que estas funcionalidades ya se manejan en la función clave **"handleWindowsInput"** la cual modifica inmediatamente la posición del jugador en vez de utilizar un intermediario.
+  + Eliminación de entidades innecesarias tipo State y Action heredadas del TDA Grafo Implícito puesto que estas funcionalidades ya se manejan
+  en la función clave **"handleWindowsInput"** la cual modifica inmediatamente la posición del jugador en vez de utilizar un intermediario.
 
   + Arreglo menor a la documentación: versiones y notas de parches distribuidas en el orden incorrecto.
 
 * Parche 1.8.3
-  + heap.c reimplementado como un montículo Min-Heap para eliminar la necesidad de calcular la diferencia de la prioridad encontrada por el montículo e INT_MAX; esto le da más sentido al código y encaja con la lógica de usar la estructura adecuada para el problema adecuado.
+  + heap.c reimplementado como un montículo Min-Heap para eliminar la necesidad de calcular la diferencia de la prioridad encontrada por el
+  montículo e INT_MAX; esto le da más sentido al código y encaja con la lógica de usar la estructura adecuada para el problema adecuado.
 
   + Creación de función freeGameObject encargada de liberar la memoria de cualquier objeto que se le asigne dentro de los archivos tipo **"combat"**.
 
@@ -219,22 +257,26 @@ reporte de bugs. $
   + Implementacion inicial del dropeo de items para los enemigos
 
 * Parche 1.8.1
-  + Removido bug presente a partir de la versión 1.7.0, haciendo uso de métodos más robustos para hacer la limpieza del buffer y la lectura de input, todos cambios principalmente concentrados en el archivo **"extra.c"**
+  + Removido bug presente a partir de la versión 1.7.0, haciendo uso de métodos más robustos para hacer la limpieza del buffer y la lectura de
+  input, todos cambios principalmente concentrados en el archivo **"extra.c"**
 
-  + Refinado de los archivos encargados del renderizado del videojuego para garantizar la integridad y la fidelidad visual del programa tras haber incorporado el nuevo modo de juego de combate y sus respectivas mecánicas.
+  + Refinado de los archivos encargados del renderizado del videojuego para garantizar la integridad y la fidelidad visual del programa tras haber
+  incorporado el nuevo modo de juego de combate y sus respectivas mecánicas.
 
 ### **Versión 1.7.0** (20-06-2026)
 > Se implemento sistema de combate y menú de combate.
 
 * Parche 1.7.2
-  + Se realizaron preparaciones generales para asegurar la correcta integración de las funcionalidades de modo de juego de combate y sus respectivas mecánicas.
+  + Se realizaron preparaciones generales para asegurar la correcta integración de las funcionalidades de modo de juego de combate y sus respectivas
+  mecánicas.
 
 * Parche 1.7.1
   + Funciones que no tenían relación con los archivos donde estaban definidas se trasladaron a los archivos correctos
   
   + Removidas múltiples llamadas de librerías innecesarias
   
-  + refactorizado nombre de archivo "**combat-system.c**" y su encabezado a "**combat.c**" y "**combat.h**" para tener nombres de archivos más breves y concisos.
+  + refactorizado nombre de archivo "**combat-system.c**" y su encabezado a "**combat.c**" y "**combat.h**" para tener nombres de archivos más breves
+  y concisos.
   
   + Arreglado bug donde el submenú superpuesto del inventario in-game se mostraba a una altura considerablemente menor de la correcta.
 
@@ -243,26 +285,31 @@ reporte de bugs. $
 * Parche 1.7.0
   + Implementada versión incial de sistema de combate y menú interactivo de combate.
 
-  + En el menú de combate existe un bug donde, al darle a Enter en un momento donde no es necesario, el jugador puede escribir en el lado izquierdo de la pantalla pero sin tener impacto alguno en la experiencia de juego. No afecta a la visualizacion del mapa
+  + En el menú de combate existe un bug donde, al darle a Enter en un momento donde no es necesario, el jugador puede escribir en el lado izquierdo de
+  la pantalla pero sin tener impacto alguno en la experiencia de juego. No afecta a la visualizacion del mapa
 
 
 ### **Versión 1.6.0** (18-06-2026)
 > Se continuó implementando la funcionalidad de generación, mapeo y tracking de entidades enemigos.
 
 * Parche 1.6.5
-  + Removidas funciones de grafos implícitos de las que no se hacían uso puesto que sus funciones estaban cubiertas por otros archivos a lo largo del motor del juego *(src/engine)*
+  + Removidas funciones de grafos implícitos de las que no se hacían uso puesto que sus funciones estaban cubiertas por otros archivos a lo largo del
+  motor del juego *(src/engine)*
 
 * Parche 1.6.4
   + Ligeras optimizaciones en la lógica de lectura de input para dispositivos Windows.
 
-  + Se refactorizó la forma en que se guardan los archivos del jugador de tal forma que se escriba cada uno de sus parámetros uno a uno en el archivo .sav para asegurar integridad de los datos y evitar que el programa colapse en caso de que el nombre del usuario pase de un arreglo finito a un puntero.
+  + Se refactorizó la forma en que se guardan los archivos del jugador de tal forma que se escriba cada uno de sus parámetros uno a uno en el archivo
+  .sav para asegurar integridad de los datos y evitar que el programa colapse en caso de que el nombre del usuario pase de un arreglo finito a un puntero.
 
   + Cambios menores en ciertos flujos de lógica que requerían ajustes para funcionar mejor.
 
 * Parche 1.6.3
-  + Arreglado bug donde al probar la generación de un enemigo en el mapa el nombre del mismo se quedaba estancado/flotando en el terminal de texto hasta que el jugador entra a ajustes y le da a continuar partida.
+  + Arreglado bug donde al probar la generación de un enemigo en el mapa el nombre del mismo se quedaba estancado/flotando en el terminal de texto hasta
+  que el jugador entra a ajustes y le da a continuar partida.
 
-  + Se refinó la implementación de la generación de enemigos y además se incluyó un sistema básico para poder visualizar y verificar el correcto procesamiento de la generación y mapeo de los enemigos mediante el TDA Mapa.
+  + Se refinó la implementación de la generación de enemigos y además se incluyó un sistema básico para poder visualizar y verificar el correcto procesamiento
+  de la generación y mapeo de los enemigos mediante el TDA Mapa.
 
   + Actualmente no se pueden generar enemigos múltiples veces por cada mazmorra, sino que una única vez en la primera mazmorra a modo de prueba del sistema.
 
@@ -270,7 +317,8 @@ reporte de bugs. $
   + Se modificó la cantidad de salidas por mazmorra para una experiencia de juego más fluida.
 
 * Parche 1.6.1
-  + Se refactorizó la estructura principal de la funcionalidad de generación y mapeo de enemigos, comprimiendo la lógica inicial de comparar nombre a nombre y asignar las estadísticas a una plantilla EnemyTemplate genérica.
+  + Se refactorizó la estructura principal de la funcionalidad de generación y mapeo de enemigos, comprimiendo la lógica inicial de comparar nombre a nombre
+  y asignar las estadísticas a una plantilla EnemyTemplate genérica.
 
   + Se cambiaron los nombres de los archivos **"enemy-gen.c"** a **"enmap.c"** para mejor legibilidad y armonía con los nombres del resto de archivos.
 
@@ -300,7 +348,8 @@ reporte de bugs. $
   
   + Se añadió la inclusión del archivo **"storage.h"** en **"game.c"** para poder hacer uso de la funcionalidad guardar juego.
 
-  + Se refactorizó ligeramente función **"getCharOption"** en **"extra.c"** para asegurar el procesamiento correcto de input y forzar cierre del programa en caso donde el terminal no sea capaz de leer input del usuario adecuadamente.
+  + Se refactorizó ligeramente función **"getCharOption"** en **"extra.c"** para asegurar el procesamiento correcto de input y forzar cierre del programa en caso
+  donde el terminal no sea capaz de leer input del usuario adecuadamente.
 
 * Parche 1.5.2
   + Se arregló el duplicado del menú de exploración y se verificó que los input handlers sean llamados correctamente.
@@ -310,15 +359,18 @@ reporte de bugs. $
 * Parche 1.5.1
   + Arreglado bug que causaba que el programa se colgase.
 
-  + preparando un siguiente parche para evitar doble-output de ciertas partes del menú exploración y pérdida total de respuesta a input al abrir el menú de ajustes sobre el mapa.
+  + preparando un siguiente parche para evitar doble-output de ciertas partes del menú exploración y pérdida total de respuesta a input al abrir el menú de ajustes
+  sobre el mapa.
 
 
 ### **Versión 1.4.0** (14-06-2026)
 > Refactorización y pulido del programa con nuevas funcionalidades y cambios para la experiencia del usuario (Quality of Life)
 
-* Se desplazó la carpeta con los TDAs dentro de la carpeta donde estaban ubicados main, game.c y game.h ("**src/**") para mantener todo el código fuente en un único directorio.
+* Se desplazó la carpeta con los TDAs dentro de la carpeta donde estaban ubicados main, game.c y game.h ("**src/**") para mantener todo el código fuente en
+un único directorio.
 
-* Se mejoró el sistema de navegación del mapa para una experiencia de juego más fluida además de la implementación de una funcionalidad para generar salidas / entradas a los siguientes niveles(mazmorras) de forma aleatoria.
+* Se mejoró el sistema de navegación del mapa para una experiencia de juego más fluida además de la implementación de una funcionalidad para generar
+salidas / entradas a los siguientes niveles(mazmorras) de forma aleatoria.
 
 * Se finalizó el sistema de carga de partidas guardadas en el sistema en base al nombre del usuario.
 
@@ -330,7 +382,8 @@ reporte de bugs. $
 
 * Se refactorizó la implementación de la estructura **"hashmap"** para que se adhiera correctamente a los requisitos del programa.
 
-* Añadido archivo "**MakeFile**" para automatizar compilación del programa; para hacer uso del mismo, abra powershell o su terminal de elección ubicado en el directorio "*infinity-morass*" y utilice el siguiente comando:
+* Añadido archivo "**MakeFile**" para automatizar compilación del programa; para hacer uso del mismo, abra powershell o su terminal de elección ubicado en
+el directorio "*infinity-morass*" y utilice el siguiente comando:
 
 
   > `mingw32-make`
@@ -343,12 +396,14 @@ reporte de bugs. $
 * Se crearon **2** archivos nuevos para distribuir el main y dejarlo más limpio:
 ---
 * 
-  + **`game.h`** tiene todos los `#include` para las librerías, las definiciones para los movimientos, las teclas que se van a leer para mover al personaje y los prototipos de las entidades.
+  + **`game.h`** tiene todos los `#include` para las librerías, las definiciones para los movimientos, las teclas que se van a leer para mover al personaje
+  y los prototipos de las entidades.
 
   + **`game.c`** tiene las entidades en sí, como el `Player`, `Enemy`, `Stats`, las funciones para el grafo y una función para manejar el input en Windows.
 ---
 
-* El main se relegó únicamente para menús y cosas simples; tiene una versión muy simple de la interfaz del menú principal, por ende más allá de eso faltaría continuar las otras 2 interfaces de navegación y combate.
+* El main se relegó únicamente para menús y cosas simples; tiene una versión muy simple de la interfaz del menú principal, por ende más allá de eso faltaría
+continuar las otras 2 interfaces de navegación y combate.
 
 * Se renombró **`map.c`** y **`map.h`** a **`hashmap.c`** y **`hashmap.h`** para que sea un poco más autoexplicativo.
 

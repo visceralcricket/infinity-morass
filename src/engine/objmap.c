@@ -10,8 +10,12 @@ static const ObjectTemplate objectTemplates[] = {
     {"Ultra espadón",      false, true,  SLOT_WEAPON},
     {"Armadura ligera",    false, true,  SLOT_ARMOR},
     {"Armadura pesada",    false, true,  SLOT_ARMOR},
-    {"Armadura berserker", false, true,  SLOT_ARMOR},  // armadura aunque tenga ataque
-    {"Rollo de historia",  false, false, SLOT_NONE}
+    {"Armadura berserker", false, true,  SLOT_ARMOR}  // armadura aunque tenga ataque
+    /* +++
+     Aquí iba a ir el pergamino de historia pero se terminó descartando en favor de crear
+     una sección dedicada explícitamente a almacenar y definir múltiples pergaminos para
+     narrar los fragmentos de la historia.
+    --- */
 };
 
 /* +++
@@ -39,6 +43,40 @@ static const char *storyScrolls[][2] = {
      "Movido por la venganza, el heredero de los antiguos desciende a la mazmorra. Busca la verdad de la tragedia y un modo de detener el mal que aun acecha en lo profundo."}
 };
 
+static void applyTemplateToObject(GameObject *object, const ObjectTemplate *tpl) {
+    if(tpl->isConsumable) {
+        object->equip = ITEM_CONSUMABLE;
+        generateStatsConsumable(object);
+    }
+    else if(tpl->isEquippable) {
+        object->equip = ITEM_EQUIPPABLE;
+        object->equipSlot = tpl->slot;
+        generateStatsEquipabble(object);
+    }
+    else {
+        object->equip = ITEM_KEY;
+    }
+}
+
+Map *createObjectsMap(void) {
+    Map *map = mapCreate();
+    if(!map) return NULL;
+    int count = sizeof(objectTemplates) / sizeof(objectTemplates[0]);
+
+    for(int i=0; i < count; ++i) {
+        const ObjectTemplate *tpl = &objectTemplates[i];
+
+        GameObject *object = generateObject(tpl->name);
+        if(!object) continue;
+
+        // Aquí utilizamos el ensamblador applyTemplateToObject
+        applyTemplateToObject(object, tpl);
+
+        mapInsert(map, object->name, object);
+    }
+    return map;
+}
+
 void handleGameObject(GameObject *currentObject) {
     if(!currentObject) return;
     switch(currentObject->equip) {
@@ -50,7 +88,6 @@ void handleGameObject(GameObject *currentObject) {
             generateStatsEquipabble(currentObject);
             break;
         case ITEM_KEY:
-            generateStatsKey(currentObject);
             break;
         default:
             break;
@@ -85,19 +122,7 @@ GameObject *chooseRandomObject(void) {
     GameObject *object = generateObject((char *)tpl->name);
     if(!object) return NULL;
 
-    if(tpl->isConsumable) {
-        object->equip = ITEM_CONSUMABLE;
-        generateStatsConsumable(object);
-    }
-    else if(tpl->isEquippable) {
-        object->equip = ITEM_EQUIPPABLE;
-        object->equipSlot = tpl->slot;   // <-- slot explícito desde el template
-        generateStatsEquipabble(object);
-    }
-    else {
-        object->equip = ITEM_KEY;
-        generateStatsKey(object); // <-- antes llamaba a generateStatsEquipabble por error
-    }
+    applyTemplateToObject(object, tpl);
 
     return object;
 }
@@ -173,39 +198,6 @@ void generateStatsEquipabble(GameObject* object)
     }
 }
 
-void generateStatsKey(GameObject* object)
-{
-    if(strcmp(object->name, "Rollo de historia") == 0) {
-        object->stats.attack = 0;
-        object->stats.defense = 0;
-        object->stats.maxHp = 0;
-        object->stats.currentHp = 0;
-        object->stats.speed = 0;
-    }
-}
-
-Map *createObjectsMap(void) {
-    Map *map = mapCreate();
-    if(!map) return NULL;
-    int count = sizeof(objectTemplates) / sizeof(objectTemplates[0]);
-
-    for(int i=0; i < count; ++i) {
-        const ObjectTemplate *tpl = &objectTemplates[i];
-
-        GameObject *object = generateObject(tpl->name);
-        if(!object) continue;
-
-        if(tpl->isEquippable) object->equipSlot = tpl->slot;
-
-        if(tpl->isConsumable) generateStatsConsumable(object);
-        else if(tpl->isEquippable) generateStatsEquipabble(object);
-        else generateStatsKey(object);
-
-        mapInsert(map, object->name, object);
-    }
-    return map;
-}
-
 GameObject *chooseRandomPotion(void) {
     int potionIndex = rand() % 3; // Las 3 primeras posiciones del arreglo son las pociones
     const ObjectTemplate *tpl = &objectTemplates[potionIndex];
@@ -213,8 +205,7 @@ GameObject *chooseRandomPotion(void) {
     GameObject *object = generateObject((char *)tpl->name);
     if(!object) return NULL;
 
-    object->equip = ITEM_CONSUMABLE;
-    generateStatsConsumable(object);
+    applyTemplateToObject(object, tpl);
 
     return object;
 }

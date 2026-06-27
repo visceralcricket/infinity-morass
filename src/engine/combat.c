@@ -99,3 +99,75 @@ void combatMode(Player *player, Enemy *enemy) {
         presioneTeclaParaContinuar();
     }
 }
+
+bool usePotionInCombat(Player *player, int startRow, int startCol) {
+    if (!player || !player->inventory) return false;
+
+    GameObject *potions[64];
+    int potionCount = 0;
+
+    GameObject *item = (GameObject *) listFirst(player->inventory);
+    while (item != NULL && potionCount < 64) {
+        if (item->equip == ITEM_CONSUMABLE) {
+            potions[potionCount++] = item;
+        }
+        item = (GameObject *) listNext(player->inventory);
+    }
+
+    int rowsUsed = potionCount + 6;
+
+    if (potionCount == 0) {
+        return false;
+    }
+
+    SET_CURSOR_POS(startRow, startCol);
+    printf(CLEAR_LINE_TO_END "Elige una poción:");
+    for (int i = 0; i < potionCount; i++) {
+        SET_CURSOR_POS(startRow+1+i, startCol);
+        printf(CLEAR_LINE_TO_END "%d) %s (+%d HP)", i+1, potions[i]->name, potions[i]->stats.currentHp);
+    }
+    SET_CURSOR_POS(startRow+1+potionCount, startCol);
+    printf(CLEAR_LINE_TO_END "0) Cancelar");
+    SET_CURSOR_POS(startRow+3+potionCount, startCol);
+    printf(CLEAR_LINE_TO_END "Opción: ");
+    fflush(stdout);
+
+    int choice = -1;
+    while (choice < 0) {
+        int key = _getch();
+        if (key == '0') {
+            choice = 0;
+        } else if (key >= '1' && key <= '9') {
+            int n = key - '0';
+            if (n <= potionCount) choice = n;
+        }
+    }
+
+    bool used = false;
+
+    if (choice > 0) {
+        GameObject *chosen = potions[choice - 1];
+
+        player->combatStats.currentHp += chosen->stats.currentHp;
+        if (player->combatStats.currentHp > player->combatStats.maxHp) {
+            player->combatStats.currentHp = player->combatStats.maxHp;
+        }
+
+        listFirst(player->inventory);
+        while (listCurrent(player->inventory) != chosen && listCurrent(player->inventory) != NULL) {
+            listNext(player->inventory);
+        }
+        if (listCurrent(player->inventory) == chosen) {
+            listPopCurrent(player->inventory);
+            free(chosen);
+        }
+        used = true;
+    }
+
+    for (int r = 0; r <= rowsUsed; r++) {
+        SET_CURSOR_POS(startRow+r, startCol);
+        printf(CLEAR_LINE_TO_END);
+    }
+    fflush(stdout);    
+    return used;
+}

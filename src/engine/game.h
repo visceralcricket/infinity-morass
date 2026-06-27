@@ -10,6 +10,7 @@
 
 #include "../tdas/extra.h"
 #include "entities.h"
+#include "player.h"
 #include "../tdas/hashmap.h"
 
 // ======== Definiciones generales ========

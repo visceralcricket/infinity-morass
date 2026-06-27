@@ -1,6 +1,7 @@
 #include "engine/game.h"
-#include "io/storage.h"
+#include "engine/objmap.h"
 #include "engine/combat.h"
+#include "io/storage.h"
 #include "ui/render.h"
 
 // --------------- Utilities ---------------
@@ -29,10 +30,9 @@ int main() {
     };
     // Inicializar estructura que almacene propiedades clave del mapa actual
     struct sessionFloor currentSession = {0};
-
-    // Construir el hashmap maestro de enemigos UNA sola vez. De aquí en adelante
-    // los enemigos se clonan desde el mapa en vez de regenerarse desde cero.
+    
     Map *enemyMap = createEnemiesMap();
+    Map *objectsMap = createObjectsMap();
 
     int mazeGenerated = false;
     // Inicializar semilla aleatoria para generar laberintos únicos
@@ -101,7 +101,7 @@ int main() {
                 break;
 
             case '2':
-                // void showGlossary(maze);
+                showGlossary(objectsMap, enemyMap);
                 break;
         }
 
@@ -243,5 +243,3 @@ void runExplorationMode(int maze[N][N], Player *player, sessionFloor *currentSes
     }
     printf(SHOW_CURSOR);
 }
-
-// void showGlossary() {}
