@@ -1,6 +1,5 @@
 #include "game.h"
 #include "objmap.h"
-#include "player.h"
 #include "../io/storage.h"
 
 // Función recursiva (DFS) para encontrar un camino aleatorio garantizado
@@ -255,15 +254,12 @@ void handleInventoryInput(Player *player, GameMode *currentSubMode) {
             break;
 
         case 'e': {
+            // Leer un pergamino: solo si el item seleccionado es ITEM_KEY con lore cargado
             if(player->inventory) {
                 GameObject *current = (GameObject *) listCurrent(player->inventory);
                 if(current && current->equip == ITEM_KEY && current->lore[0] != '\0') {
-                    // Pergamino: abrir modo lectura (feature de pergaminos)
                     limpiarPantalla();
                     *currentSubMode = MODE_SCROLL_READ;
-                } else {
-                    // Poción / equipo: usar o equipar (feature de interacción de objetos)
-                    useItemExploration(player, current);
                 }
             }
             break;
