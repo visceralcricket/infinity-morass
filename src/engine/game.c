@@ -254,17 +254,31 @@ void handleInventoryInput(Player *player, GameMode *currentSubMode) {
             break;
 
         case 'e': {
-            // Leer un pergamino: solo si el item seleccionado es ITEM_KEY con lore cargado
             if(player->inventory) {
                 GameObject *current = (GameObject *) listCurrent(player->inventory);
                 if(current && current->equip == ITEM_KEY && current->lore[0] != '\0') {
+                    // Pergamino: abrir modo lectura (feature de pergaminos)
                     limpiarPantalla();
                     *currentSubMode = MODE_SCROLL_READ;
+                } else {
+                    // Poción / equipo: usar o equipar (feature de interacción de objetos)
+                    useItemExploration(player, current);
                 }
             }
             break;
         }
     }
+}
+
+// Manejar input dentro de la pantalla de lectura de un pergamino
+void handleScrollInput(GameMode *currentSubMode) {
+    int key = _getch();
+
+    if(key == ESC_KEY) {
+        limpiarPantalla();
+        *currentSubMode = MODE_INVENTORY_VIEW;
+    }
+    // Cualquier otra tecla no hace nada: el jugador sigue leyendo
 }
 
 void resetPlayerProgress(Player *player, int maze[N][N], sessionFloor *currentSession) {
@@ -290,15 +304,4 @@ void resetPlayerProgress(Player *player, int maze[N][N], sessionFloor *currentSe
     placeObjects(maze);
     
     currentSession->isMapDirty = true;
-}
-
-// Manejar input dentro de la pantalla de lectura de un pergamino
-void handleScrollInput(GameMode *currentSubMode) {
-    int key = _getch();
-
-    if(key == ESC_KEY) {
-        limpiarPantalla();
-        *currentSubMode = MODE_INVENTORY_VIEW;
-    }
-    // Cualquier otra tecla no hace nada: el jugador sigue leyendo
 }
