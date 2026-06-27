@@ -50,19 +50,10 @@ void combatMode(Player *player, Enemy *enemy) {
     if (fleeCondition) {
         printf("\n\t¡Has huido del %s! Vives para luchar otro día...\n", enemy->enemyName);
     }
-    else if (player->combatStats.currentHp <= 0) {
-        printf("\n\t¡Has sido derrotado! Tal parece que no lograrás ser el más fuerte de la mazmorra...\n");
-        printf("\n\t\t\t\t\t GAME OVER\n");
-        printf("\n\t\t\t    ¡Inténtalo de nuevo! ¡No te rindas!\n");
-        printf("\n");
-    }
+    
     else if (enemy->combatStats.currentHp <= 0) {
         printf("\n\t¡Has derrotado al %s! ¡Felicidades!\n", enemy->enemyName);
 
-        /* +++
-        Considerar añadir macros también para estas 2 variables utilizadas
-        en el randomizador (100, 30).
-        --- */
         if (rand() % 100 < 30) 
         { 
             GameObject *potionDrop = chooseRandomPotion();
@@ -103,6 +94,8 @@ void combatMode(Player *player, Enemy *enemy) {
 
     // Pausa siempre, también al morir, para que el mensaje de GAME OVER
     // pueda leerse antes de volver al flujo principal.
-    printf("\t");
-    presioneTeclaParaContinuar();
+    if(player->combatStats.currentHp > 0) {
+        printf("\t");
+        presioneTeclaParaContinuar();
+    }
 }
