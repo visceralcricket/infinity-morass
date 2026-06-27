@@ -254,12 +254,16 @@ void handleInventoryInput(Player *player, GameMode *currentSubMode) {
             break;
 
         case 'e': {
-            // Leer un pergamino: solo si el item seleccionado es ITEM_KEY con lore cargado
             if(player->inventory) {
                 GameObject *current = (GameObject *) listCurrent(player->inventory);
                 if(current && current->equip == ITEM_KEY && current->lore[0] != '\0') {
+                    // Pergamino: abrir modo lectura (feature de pergaminos)
                     limpiarPantalla();
                     *currentSubMode = MODE_SCROLL_READ;
+                } else {
+                    // Poción / equipo: usar o equipar (feature de interacción de objetos)
+                    useItemExploration(player, current);
+                    limpiarPantalla();
                 }
             }
             break;
@@ -269,6 +273,7 @@ void handleInventoryInput(Player *player, GameMode *currentSubMode) {
 
 // Manejar input dentro de la pantalla de lectura de un pergamino
 void handleScrollInput(GameMode *currentSubMode) {
+    limpiarInputPendiente();
     int key = _getch();
 
     if(key == ESC_KEY) {
@@ -276,4 +281,31 @@ void handleScrollInput(GameMode *currentSubMode) {
         *currentSubMode = MODE_INVENTORY_VIEW;
     }
     // Cualquier otra tecla no hace nada: el jugador sigue leyendo
+}
+
+void resetPlayerProgress(Player *player, int maze[N][N], sessionFloor *currentSession) {
+    if(player->inventory) {
+        GameObject *item = (GameObject *) listPopFront(player->inventory);
+        while(item) {
+            free(item);
+            item = (GameObject *) listPopFront(player->inventory);
+        }
+        listClean(player->inventory);
+    }
+    player->combatStats.maxHp = 100;
+    player->combatStats.currentHp = 100;
+    player->combatStats.attack = 5;
+    player->combatStats.defense = 5;
+    player->combatStats.speed = 5;
+    
+    player->x = player->y = 0;
+    saveGame(player, currentSession);
+
+
+    generateMaze(maze, 20);
+    placeExits(maze, MAX_NUM_EXITS);
+    placeEnemies(maze, 1);
+    placeObjects(maze);
+    
+    currentSession->isMapDirty = true;
 }

@@ -35,6 +35,13 @@ typedef enum {
     OBJECT_INVENTORY
 } ItemState;
 
+
+typedef enum {
+    SLOT_NONE = 0,  
+    SLOT_WEAPON,
+    SLOT_ARMOR
+} EquipSlot;
+
 // ======== Menu modes enum structure ========
 
 typedef enum {
@@ -65,6 +72,7 @@ struct GameObject {
     char lore[MAX_LORE_LENGTH];
     ItemState state;
     ItemType equip;
+    EquipSlot equipSlot;   // Slot de equipo (solo relevante si equip == ITEM_EQUIPPABLE)
     union {
         struct { int x, y; };    // si está en el mapa
         struct { int slot; };    // si está en inventario

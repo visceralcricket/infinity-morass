@@ -3,6 +3,7 @@
 
 #include "../engine/entities.h"
 #include "../tdas/extra.h"
+#include "../tdas/hashmap.h"
 /*
 #define MAX_SHIFT_ROW N+5
 #define MAX_SHIFT_COL N+50
@@ -29,5 +30,7 @@ void renderScrollOverlay(GameObject *scroll);
 void renderCombatOverlay(Player *player, Enemy *enemy, void *currentTurn, int turnCounter, bool *fleeCondition);
 
 void renderGameOverScreen(const char *killerName);
+
+void showGlossary(Map *objectMap, Map *enemyMap);
 
 #endif
