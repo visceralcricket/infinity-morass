@@ -97,7 +97,7 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 + con jefes: sería ideal crear nuevas macros que representen mejor a cada enemigo de forma
 + única o que sean capaces de diferenciar enemigos comúnes de jefes. Resuelto en parche 1.8.8
 
-+ [RESUELTO] En la version actual no se ha implementado el glosario
+- [PENDIENTE] En la version actual no se ha implementado el glosario
 
 + [RESUELTO] No se le indica al jugador en qué nivel de la mazmorra se encuentra, es decir,
 + no existe forma de trackear el número que representa la mazmora actual: en caso de
@@ -109,10 +109,6 @@ Este proyecto está desarrollado en **C (Estándar C99)**. Para compilarlo de fo
 @@ A nivel de lógica de procedimientos / sistemas @@
 + [RESUELTO] Implementar funcionalidad de reiniciar personaje (o al menos los puntos de vida del mismo)
 + Resuelto en parche v1.8.9
-
-+ [RESUELTO] Implementar el uso de objetos (todos) en el modo exploración
-
-- [PENDIENTE] Implementar el uso de objetos (pociones) en combate
 
 + [RESUELTO] Actualmente la generacion de enemigos no usa el mapa para mostrarlos, los generas desde 0 siempre. 
 + Resuelto en parche 1.8.8
@@ -143,12 +139,11 @@ reporte de bugs. $
 + Bomba molotov [CONSUMIBLE]: +10 ATK -5 SPD
 + Resuelto en parche v1.8.9
 
+
+
 ```
 ## **Changelog (historial de cambios)**
 <small>*Nota: Este changelog está en orden cronológico inverso.*</small>
-
-### **Versión 1.9.0** (26-06-2026) 
-> Añadidas las implementaciones de equipar y usar objetos, además de añadirse el glosario de enemigos y objetos.
 
 ### **Versión 1.8.0** (20-06-2026) 
 > Integración inicial de funcionalidades: modo de juego de combate, sistema de combate, finalización del sistema de guardado/carga de partidas y mejoras de calidad de vida.
@@ -185,17 +180,9 @@ reporte de bugs. $
   + Implementado formateador **"diff"** para visualización de secciones *"Funcionalidades pendientes"* y *"Problemas conocidos"*
 
 * Parche 1.8.6
-<<<<<<< HEAD
-<<<<<<< HEAD
-  + Añadida la posibilidad de agarrar objetos en el mapa de juego.
-=======
-  + Rolled-back cambios realizados **"heap.c"** y **"combat.c"**: se dejó como Min-Heap y se preservó la resta con **INT_MAX**.
->>>>>>> 7ac8a5274a085332c1ddc5d9eadddb7597efb56e
-=======
   + Añadida la posibilidad de agarrar objetos en el mapa de juego.
   
   + Rolled-back cambios realizados **"heap.c"** y **"combat.c"**: se dejó como Min-Heap y se preservó la resta con **INT_MAX**.
->>>>>>> de855082f2f71e18cf6a772b18f90d64fb71e99e
 
 * Parche 1.8.5
   + Implementadas secciones de **"Funcionalidades pendientes"** y **"Problemas conocidos"**
